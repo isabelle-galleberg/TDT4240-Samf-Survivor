@@ -2,7 +2,6 @@ package com.mygdx.tdt4240;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.tdt4240.SamfSurvivor;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -10,6 +9,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("tdt4240-samf-survivor");
-		new Lwjgl3Application(new SamfSurvivor(), config);
+		new Lwjgl3Application(new Game(), config);
 	}
 }

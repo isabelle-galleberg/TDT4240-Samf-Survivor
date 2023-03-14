@@ -1,9 +1,14 @@
 package com.mygdx.tdt4240.states.PlayState.Model.ecs.components
 
-import com.badlogic.ashley.core.Component
+import com.github.quillraven.fleks.Component
+import com.github.quillraven.fleks.ComponentType
 
-class SpriteComponent : Component{
-    // TODO: sprite is a picture
-    //public val Sprite =
-    public val position:Pair<Int, Int> = Pair(0, 0)
+data class SpriteComponent(
+    // TODO: add Sprite picture
+    var position:Pair<Int, Int> = Pair(0, 0)
+) : Component<SpriteComponent> {
+
+    override fun type() = SpriteComponent
+
+    companion object : ComponentType<SpriteComponent>()
 }

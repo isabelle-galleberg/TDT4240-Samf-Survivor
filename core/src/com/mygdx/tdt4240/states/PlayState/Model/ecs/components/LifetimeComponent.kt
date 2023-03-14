@@ -1,8 +1,13 @@
 package com.mygdx.tdt4240.states.PlayState.Model.ecs.components
 
-import com.badlogic.ashley.core.Component
+import com.github.quillraven.fleks.Component
+import com.github.quillraven.fleks.ComponentType
 
-class LifetimeComponent : Component{
-    // TODO: lifetime in seconds
-    public val lifetime = 2
+data class LifetimeComponent(
+    var lifetime:Int = 2 //lifetime in seconds
+) : Component<LifetimeComponent> {
+
+    override fun type() = LifetimeComponent
+
+    companion object : ComponentType<LifetimeComponent>()
 }

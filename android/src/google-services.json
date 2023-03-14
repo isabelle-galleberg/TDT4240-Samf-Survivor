@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "62813164980",
+    "project_id": "samf-survivor",
+    "storage_bucket": "samf-survivor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62813164980:android:0673bf9a0ecfd04f0e4ee1",
+        "android_client_info": {
+          "package_name": "com.mygdx.tdt4240"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62813164980-1f265a84dt17fd0v3c35a177modjioen.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyXYrq9vlU7TumTLVHkkOVnzDIryqOE0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62813164980-1f265a84dt17fd0v3c35a177modjioen.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

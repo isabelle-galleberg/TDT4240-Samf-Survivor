@@ -1,3 +1,4 @@
+apply plugin: 'com.google.gms.google-services'
 android {
     buildToolsVersion "33.0.1"
     compileSdkVersion 33
@@ -83,6 +84,12 @@ task run(type: Exec) {
 
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.mygdx.tdt4240/com.mygdx.tdt4240.AndroidLauncher'
+}
+
+dependencies {
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+    implementation 'com.google.firebase:firebase-database:20.0.4'
 }
 
 eclipse.project.name = appName + "-android"

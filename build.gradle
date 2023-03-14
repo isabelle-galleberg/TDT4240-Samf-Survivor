@@ -67,6 +67,7 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
         api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        api "com.badlogicgames.ashley:ashley:$ashleyVersion"
     }
 }
 
@@ -92,5 +93,6 @@ project(":core") {
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        api "com.badlogicgames.ashley:ashley:$ashleyVersion"
     }
 }

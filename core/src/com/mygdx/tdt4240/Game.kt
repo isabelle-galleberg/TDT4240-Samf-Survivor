@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.tdt4240.states.MainMenuState
 import com.mygdx.tdt4240.states.StateManager
+import com.mygdx.tdt4240.states.TutorialState
 
 class Game : ApplicationAdapter() {
 	companion object {
@@ -19,7 +20,7 @@ class Game : ApplicationAdapter() {
 		stateManager = StateManager()
 		Gdx.input.inputProcessor = InputMultiplexer()
 		Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
-		stateManager?.push(MainMenuState(stateManager!!))
+		stateManager?.push(TutorialState(stateManager!!))
 	}
 
 	override fun render() {

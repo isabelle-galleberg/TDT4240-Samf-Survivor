@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "com.mygdx.tdt4240"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
@@ -87,9 +87,8 @@ task run(type: Exec) {
 }
 
 dependencies {
-    // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
-    implementation 'com.google.firebase:firebase-database:20.0.4'
+    implementation 'com.google.firebase:firebase-database:20.1.0'
 }
 
 eclipse.project.name = appName + "-android"

@@ -5,14 +5,16 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.tdt4240.states.MainMenuState
+import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.states.StateManager
 import com.mygdx.tdt4240.states.TutorialState
+import com.mygdx.tdt4240.states.RegisterState
 
-class Game : ApplicationAdapter() {
+class Game(private var api: API) : ApplicationAdapter() {
 	companion object {
 		var sprites: SpriteBatch? = null
 	}
+
 	private var stateManager: StateManager? = null
 
 	override fun create() {
@@ -20,7 +22,7 @@ class Game : ApplicationAdapter() {
 		stateManager = StateManager()
 		Gdx.input.inputProcessor = InputMultiplexer()
 		Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
-		stateManager?.push(TutorialState(stateManager!!))
+		stateManager?.push(RegisterState(stateManager!!, api))
 	}
 
 	override fun render() {

@@ -15,7 +15,7 @@ abstract class State(
 
     init {
         // TODO: change game width and height according to screen size
-        camera.setToOrtho(false, GAME_WIDTH, GAME_HEIGHT)
+        camera.setToOrtho(false, GAME_WIDTH.toFloat(), GAME_HEIGHT.toFloat())
     }
 
     abstract fun update(deltaTime: Float)

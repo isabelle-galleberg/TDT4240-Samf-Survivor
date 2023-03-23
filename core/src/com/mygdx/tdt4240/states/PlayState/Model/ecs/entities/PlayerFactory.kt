@@ -14,5 +14,4 @@ object PlayerFactory {
         }
         return entity
     }
-
 }

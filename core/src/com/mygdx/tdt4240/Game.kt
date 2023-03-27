@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.states.StateManager
+import com.mygdx.tdt4240.states.TutorialState
 import com.mygdx.tdt4240.states.RegisterState
 
 class Game(private var api: API) : ApplicationAdapter() {
 	companion object {
 		var sprites: SpriteBatch? = null
 	}
-	
+
 	private var stateManager: StateManager? = null
 
 	override fun create() {

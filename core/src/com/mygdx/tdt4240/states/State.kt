@@ -14,7 +14,6 @@ abstract class State(
     protected val camera: OrthographicCamera = OrthographicCamera()
 
     init {
-        // TODO: change game width and height according to screen size
         camera.setToOrtho(false, GAME_WIDTH, GAME_HEIGHT)
     }
 

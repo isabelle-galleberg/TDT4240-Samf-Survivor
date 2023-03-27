@@ -1,32 +1,38 @@
 package com.mygdx.tdt4240.states
 import com.badlogic.gdx.Gdx
-import com.mygdx.tdt4240.sprites.Common
+import com.badlogic.gdx.graphics.Pixmap
+import com.mygdx.tdt4240.sprites.Buttons
 
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.mygdx.tdt4240.utils.Constants
+import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
+import com.mygdx.tdt4240.utils.Constants.TUTORIAL_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.TUTORIAL_WIDTH
 
+
+/**
+ * State for the tutorial.
+ * @param stateManager Manager of all game states.
+ */
 
 class TutorialState(stateManager: StateManager) : State(stateManager) {
-    private val titleText = Common().titleText
-    val ws=Common().windowSprite
-    val logo=Common().logoTexture
-    val samf=Common().samfTexture
-
+    private val logo = Texture("logo.png")
+    private val background = Texture("samfundet.png")
     private val stage = Stage()
-    private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
-    private val nextButton = Common().createSmallButton("Next")
-    private val backButton=Common().createSmallButton("Back")
+    private val nextButton = Buttons().createSmallButton("Next")
+    private val backButton = Buttons().createSmallButton("Back")
+    private val pixmap = Pixmap(TUTORIAL_WIDTH, TUTORIAL_HEIGHT, Pixmap.Format.RGBA8888)
+    private val tutorialWindow: Texture
+
 
     init {
-        nextButton.setPosition((Constants.GAME_WIDTH.toFloat() / 5)*4 - nextButton.width / 2, 20f)
-        backButton.setPosition((Constants.GAME_WIDTH.toFloat() / 5) - nextButton.width / 2, 20f)
+        pixmap.setColor(128F, 0f, 0f, 1f)
+        pixmap.fillRectangle(0, 0, TUTORIAL_WIDTH, TUTORIAL_HEIGHT)
+        tutorialWindow = Texture(pixmap)
+        nextButton.setPosition((GAME_WIDTH / 5)*4 - nextButton.width / 2, 20f)
+        backButton.setPosition((GAME_WIDTH / 5) - nextButton.width / 2, 20f)
         stage.addActor(nextButton)
         stage.addActor(backButton)
     }
@@ -35,23 +41,22 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
         Gdx.input.inputProcessor = stage
     }
 
-    override fun render(sb: SpriteBatch) {
-        sb.begin()
-        sb.draw(samf,0f,0f,Constants.GAME_WIDTH.toFloat(),Constants.GAME_HEIGHT.toFloat())
-        sb.draw(logo,Constants.GAME_WIDTH.toFloat()/2-logo.width/2,Constants.GAME_HEIGHT.toFloat()-logo.height)
-        ws.draw(sb)
-        ws.setCenter(Constants.GAME_WIDTH.toFloat()/2,Constants.GAME_HEIGHT.toFloat()/3)
-        //titleText.draw(sb, "This is the tutorial view", 20f, 100f)
-        sb.end()
-
+    override fun render(sprites: SpriteBatch) {
+        sprites.begin()
+        sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
+        sprites.draw(logo,GAME_WIDTH/2-logo.width/2,GAME_HEIGHT-logo.height)
+        sprites.draw(tutorialWindow,GAME_WIDTH/2-tutorialWindow.width/2,0f)
+        sprites.end()
         stage.act(Gdx.graphics.deltaTime)
         stage.draw()
     }
 
     override fun dispose() {
         stage.dispose()
-        skin.dispose()
+        logo.dispose()
+        background.dispose()
+        pixmap.dispose()
+        tutorialWindow.dispose()
     }
-
 
 }

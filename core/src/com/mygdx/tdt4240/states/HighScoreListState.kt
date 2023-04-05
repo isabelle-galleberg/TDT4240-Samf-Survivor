@@ -56,7 +56,7 @@ class HighScoreListState(
 
             font.draw(sprites, number, GAME_WIDTH * 0.175f, highscoreY + GAME_HEIGHT * 0.09f)
             font.draw(sprites, username, GAME_WIDTH * 0.25f, highscoreY + GAME_HEIGHT * 0.09f)
-            font.draw(sprites, score, GAME_WIDTH * 0.8f, highscoreY + GAME_HEIGHT * 0.09f)
+            font.draw(sprites, score, GAME_WIDTH * 0.75f, highscoreY + GAME_HEIGHT * 0.09f)
         }
         sprites.flush()
         sprites.end()

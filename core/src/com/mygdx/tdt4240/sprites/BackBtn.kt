@@ -19,6 +19,6 @@ class BackBtn {
     }
 
     fun backBtnPressed(): Boolean {
-        return Gdx.input.justTouched() && Gdx.input.x > backBtnX && Gdx.input.x < backBtnX + backBtnSize && Gdx.input.y > backBtnY && Gdx.input.y < backBtnY + backBtnSize
+        return Gdx.input.justTouched() && Gdx.input.x > backBtnX && Gdx.input.x < backBtnX + backBtnSize && Gdx.input.y < GAME_HEIGHT - backBtnY && Gdx.input.y > GAME_HEIGHT - backBtnY - backBtnSize
     }
 }

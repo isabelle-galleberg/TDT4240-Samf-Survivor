@@ -3,6 +3,10 @@ import java.util.ArrayList
 
 interface API {
     fun submitUser(user: User)
+
     fun getHighscores(dataHolder: ArrayList<User>)
-    fun checkUserExists(username: String): Boolean
+
+    fun userExists(username: String, password: String): Boolean
+    
+    fun usernameExists(username: String): Boolean
 }

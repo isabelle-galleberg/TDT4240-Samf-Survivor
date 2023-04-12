@@ -11,6 +11,8 @@ object Constants {
     val INPUT_WIDTH = GAME_WIDTH * 0.6f
     val INPUT_HEIGHT = GAME_HEIGHT * 0.15f
 
+    val BUTTON_HEIGHT = GAME_HEIGHT * 0.12f
+
     val TUTORIAL_WIDTH=(GAME_WIDTH /10).toInt()*7
     val TUTORIAL_HEIGHT=(GAME_HEIGHT /8).toInt()*6
 

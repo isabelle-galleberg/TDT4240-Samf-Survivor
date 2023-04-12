@@ -26,8 +26,7 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
 
     //#TODO-endre val+array til oppdaterte bilder av spillet
     private val logo2=Texture("logo.png")
-    private val cat=Texture ("cat1.png")
-    private val imgArray= arrayOf(background,cat,logo2)
+    private val imgArray= arrayOf(background,logo2)
     private var pointer=0
 
     private val stage = Stage()

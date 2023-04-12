@@ -14,7 +14,7 @@ object NPCBehavior : Layer4() {
 /* Set bombs with a random delay between 2 and 10 seconds*/
 open class Layer4 : Layer3() {
     fun setBombs(world: World) {
-        //TODO: Stop this loop somehow
+        //TO DO: Stop this loop when game is over
         while(true){
             Timer().schedule(object : TimerTask() {
                 override fun run() {
@@ -55,7 +55,7 @@ open class Layer2 : Layer1() {
         var collision = true
         while (collision) {
             if (NPCDirection == DirectionType.DOWN) {
-                if (NPCPosition.second == 9 || TileSystem.getPositions().contains(Pair(NPCPosition.first, NPCPosition.second + 1))) {
+                if (NPCPosition.second == 8 || TileSystem.getPositions().contains(Pair(NPCPosition.first, NPCPosition.second + 1))) {
                     NPCDirection = randomDirection(DirectionType.DOWN)
                 } else {
                     collision = false
@@ -73,7 +73,7 @@ open class Layer2 : Layer1() {
                     collision = false
                 }
             } else {
-                if (NPCPosition.first == 9 || TileSystem.getPositions().contains(Pair(NPCPosition.first + 1, NPCPosition.second))) {
+                if (NPCPosition.first == 8 || TileSystem.getPositions().contains(Pair(NPCPosition.first + 1, NPCPosition.second))) {
                     NPCDirection = randomDirection(DirectionType.RIGHT)
                 } else {
                     collision = false

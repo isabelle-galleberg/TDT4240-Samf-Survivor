@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.firebase.User
 import com.mygdx.tdt4240.states.StateManager
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
 /**
  * State for the register form.
@@ -38,12 +39,12 @@ class RegisterState(
         password.setSize(1000f, 150f)
         button.setSize(1000f, 150f)
         errorLabel.setSize(1000f, 150f)
-        username.setPosition(Gdx.graphics.width.toFloat() / 2 - button.width / 2, 800f)
-        password.setPosition(Gdx.graphics.width.toFloat() / 2- button.width / 2, 500f)
-        button.setPosition(Gdx.graphics.width.toFloat() / 2 - button.width / 2, 200f)
+        username.setPosition(GAME_WIDTH/2 - button.width / 2, 800f)
+        password.setPosition(GAME_WIDTH/2- button.width / 2, 500f)
+        button.setPosition(GAME_WIDTH/ 2 - button.width / 2, 200f)
         usernameLabel.setPosition(1050f, 960f)
         passwordLabel.setPosition(1050f, 660f)
-        errorLabel.setPosition(Gdx.graphics.width.toFloat() / 2 - errorLabel.width / 2, 0f)
+        errorLabel.setPosition(GAME_WIDTH/2 - errorLabel.width / 2, 0f)
         textFieldStyle.font.data.setScale(3f)
 
         password.isPasswordMode = true

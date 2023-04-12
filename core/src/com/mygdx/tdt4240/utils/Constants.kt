@@ -8,8 +8,7 @@ object Constants {
     val GAME_HEIGHT = Gdx.graphics.height.toFloat()
     val FONT_SIZE = GAME_HEIGHT / 250
 
-    val TUTORIAL_WIDTH=(GAME_WIDTH /10).toInt()*7
-    val TUTORIAL_HEIGHT=(GAME_HEIGHT /8).toInt()*6
+
 
     const val SAMF_RED= "A03033"
     const val SAMF_RED_DARK="5B0E10"

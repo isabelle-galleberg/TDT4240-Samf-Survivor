@@ -10,11 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.sprites.Logo
+import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
-import com.mygdx.tdt4240.utils.Constants.TUTORIAL_HEIGHT
-import com.mygdx.tdt4240.utils.Constants.TUTORIAL_WIDTH
-
 
 /**
  * State for the tutorial.
@@ -24,7 +22,9 @@ import com.mygdx.tdt4240.utils.Constants.TUTORIAL_WIDTH
 class TutorialState(stateManager: StateManager) : State(stateManager) {
     private val logo = Logo().createLogo()
     private val background = Texture("samfundet.png")
+    private val tutorialWindow=Window().createWindow()
 
+    //#TODO-endre val+array til oppdaterte bilder av spillet
     private val logo2=Texture("logo.png")
     private val cat=Texture ("cat1.png")
     private val imgArray= arrayOf(background,cat,logo2)
@@ -34,19 +34,13 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
     private val backBtn = BackBtn().createBackBtn()
     private val nextButton = Buttons().createSmallButton("Next")
     private val backButton = Buttons().createSmallButton("Back")
-    private val pixmap = Pixmap(TUTORIAL_WIDTH, TUTORIAL_HEIGHT, Pixmap.Format.RGBA8888)
-    private val tutorialWindow: Texture
 
 
     init {
-        pixmap.setColor(128F, 0f, 0f, 1f)
-        pixmap.fillRectangle(0, 0, TUTORIAL_WIDTH, TUTORIAL_HEIGHT)
-        tutorialWindow = Texture(pixmap)
         nextButton.setPosition((GAME_WIDTH / 5)*4 - nextButton.width / 2, 20f)
         backButton.setPosition((GAME_WIDTH / 5) - nextButton.width / 2, 20f)
         stage.addActor(nextButton)
         stage.addActor(backButton)
-
         backButton.isDisabled=true
 
         handleBackButtonClick()
@@ -89,7 +83,6 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
                 }
             } })
     }
-
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
@@ -100,9 +93,10 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
+        tutorialWindow.draw(sprites)
+        //sprites.draw(tutorialWindow,(GAME_WIDTH- TUTORIAL_WIDTH)/2,0f)
+        //sprites.draw(imgArray[pointer], 0f,0f)
         logo.draw(sprites)
-        sprites.draw(tutorialWindow,GAME_WIDTH/2-tutorialWindow.width/2,0f)
-        sprites.draw(imgArray[pointer], 0f,0f)
         backBtn.draw(sprites)
         sprites.end()
         stage.act(Gdx.graphics.deltaTime)
@@ -112,8 +106,7 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
     override fun dispose() {
         stage.dispose()
         background.dispose()
-        pixmap.dispose()
-        tutorialWindow.dispose()
+        //tutorialWindow.dispose()
     }
 
 }

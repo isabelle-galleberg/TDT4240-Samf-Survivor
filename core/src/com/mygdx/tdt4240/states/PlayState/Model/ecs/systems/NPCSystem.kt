@@ -9,7 +9,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 
 /* System for the NPC*/
-class NPCSystem : IteratingSystem(
+object NPCSystem : IteratingSystem(
     World.family { all(CharacterComponent).none(ScoreComponent)}
 ) {
 
@@ -18,7 +18,7 @@ class NPCSystem : IteratingSystem(
     }
 
     fun getPosition():Pair<Int,Int> {
-        return family.first().get(SpriteComponent).position
+        return Pair(family.first().get(SpriteComponent).x, family.first().get(SpriteComponent).y)
     }
 
     fun getDirection(): DirectionType {

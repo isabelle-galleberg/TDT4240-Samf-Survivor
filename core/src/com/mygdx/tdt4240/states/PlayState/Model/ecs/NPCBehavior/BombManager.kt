@@ -2,6 +2,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior
 
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.BombFactory
 
+
 /* Manages action when bombs are set */
 class BombManager : Observer{
     init {

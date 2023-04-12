@@ -4,7 +4,8 @@ import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 
 data class CharacterComponent(
-    var direction:Pair<Int, Int> = Pair(0, 0),
+    var x:Int = 0,
+    var y:Int = 0,
     var speed:Int = 5,
     var lives:Int = 3,
     var fireLength:Int = 3

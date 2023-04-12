@@ -25,9 +25,7 @@ class MainMenuState(
 
     private var playBtn: ImageButton? = null
     private var tutorialBtn: ImageButton? = null
-
     private var highScoreBtn: ImageButton? = null
-
     private var logOutBtn: ImageButton? = null
 
     private val logo = Logo().createLogo()
@@ -35,21 +33,22 @@ class MainMenuState(
 
     init{
         playBtn = createMenuButton("buttonImages/playBtnImg.png")
-        playBtn!!.setPosition(Gdx.graphics.width.toFloat()/2- playBtn!!.width/2,Gdx.graphics.height.toFloat()*3/5)
+        playBtn!!.setPosition(GAME_WIDTH/2- playBtn!!.width/2, GAME_HEIGHT*3/5)
 
         tutorialBtn = createMenuButton("buttonImages/tutorialBtnImg.png")
-        tutorialBtn!!.setPosition(Gdx.graphics.width.toFloat()/2- tutorialBtn!!.width/2,Gdx.graphics.height.toFloat()*2/5)
+        tutorialBtn!!.setPosition(GAME_WIDTH/2- tutorialBtn!!.width/2, GAME_HEIGHT*2/5)
 
         highScoreBtn = createMenuButton("buttonImages/highScoreBtnImg.png")
-        highScoreBtn!!.setPosition(Gdx.graphics.width.toFloat()/2- highScoreBtn!!.width/2,Gdx.graphics.height.toFloat()*1/5)
+        highScoreBtn!!.setPosition(GAME_WIDTH/2- highScoreBtn!!.width/2, GAME_HEIGHT*1/5)
 
         logOutBtn = createMenuButton("buttonImages/logOutBtnImg.png")
-        logOutBtn!!.setPosition(Gdx.graphics.width.toFloat()/2- logOutBtn!!.width/2,Gdx.graphics.height.toFloat()*0/5)
+        logOutBtn!!.setPosition(GAME_WIDTH/2- logOutBtn!!.width/2, GAME_HEIGHT*0/5)
 
         handlePlay()
         handleTutorial()
         handleHighScore(api)
         handleLogOut()
+
         stage.addActor(playBtn)
         stage.addActor(tutorialBtn)
         stage.addActor(highScoreBtn)
@@ -57,7 +56,6 @@ class MainMenuState(
     }
 
     private fun createMenuButton(str: String): ImageButton {
-
         val mainMenuTexture = Texture(Gdx.files.internal(str))
         val mainMenuTextureRegion = TextureRegion(mainMenuTexture)
         val mainMenuTexRegionDrawable = TextureRegionDrawable(mainMenuTextureRegion)

@@ -21,7 +21,7 @@ class Game(private var api: API) : ApplicationAdapter() {
 		sprites = SpriteBatch()
 		stateManager = StateManager()
 		Gdx.input.inputProcessor = InputMultiplexer()
-		Gdx.gl.glClearColor(0F, 0F, 0F, 1F)
+		Gdx.gl.glClearColor(237F, 232F, 232F, 1F)
 		stateManager?.push(RegisterState(stateManager!!, api))
 	}
 

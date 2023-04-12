@@ -5,7 +5,8 @@ import com.github.quillraven.fleks.ComponentType
 
 data class SpriteComponent(
     // TODO: add Sprite picture
-    var position:Pair<Int, Int> = Pair(0, 0)
+    var x: Int = 0,
+    var y: Int = 0
 ) : Component<SpriteComponent> {
 
     override fun type() = SpriteComponent

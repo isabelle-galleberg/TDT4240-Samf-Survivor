@@ -26,6 +26,7 @@ class AndroidAPI : API {
             }
             completed = true
         }
+        // Wait for the database to respond
         while (!completed) {
             Thread.sleep(100)
         }
@@ -33,9 +34,7 @@ class AndroidAPI : API {
     }
 
     override fun getHighscores(dataHolder: ArrayList<User>) {
-        println("Getting highscores")
         users.get().addOnCompleteListener { task ->
-            println("Got highscores")
             val response = task.result.children
             for (child in response) {
                 child.getValue(User::class.java)?.let { dataHolder.add(it) }

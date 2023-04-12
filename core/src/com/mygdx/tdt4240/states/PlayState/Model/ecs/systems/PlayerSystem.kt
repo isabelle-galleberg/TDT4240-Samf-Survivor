@@ -47,7 +47,7 @@ class PlayerSystem : IteratingSystem(
                 entity[CharacterComponent].lives -= 1;
             }
         return entity[CharacterComponent].lives
-        //TODO, skriv kode for når isHit blir true.
+        //fix, skriv kode for når isHit blir true.
     }
 
     fun powerUps(entity: Entity) {

@@ -35,31 +35,36 @@ class RegisterState(
     private val logo = Logo().createLogo()
     private val backBtn = BackBtn().createBackBtn()
     private val username = TextField("", skin).apply {
+        color = Color.FIREBRICK
         messageText = "Username"
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.6f)
     }
     private val password = TextField("", skin).apply {
+        color = Color.FIREBRICK
         messageText = "Password"
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition(GAME_WIDTH / 2- INPUT_WIDTH / 2, GAME_HEIGHT * 0.4f)
+        isPasswordMode = true
+        setPasswordCharacter('*')
     }
-    private val button = TextButton("Register", skin)
+    private val button = TextButton("Register", skin).apply{
+        color = Color.FIREBRICK
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition(GAME_WIDTH/ 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.2f)
+    }
 
     private var errorLabel = Label("", skin).apply {
-        color = Color.RED
+        color = Color.FIREBRICK
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0f)
     }
-    private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java)
+    private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java).apply {
 
+    }
 
     init {
-        username.setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        password.setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        button.setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        errorLabel.setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        username.setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.6f)
-        password.setPosition(GAME_WIDTH / 2- INPUT_WIDTH / 2, GAME_HEIGHT * 0.4f)
-        button.setPosition(GAME_WIDTH/ 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.2f)
-        errorLabel.setPosition(GAME_WIDTH / 2 - errorLabel.width / 2, 0f)
         textFieldStyle.font.data.setScale(FONT_SIZE)
-        password.isPasswordMode = true
-        password.setPasswordCharacter('*')
 
         handleRegister(api)
 
@@ -75,7 +80,7 @@ class RegisterState(
                     errorLabel.setText("Please fill in all fields")
                     stage.addActor(errorLabel)
                 }
-                else if (api.checkUserExists(username.text)){
+                else if (api.usernameExists(username.text)){
                     errorLabel.setText("Username already exists")
                     stage.addActor(errorLabel)
                 }

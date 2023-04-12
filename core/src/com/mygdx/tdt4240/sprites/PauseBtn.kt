@@ -7,7 +7,7 @@ import com.mygdx.tdt4240.utils.Constants
 
 class PauseBtn {
     private val pauseBtnSize = Constants.GAME_HEIGHT * 0.1f
-    private val pauseBtnX = Constants.GAME_WIDTH * 0.03f
+    private val pauseBtnX = Constants.GAME_WIDTH * 0.93f
     private val pauseBtnY = Constants.GAME_HEIGHT * 0.85f
 
     fun createPauseBtn(): Sprite {

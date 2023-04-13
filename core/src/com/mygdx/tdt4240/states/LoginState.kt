@@ -31,32 +31,31 @@ class LoginState(
         color = Color.FIREBRICK
         messageText = "Username"
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.65f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.65f)
     }
     private val password = TextField("", skin).apply {
         color = Color.FIREBRICK
         messageText = "Password"
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2- INPUT_WIDTH / 2, GAME_HEIGHT * 0.45f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.45f)
         isPasswordMode = true
         setPasswordCharacter('*')
     }
     private val loginBtn = TextButton("Log in", skin).apply{
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, BUTTON_HEIGHT)
-        setPosition(GAME_WIDTH/ 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.3f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.3f)
 
     }
     private val registerBtn = TextButton("Create a new user", skin).apply{
         color = Color.GRAY
         setSize(INPUT_WIDTH, BUTTON_HEIGHT)
-        setPosition(GAME_WIDTH/ 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.15f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.15f)
     }
-
     private var errorLabel = Label("", skin).apply {
         color = Color.RED
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0f)
     }
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
 
@@ -86,7 +85,7 @@ class LoginState(
                 }
                 else {
                     errorLabel.remove()
-                    stateManager.push(MainMenuState(stateManager))
+                    stateManager.push(MainMenuState(stateManager, api))
                 }
             }
         })

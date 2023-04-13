@@ -6,9 +6,9 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
 
 /* The concrete factory following the abstract factory pattern for creating walls on gameboard */
 object WallFactory {
-    fun createWall(world: World, position: Pair<Int, Int>): Entity {
+    fun createWall(world: World, x: Int, y: Int): Entity {
         val entity: Entity = world.entity {
-            it += SpriteComponent(position)
+            it += SpriteComponent(x,y)
         }
         return entity
     }

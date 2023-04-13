@@ -17,35 +17,14 @@ class Player {
     private var downPressed = false;
 
     private var gameOver = false;
-
+/*
     val world = world {}
 
     val entity = world.entity {
         it += CharacterComponent(0,0,5, 3)
     }
 
-    fun changePos() {
-        with(world) {
-            if (rightPressed) {
-                entity[CharacterComponent].x += entity[CharacterComponent].speed
 
-            }
-             if (leftPressed) {
-                 entity[CharacterComponent].x -= entity[CharacterComponent].speed
-
-             }
-            if (upPressed) {
-                entity[CharacterComponent].y += entity[CharacterComponent].speed
-
-            }
-            if (downPressed) {
-                entity[CharacterComponent].y -= entity[CharacterComponent].speed
-
-            }
-
-        }
-
-    }
 
     fun lives(isHit: Boolean): Int {
         with(world) {
@@ -79,7 +58,7 @@ fun main(){
 
     }
 
-
+*/
 
 
 }

@@ -26,7 +26,7 @@ class Board  {
 
                 //Walls
                 if (i == 0 || j == 0 || i == arr.size -1 || j == arr[i].size -1) {
-                    arr[i][j] = WallFactory.createWall(world, Pair(i,j))
+                    arr[i][j] = WallFactory.createWall(world, i,j)
 
 
                 }
@@ -34,13 +34,13 @@ class Board  {
                 //Crates
                 else
                      {
-                    arr[i][j] = CrateFactory.createCrate(world, Pair(i,j))
+                    arr[i][j] = CrateFactory.createCrate(world, i,j)
                 }
             }
         }
         //Players
-        arr[1][1] = PlayerFactory.createPlayer(world, Pair(1,1))
-        arr[7][7] = PlayerFactory.createPlayer(world, Pair(7,7))
+        arr[1][1] = PlayerFactory.createPlayer(world, 1, 1)
+        arr[7][7] = PlayerFactory.createPlayer(world, 7,7)
 
         initBoard(arr)
 

@@ -11,9 +11,10 @@ class DownBtn {
     private val downBtnY = Constants.GAME_HEIGHT * 0.05f
 
     fun createDownBtn(): Sprite {
-        val sprite = Sprite(Texture("gameView/downBtn.png"))
+        val sprite = Sprite(Texture("gameView/arrowVerticalBtn.png"))
         sprite.setSize(downBtnSize, downBtnSize)
         sprite.setPosition(downBtnX, downBtnY)
+        sprite.setFlip(false, true)
         return sprite
     }
 

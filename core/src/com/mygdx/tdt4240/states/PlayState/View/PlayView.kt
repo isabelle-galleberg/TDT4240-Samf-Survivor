@@ -1,5 +1,6 @@
 package com.mygdx.tdt4240.states.PlayState.View
 
+import com.badlogic.gdx.graphics.Color
 import com.mygdx.tdt4240.states.MainMenuState
 import com.mygdx.tdt4240.states.State
 import com.mygdx.tdt4240.states.StateManager
@@ -19,6 +20,10 @@ import com.mygdx.tdt4240.sprites.LeftBtn
 import com.mygdx.tdt4240.sprites.RightBtn
 
 import com.mygdx.tdt4240.sprites.LivesDisplay
+import com.mygdx.tdt4240.sprites.Player
+import com.mygdx.tdt4240.sprites.NPC
+
+
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
@@ -31,6 +36,10 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val downBtn = DownBtn().createDownBtn()
     private val leftBtn = LeftBtn().createLeftBtn()
     private val rightBtn = RightBtn().createRightBtn()
+
+    private val player = Player().createPlayer()
+    private val nPC = NPC().createNPC()
+
 
     private val boardImg = Texture("gameView/board.png")
     private val tileImg = Texture("gameView/tile.png")
@@ -45,7 +54,22 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
             // need to change to PauseState view
             stateManager.push(MainMenuState(stateManager))
         }
-        // add logic for the rest of the buttons
+        else if (UpBtn().upBtnPressed()) {
+            println("MOVE UP")
+        }
+        else if (DownBtn().downBtnPressed()) {
+            println("MOVE DOWN")
+        }
+        else if (LeftBtn().leftBtnPressed()) {
+            println("MOVE LEFT")
+        }
+        else if (RightBtn().rightBtnPressed()) {
+            println("MOVE RIGHT")
+        }
+        else if (BombBtn().bombBtnPressed()) {
+            println("BOOMB!!")
+        }
+
     }
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
@@ -66,6 +90,12 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
             }
         }
 
+        // Draw player
+        player.draw(sprites)
+
+        // Draw NPC
+        nPC.draw(sprites)
+
         // Button to add bombs on the bord
         bombBtn.draw(sprites)
 
@@ -77,6 +107,11 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
         // Lives display for player and NPC
         LivesDisplay(sprites, 3,2)
+
+        // Timer - must make it dynamic
+        val time = "2:06"
+        font.setColor(Color.BLACK)
+        font.draw(sprites, time, GAME_HEIGHT * 0.4f,  GAME_HEIGHT * 0.92f)
 
         sprites.flush()
         sprites.end()

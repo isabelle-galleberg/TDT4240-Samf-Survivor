@@ -1,6 +1,6 @@
 package com.mygdx.tdt4240.sprites
 
-//import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -18,8 +18,8 @@ class BombBtn {
         return sprite
     }
 
-    /*fun bombBtnPressed(): Boolean {
+    fun bombBtnPressed(): Boolean {
         return Gdx.input.justTouched() && Gdx.input.x > bombBtnX && Gdx.input.x < bombBtnX + bombBtnSize && Gdx.input.y < GAME_HEIGHT - bombBtnY && Gdx.input.y > GAME_HEIGHT - bombBtnY - bombBtnSize
-    }*/
+    }
 
 }

@@ -1,6 +1,6 @@
 package com.mygdx.tdt4240.sprites
 
-//import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.mygdx.tdt4240.utils.Constants
@@ -17,7 +17,7 @@ class UpBtn {
         return sprite
     }
 
-    /*fun upBtnPressed(): Boolean {
+    fun upBtnPressed(): Boolean {
         return Gdx.input.justTouched() && Gdx.input.x > upBtnX && Gdx.input.x < upBtnX + upBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - upBtnY && Gdx.input.y > Constants.GAME_HEIGHT - upBtnY - upBtnSize
-    }*/
+    }
 }

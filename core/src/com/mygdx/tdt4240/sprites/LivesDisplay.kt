@@ -16,7 +16,7 @@ class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Int){
         // Lives display for main player
         sprites.draw(backgroundImg, GAME_HEIGHT * 0.25f,  GAME_HEIGHT * 0.75f, GAME_HEIGHT * 0.3f, GAME_HEIGHT * 0.1f)
 
-        sprites.draw(playerImg, GAME_HEIGHT * 0.27f,  GAME_HEIGHT * 0.76f, GAME_HEIGHT * 0.07f, GAME_HEIGHT * 0.075f)
+        sprites.draw(playerImg, GAME_HEIGHT * 0.27f,  GAME_HEIGHT * 0.76f, GAME_HEIGHT * 0.07f, GAME_HEIGHT * 0.07f)
 
         for (i in 0 until 3) {
             if(i < livesPlayer){
@@ -31,7 +31,7 @@ class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Int){
         // Lives display for NPC
         sprites.draw(backgroundImg, GAME_HEIGHT * 0.25f,  GAME_HEIGHT * 0.65f, GAME_HEIGHT * 0.3f, GAME_HEIGHT * 0.1f)
 
-        sprites.draw(nPCImg, GAME_HEIGHT * 0.27f,  GAME_HEIGHT * 0.67f, GAME_HEIGHT * 0.06f, GAME_HEIGHT * 0.06f)
+        sprites.draw(nPCImg, GAME_HEIGHT * 0.27f,  GAME_HEIGHT * 0.66f, GAME_HEIGHT * 0.07f, GAME_HEIGHT * 0.07f)
 
         for (i in 0 until 3) {
             if(i < livesNPC){

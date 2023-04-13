@@ -11,9 +11,10 @@ class LeftBtn {
     private val leftBtnY = Constants.GAME_HEIGHT * 0.05f
 
     fun createLeftBtn(): Sprite {
-        val sprite = Sprite(Texture("gameView/leftBtn.png"))
+        val sprite = Sprite(Texture("gameView/arrowHorizontalBtn.png"))
         sprite.setSize(leftBtnSize, leftBtnSize)
         sprite.setPosition(leftBtnX, leftBtnY)
+        sprite.setFlip(true, false)
         return sprite
     }
 

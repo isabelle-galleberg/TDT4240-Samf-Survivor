@@ -11,7 +11,7 @@ class RightBtn {
     private val rightBtnY = Constants.GAME_HEIGHT *  0.05f
 
     fun createRightBtn(): Sprite {
-        val sprite = Sprite(Texture("gameView/rightBtn.png"))
+        val sprite = Sprite(Texture("gameView/arrowHorizontalBtn.png"))
         sprite.setSize(rightBtnSize, rightBtnSize)
         sprite.setPosition(rightBtnX, rightBtnY)
         return sprite

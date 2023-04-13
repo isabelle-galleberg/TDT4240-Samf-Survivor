@@ -28,6 +28,8 @@ class Game {
 
     private var score = PlayerSystem.getScore();
 
+    private var timer = false;
+
 
 
     val grid = Array(9) { arrayOfNulls<Entity>(9) }
@@ -68,11 +70,10 @@ class Game {
     fun initGame() {
         initBoard(grid);
         PlayerSystem.setScore(0);
-        //FIX: START TIMER PÅ 3 MIN.
+        timer = true;
     }
 
     fun movePlayer() {
-        var playerDirection = PlayerSystem.getDirection();
         var playerPosition = PlayerSystem.getPosition();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.D) && !ObstacleSystem.getPositions().contains(Pair(playerPosition.first + 1, playerPosition.second ))) {
@@ -95,12 +96,11 @@ class Game {
     }
 
     fun isGameOver(): Int {
-        var time = 1 //dummy verdi. Skal egt være en timer
         if(NPCSystem.getLives() == 0) {
             gameWon = true;
             score = PlayerSystem.getLives() * 250 // * tid igjen på timer
         }
-        if(time == 0) {
+        if(timer) {
             gameOver = true;
             score = 0;
 
@@ -112,11 +112,14 @@ class Game {
         var randomTypes = PowerupType.values().toList().shuffled()
         var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
 
+        for(i in powerupPositions.indices) {
+
+
+
+        }
 
 
     }
-
-
 
 }
 fun main() {

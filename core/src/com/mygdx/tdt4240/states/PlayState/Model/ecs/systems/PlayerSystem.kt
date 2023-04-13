@@ -20,15 +20,6 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 object PlayerSystem : IteratingSystem(
     family { all(CharacterComponent) }
 ) {
-    //Touch functions
-    private var rightPressed = false;
-    private var leftPressed = false;
-    private var upPressed = false;
-    private var downPressed = false;
-
-    private var firePressed = false;
-
-    private var gameOver = false;
     private var isHit = false;
 
     fun getDirection(): DirectionType {
@@ -64,22 +55,6 @@ object PlayerSystem : IteratingSystem(
         //fix, skriv kode for når isHit blir true.
     }
 
-    fun powerUps(entity: Entity, type: PowerupType) {
-
-        if(type == PowerupType.POINTS) {
-            entity[ScoreComponent].score += entity[BoostComponent].points.value
-
-        }
-        if (type == PowerupType.RANGE) {
-            entity[CharacterComponent].fireLength +=  entity[BoostComponent].bombRange.value
-        }
-
-        if(type == PowerupType.SPEED) {
-            entity[CharacterComponent].speed += entity[BoostComponent].boostSpeed.value
-
-        }
-
-    }
 
 
 

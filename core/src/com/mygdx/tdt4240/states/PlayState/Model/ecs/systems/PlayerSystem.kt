@@ -5,10 +5,15 @@ import com.badlogic.gdx.Input
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
+import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.BombFactory
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 
 /* System for the player and NPC*/
@@ -26,27 +31,10 @@ class PlayerSystem : IteratingSystem(
     private var gameOver = false;
     private var isHit = false;
 
+    fun getDirection(): DirectionType {
+        return family.first().get(CharacterComponent).direction
+    }
 
-/*
-    fun changePos(entity: Entity) {
-            if (rightPressed) {
-                entity[CharacterComponent].x += entity[CharacterComponent].speed
-
-            }
-            if (leftPressed) {
-                entity[CharacterComponent].x -= entity[CharacterComponent].speed
-
-            }
-            if (upPressed) {
-                entity[CharacterComponent].y += entity[CharacterComponent].speed
-
-            }
-            if (downPressed) {
-                entity[CharacterComponent].y -= entity[CharacterComponent].speed
-
-        }
-
-    }*/
     fun lives(entity: Entity): Int {
         if(isHit) {
                 entity[CharacterComponent].lives -= 1;
@@ -55,11 +43,22 @@ class PlayerSystem : IteratingSystem(
         //fix, skriv kode for når isHit blir true.
     }
 
-    fun powerUps(entity: Entity) {
-       entity[CharacterComponent].speed += entity[BoostComponent].boostSpeed.value
-        entity[CharacterComponent].fireLength +=  entity[BoostComponent].bombRange.value
+    fun powerUps(entity: Entity, type: PowerupType) {
 
-        entity[ScoreComponent].score += entity[BoostComponent].points.value
+        if(type == PowerupType.POINTS) {
+            entity[ScoreComponent].score += entity[BoostComponent].points.value
+
+        }
+        if (type == PowerupType.RANGE) {
+            entity[CharacterComponent].fireLength +=  entity[BoostComponent].bombRange.value
+        }
+
+        if(type == PowerupType.SPEED) {
+            entity[CharacterComponent].speed += entity[BoostComponent].boostSpeed.value
+
+        }
+
+
 
 
 

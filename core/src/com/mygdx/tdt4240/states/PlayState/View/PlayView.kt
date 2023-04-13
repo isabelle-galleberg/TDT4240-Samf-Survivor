@@ -1,7 +1,6 @@
 package com.mygdx.tdt4240.states.PlayState.View
 
 import com.badlogic.gdx.graphics.Color
-import com.mygdx.tdt4240.states.MainMenuState
 import com.mygdx.tdt4240.states.State
 import com.mygdx.tdt4240.states.StateManager
 
@@ -22,8 +21,6 @@ import com.mygdx.tdt4240.sprites.RightBtn
 import com.mygdx.tdt4240.sprites.LivesDisplay
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
-
-
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
@@ -52,7 +49,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     override fun update(deltaTime: Float) {
         if (PauseBtn().pauseBtnPressed()) {
             // need to change to PauseState view
-            stateManager.push(MainMenuState(stateManager))
+            //stateManager.push(MainMenuState(stateManager))
         }
         else if (UpBtn().upBtnPressed()) {
             println("MOVE UP")

@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.tdt4240.firebase.API
+import com.mygdx.tdt4240.states.MainMenuState
 import com.mygdx.tdt4240.states.StateManager
 import com.mygdx.tdt4240.states.RegisterState
 

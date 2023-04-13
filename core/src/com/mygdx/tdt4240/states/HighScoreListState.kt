@@ -36,7 +36,7 @@ class HighScoreListState(
 
     override fun update(deltaTime: Float) {
      if (BackBtn().backBtnPressed()) {
-         stateManager.push(MainMenuState(stateManager))
+         stateManager.push(MainMenuState(stateManager,api))
      }
     }
 

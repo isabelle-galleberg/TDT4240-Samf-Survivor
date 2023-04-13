@@ -7,31 +7,31 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 /* The abstract factory following the abstract factory pattern for creating entities for gameboard */
 object EntityFactory {
-    fun createBomb(world: World, position: Pair<Int, Int>): Entity{
-        return BombFactory.createBomb( world, position)
+    fun createBomb(world: World, x: Int, y: Int): Entity{
+        return BombFactory.createBomb( world, x,y)
     }
-    fun createCrate(world: World, position: Pair<Int, Int>): Entity {
-        return CrateFactory.createCrate(world,position)
-    }
-
-    fun createFire(world: World, position: Pair<Int, Int>): Entity {
-        return FireFactory.createFire(world, position)
+    fun createCrate(world: World, x: Int, y: Int): Entity {
+        return CrateFactory.createCrate(world,x,y)
     }
 
-    fun createNPC(world: World, position: Pair<Int, Int>): Entity {
-        return NPCFactory.createNPC(world,position)
+    fun createFire(world: World,x: Int, y: Int): Entity {
+        return FireFactory.createFire(world, x,y)
     }
 
-    fun createPlayer(world: World, position: Pair<Int, Int>): Entity {
-        return PlayerFactory.createPlayer(world, position)
+    fun createNPC(world: World, x: Int, y: Int): Entity {
+        return NPCFactory.createNPC(world,x,y)
     }
 
-    fun createPowerup(world: World,position: Pair<Int, Int>, powerupType: PowerupType): Entity {
-        return PowerupFactory.createPowerup(world,position,powerupType)
+    fun createPlayer(world: World, x: Int, y: Int): Entity {
+        return PlayerFactory.createPlayer(world, x,y)
     }
 
-    fun createWall(world: World, position: Pair<Int, Int>): Entity {
-        return WallFactory.createWall(world,position)
+    fun createPowerup(world: World,x: Int, y: Int, powerupType: PowerupType): Entity {
+        return PowerupFactory.createPowerup(world,x,y,powerupType)
+    }
+
+    fun createWall(world: World, x: Int, y: Int): Entity {
+        return WallFactory.createWall(world,x,y)
     }
 
 }

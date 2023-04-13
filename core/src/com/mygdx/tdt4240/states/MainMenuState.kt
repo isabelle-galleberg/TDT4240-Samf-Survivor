@@ -31,22 +31,22 @@ class MainMenuState(
     private val playBtn = TextButton("PLAY", skin).apply {
         color = Color.RED
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.65f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.65f)
     }
     private val tutorialBtn = TextButton("TUTORIAL", skin).apply {
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.45f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.45f)
     }
     private val highscoreBtn = TextButton("HIGHSCORE", skin).apply {
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.25f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.25f)
     }
     private val logOutBtn = TextButton("LOG OUT", skin).apply {
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.05f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.05f)
     }
 
     private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java)

@@ -38,30 +38,28 @@ class RegisterState(
         color = Color.FIREBRICK
         messageText = "Username"
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.6f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.6f)
     }
     private val password = TextField("", skin).apply {
         color = Color.FIREBRICK
         messageText = "Password"
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2- INPUT_WIDTH / 2, GAME_HEIGHT * 0.4f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.4f)
         isPasswordMode = true
         setPasswordCharacter('*')
     }
     private val button = TextButton("Register", skin).apply{
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH/ 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0.2f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.2f)
     }
 
     private var errorLabel = Label("", skin).apply {
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition(GAME_WIDTH / 2 - INPUT_WIDTH / 2, GAME_HEIGHT * 0f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0f)
     }
-    private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java).apply {
-
-    }
+    private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java)
 
     init {
         textFieldStyle.font.data.setScale(FONT_SIZE)

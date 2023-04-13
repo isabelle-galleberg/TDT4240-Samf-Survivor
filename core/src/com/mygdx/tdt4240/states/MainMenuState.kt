@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.Logo
+import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
@@ -59,7 +60,7 @@ class MainMenuState(
         stage.addActor(highscoreBtn)
         stage.addActor(logOutBtn)
 
-        /*  handleClick(playBtn, PlayState(stateManager))*/
+        handleClick(playBtn, PlayView(stateManager,api))
         handleClick(tutorialBtn, TutorialState(stateManager))
         handleClick(highscoreBtn, HighScoreListState(stateManager, api))
         handleClick(logOutBtn, LoginState(stateManager, api))

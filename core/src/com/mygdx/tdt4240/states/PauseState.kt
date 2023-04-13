@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
@@ -22,28 +24,38 @@ class PauseState(
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     private val logo = Logo().createLogo()
 
-    private val playBtn = TextButton("CONTINUE GAME", skin).apply {
-        color = Color.FIREBRICK
+    private var label = Label("You have paused the game.", skin).apply {
+        color = Color.BLACK
         setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
         setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.65f)
+    }
+
+    private val playBtn = TextButton("CONTINUE GAME", skin).apply {
+        color = Color.RED
+        setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
+        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.45f)
     }
 
     private val tutorialBtn = TextButton("TUTORIAL", skin).apply {
         color = Color.FIREBRICK
         setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
-        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.45f)
+        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.25f)
     }
 
     private val mainMenuBtn = TextButton("QUIT GAME", skin).apply {
         color = Color.FIREBRICK
         setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
-        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.25f)
+        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.05f)
     }
 
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
 
     init {
         textFieldStyle.font.data.setScale(Constants.FONT_SIZE)
+
+        label.setAlignment(Align.center)
+
+        stage.addActor(label)
 
         stage.addActor(playBtn)
         stage.addActor(tutorialBtn)

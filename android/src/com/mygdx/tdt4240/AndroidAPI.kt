@@ -14,7 +14,27 @@ class AndroidAPI : API {
         users.push().setValue(user)
     }
 
-    override fun checkUserExists(username: String): Boolean {
+    override fun userExists(username: String, password: String): Boolean {
+        var exists = false
+        var completed = false
+        users.get().addOnCompleteListener { task ->
+            val response = task.result.children
+            for (child in response) {
+                if (child.getValue(User::class.java)?.username.toString() == username &&
+                    child.getValue(User::class.java)?.password.toString() == password) {
+                    exists = true
+                }
+            }
+            completed = true
+        }
+        // wait for the database to respond
+        while (!completed) {
+            Thread.sleep(100)
+        }
+        return exists
+    }
+
+    override fun usernameExists(username: String): Boolean {
         var exists = false
         var completed = false
         users.get().addOnCompleteListener { task ->
@@ -26,7 +46,7 @@ class AndroidAPI : API {
             }
             completed = true
         }
-        // Wait for the database to respond
+        // wait for the database to respond
         while (!completed) {
             Thread.sleep(100)
         }

@@ -17,7 +17,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 
 /* System for the player and NPC*/
-class PlayerSystem : IteratingSystem(
+object PlayerSystem : IteratingSystem(
     family { all(CharacterComponent) }
 ) {
     //Touch functions
@@ -33,6 +33,27 @@ class PlayerSystem : IteratingSystem(
 
     fun getDirection(): DirectionType {
         return family.first().get(CharacterComponent).direction
+    }
+
+    fun setDirection(direction: DirectionType) {
+        family.first().get(CharacterComponent).changeDirection(direction)
+    }
+
+    fun getPosition():Pair<Int,Int> {
+        return Pair(family.first().get(SpriteComponent).x, family.first().get(SpriteComponent).y)
+    }
+
+    fun getLives(): Int {
+        return family.first().get(CharacterComponent).lives
+    }
+
+    fun getScore():Int {
+        return family.first().get(ScoreComponent).score
+
+    }
+
+    fun setScore(score: Int) {
+        family.first().get(ScoreComponent).changeScore(score)
     }
 
     fun lives(entity: Entity): Int {
@@ -58,44 +79,15 @@ class PlayerSystem : IteratingSystem(
 
         }
 
-
-
-
-
-
     }
-
 
 
 
     override fun onTickEntity(entity: Entity) {
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-            entity[SpriteComponent].x += entity[CharacterComponent].speed
 
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            entity[SpriteComponent].x -= entity[CharacterComponent].speed
-
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            entity[SpriteComponent].y += entity[CharacterComponent].speed
-
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-            entity[SpriteComponent].y -= entity[CharacterComponent].speed
-
-        }
-
-        if(entity[CharacterComponent].lives == 0) {
-            gameOver = true;
-        }
 
 
 
     }
-}
-fun main() {
-    var p = PlayerSystem()
-
 }

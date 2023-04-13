@@ -6,6 +6,7 @@ import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 
 /* System for the NPC*/
@@ -24,6 +25,10 @@ object NPCSystem : IteratingSystem(
     fun getDirection(): DirectionType {
         return family.first().get(CharacterComponent).direction
     }
+    fun getLives(): Int {
+        return family.first().get(CharacterComponent).lives
+    }
+
 
     override fun onTickEntity(entity: Entity) {
         TODO("Not yet implemented")

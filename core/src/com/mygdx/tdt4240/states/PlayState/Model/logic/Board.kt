@@ -11,7 +11,7 @@ class Board  {
 
     val grid = Array(9) { arrayOfNulls<Entity>(9) }
 
-    private fun initBoard(arr: Array<Array<Entity?>>) {
+    fun initBoard(arr: Array<Array<Entity?>>) {
         for (i in arr.indices) {
             for (j in arr[i].indices) {
                 print("${arr[i][j]} ")

@@ -1,6 +1,5 @@
 package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
@@ -10,7 +9,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObservableCompone
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
 
 /* System for wall, crate and fire*/
-object TileSystem : IteratingSystem(
+object ObstacleSystem : IteratingSystem(
     World.family { all(SpriteComponent).none(CharacterComponent, ObservableComponent, BoostComponent) }
 ) {
     private var positions: MutableList<Pair<Int, Int>> = createPositionList()

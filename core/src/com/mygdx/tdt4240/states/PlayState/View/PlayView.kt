@@ -21,6 +21,7 @@ import com.mygdx.tdt4240.sprites.RightBtn
 import com.mygdx.tdt4240.sprites.LivesDisplay
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
+import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
@@ -41,6 +42,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val boardImg = Texture("gameView/board.png")
     private val tileImg = Texture("gameView/tile.png")
     private val wallImg = Texture("gameView/wall.png")
+
+    private val playController = PlayController()
 
     init {
         font.data.setScale(FONT_SIZE)
@@ -63,9 +66,9 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         else if (RightBtn().rightBtnPressed()) {
             println("MOVE RIGHT")
         }
-        else if (BombBtn().bombBtnPressed()) {
-            println("BOOMB!!")
-        }
+        //else if (BombBtn().bombBtnPressed()) {
+            //println("BOOMB!!")
+       // }
 
     }
     override fun render(sprites: SpriteBatch) {
@@ -75,17 +78,33 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         pauseBtn.draw(sprites)
 
         // Draw game board
+        var uiBoard = playController.drawBoard()
+
         sprites.draw(boardImg, GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f,  0f, GAME_HEIGHT, GAME_HEIGHT)
-        for (i in 0 until 9) {
-            for (j in 0 until 9) {
-                if (i % 2 != 0 && j % 2 != 0){
+
+        for (i in 0 until uiBoard.size) {
+            for (j in 0 until uiBoard.get(0).size) {
+                sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                if (uiBoard[i][j].equals("wall")) {
                     sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                } else if (uiBoard[i][j].equals("crate")) {
+
+                } else if (uiBoard[i][j].equals("player")) {
+
                 }
-                else {
-                    sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
-                }
-            }
-        }
+            }}
+
+
+        //for (i in 0 until 9) {
+            //for (j in 0 until 9) {
+                //if (i % 2 != 0 && j % 2 != 0){
+                    //sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                //}
+                //else (i=3){
+                    //sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                //}
+            //}
+        //}
 
         // Draw player
         player.draw(sprites)

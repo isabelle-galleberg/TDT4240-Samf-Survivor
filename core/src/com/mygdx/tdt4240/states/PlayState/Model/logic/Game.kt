@@ -14,25 +14,48 @@ import java.util.*
 
 
 /* Game logic */
-class Game {
+class Game (
+    val world: World
+        ){
 
     private val entityFactory = EntityFactory
 
-    private var gameOver = false;
-    private var gameWon = false;
+    private var gameOver = false
+    private var gameWon = false
 
-    private var score = PlayerSystem.getScore();
+    private var score = 0
 
-    private var timer = false;
+    private var timer = false
 
-    private var bombCount = 0;
+    private var bombCount = 0
 
-    private var firePressed = false;
+    private var firePressed = false
 
 
 
-    val grid = Array(9) { arrayOfNulls<Entity>(9) }
+    val board = Array(9) { arrayOfNulls<Entity>(9) }
 
+    fun initBoard() {
+        //Player
+        board[0][0] = PlayerFactory.createPlayer(world, 0, 0)
+
+        //NPC
+        board[0][0] = NPCFactory.createNPC(world, 0, 0)
+        for (i in board.indices) {
+            for (j in board[i].indices) {
+                //Walls
+                if (i % 2 != 0 && j % 2 != 0){
+                    board[i][j] = WallFactory.createWall(world, i, j)
+                }
+
+                //Crates
+                //TO DO where crates??
+                else if (i == 3) {
+                    board[i][j] = CrateFactory.createCrate(world, i, j)
+                }
+            }
+        }
+    }
     fun initBoard(arr: Array<Array<Entity?>>) {
         for (i in arr.indices) {
             for (j in arr[i].indices) {
@@ -67,7 +90,7 @@ class Game {
     }
 
     fun initGame() {
-        initBoard(grid);
+        initBoard(board);
         PlayerSystem.setScore(0);
         bombCount = 0;
         timer = true;
@@ -140,14 +163,13 @@ class Game {
 
 }
 fun main() {
-    val b = Game()
-    val g = b.grid
-    val world = world {}
+    //val g = Game()
+    //val b = g.board
 
-    b.drawBoard(g, world)
-    b.drawPlayer(g,world,1,1)
+    //b.drawBoard(g, world)
+    //b.drawPlayer(g,world,1,1)
 
-    print(b.initBoard(g));
+    //print(b.initBoard(g));
 
 
 }

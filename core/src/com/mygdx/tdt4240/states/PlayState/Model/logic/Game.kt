@@ -18,10 +18,6 @@ class Game {
 
     private val entityFactory = EntityFactory
 
-    private var gameOver = false;
-    private var gameWon = false;
-
-    private var score = 0
 
     private var timer = false;
 
@@ -70,38 +66,41 @@ class Game {
         initBoard(grid);
         bombCount = 0;
         timer = true;
-    }
-
-    fun movePlayer() {
-        var playerPosition = PlayerSystem.getPosition();
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.D) && !ObstacleSystem.getPositions().contains(Pair(playerPosition.first + 1, playerPosition.second ))) {
-            PlayerSystem.setDirection(DirectionType.RIGHT)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.A) && !ObstacleSystem.getPositions().contains(Pair(playerPosition.first - 1, playerPosition.second ))) {
-            PlayerSystem.setDirection(DirectionType.LEFT)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W) &&  !ObstacleSystem.getPositions().contains(Pair(playerPosition.first, playerPosition.second + 1 ))) {
-            PlayerSystem.setDirection(DirectionType.UP)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.S) &&  !ObstacleSystem.getPositions().contains(Pair(playerPosition.first, playerPosition.second - 1))) {
-            PlayerSystem.setDirection(DirectionType.DOWN)
-        }
-        else {
-            PlayerSystem.setDirection(DirectionType.NONE)
-
-        }
 
     }
 
-    fun move(world: World, x:Int, y: Int) {
-        drawPlayer(grid, world, x,y)
-
+    fun movePlayerRight() {
+       var posX = PlayerSystem.getPosition().first
+        var posY = PlayerSystem.getPosition().second
+        if(!ObstacleSystem.getPositions().contains(Pair(posX+1,posY))) {
+                PlayerSystem.setPositionX(posX +1)
+        }
     }
 
-    fun updateBoard() {
-
+    fun movePlayerLeft() {
+        var posX = PlayerSystem.getPosition().first
+        var posY = PlayerSystem.getPosition().second
+        if(!ObstacleSystem.getPositions().contains(Pair(posX-1,posY))) {
+            PlayerSystem.setPositionX(posX -1)
+        }
     }
+
+    fun movePlayerUp() {
+        var posX = PlayerSystem.getPosition().first
+        var posY = PlayerSystem.getPosition().second
+        if(!ObstacleSystem.getPositions().contains(Pair(posX,posY+1))) {
+            PlayerSystem.setPositionX(posY +1)
+        }
+    }
+
+    fun movePlayerDown() {
+        var posX = PlayerSystem.getPosition().first
+        var posY = PlayerSystem.getPosition().second
+        if(!ObstacleSystem.getPositions().contains(Pair(posX,posY-1))) {
+            PlayerSystem.setPositionX(posY -1)
+        }
+    }
+
 
     fun getBombs(): Int {
         if(PlayerSystem.getPosition() == BombSystem.getPosition()) {
@@ -130,20 +129,6 @@ class Game {
 
       //fix
 
-    }
-
-
-    fun isGameOver(entity: Entity): Int {
-        if(NPCSystem.getLives(entity) == 0) {
-            gameWon = true;
-            score = PlayerSystem.getLives() * 250 // * tid igjen på timer
-        }
-        if(timer) {
-            gameOver = true;
-            score = 0;
-
-        }
-        return score
     }
 
 

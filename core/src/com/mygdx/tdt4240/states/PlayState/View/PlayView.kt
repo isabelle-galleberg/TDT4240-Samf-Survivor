@@ -23,6 +23,7 @@ import com.mygdx.tdt4240.sprites.LivesDisplay
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.states.PauseState
+import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 
 class PlayView (
     stateManager: StateManager, private val api: API
@@ -46,6 +47,8 @@ class PlayView (
     private val tileImg = Texture("gameView/tile.png")
     private val wallImg = Texture("gameView/wall.png")
 
+    val controller = PlayController()
+
     init {
         font.data.setScale(FONT_SIZE)
     }
@@ -58,19 +61,24 @@ class PlayView (
         }
         else if (UpBtn().upBtnPressed()) {
             println("MOVE UP")
+            controller.updatePos("UP")
         }
         else if (DownBtn().downBtnPressed()) {
             println("MOVE DOWN")
+            controller.updatePos("DOWN")
         }
         else if (LeftBtn().leftBtnPressed()) {
             println("MOVE LEFT")
+            controller.updatePos("LEFT")
         }
         else if (RightBtn().rightBtnPressed()) {
             println("MOVE RIGHT")
+            controller.updatePos("RIGHT")
         }
         else if (BombBtn().bombBtnPressed()) {
             println("BOOMB!!")
         }
+
 
     }
     override fun render(sprites: SpriteBatch) {

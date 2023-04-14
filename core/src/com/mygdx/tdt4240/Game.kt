@@ -23,7 +23,7 @@ class Game(private var api: API) : ApplicationAdapter() {
 		stateManager = StateManager()
 		Gdx.input.inputProcessor = InputMultiplexer()
 		Gdx.gl.glClearColor(237F, 232F, 232F, 1F)
-		stateManager?.push(PlayView(stateManager!!))
+		stateManager?.push(PlayView(stateManager!!,api))
 	}
 
 	override fun render() {

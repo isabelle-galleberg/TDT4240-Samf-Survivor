@@ -38,6 +38,16 @@ object PlayerSystem : IteratingSystem(
         return family.first().get(CharacterComponent).lives
     }
 
+    fun setPositionX(x:Int) {
+        family.first().get(SpriteComponent).changePositionX(x);
+    }
+    fun setPositionY(y:Int) {
+        family.first().get(SpriteComponent).changePositionY(y);
+    }
+    fun reduceLives() {
+        family.first().get(CharacterComponent).reduceLives()
+    }
+
     fun getScore():Int {
         return family.first().get(ScoreComponent).score
 
@@ -47,13 +57,6 @@ object PlayerSystem : IteratingSystem(
         family.first().get(ScoreComponent).changeScore(score)
     }
 
-    fun lives(): Int {
-        if(isHit) {
-            family.first().get(CharacterComponent).reduceLives();
-            }
-        return family.first().get(CharacterComponent).lives
-        //fix, skriv kode for når isHit blir true.
-    }
 
 
 

@@ -8,6 +8,10 @@ object Constants {
     val GAME_HEIGHT = Gdx.graphics.height.toFloat()
     val FONT_SIZE = GAME_HEIGHT / 250
 
+    val INPUT_WIDTH = GAME_WIDTH * 0.6f
+    val INPUT_HEIGHT = GAME_HEIGHT * 0.15f
+
+    val BUTTON_HEIGHT = GAME_HEIGHT * 0.12f
 
 
     const val SAMF_RED= "A03033"

@@ -1,13 +1,15 @@
-package com.mygdx.tdt4240;
+package com.mygdx.tdt4240
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.states.LoginState
 import com.mygdx.tdt4240.states.StateManager
+import com.mygdx.tdt4240.states.TutorialState
+import com.mygdx.tdt4240.states.RegisterState
 
 class Game(private var api: API) : ApplicationAdapter() {
 	companion object {

@@ -4,5 +4,6 @@ enum class DirectionType {
     UP,
     DOWN,
     LEFT,
-    RIGHT
+    RIGHT,
+    NONE
 }

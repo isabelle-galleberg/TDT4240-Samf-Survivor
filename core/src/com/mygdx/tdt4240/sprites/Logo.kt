@@ -9,7 +9,7 @@ class Logo {
     private val logoWidth = GAME_HEIGHT * 0.8f
     private val logoHeight = GAME_HEIGHT * 0.1f
     private val logoX = (GAME_WIDTH - logoWidth) * 0.5f
-    private val logoY = GAME_HEIGHT * 0.85f
+    private val logoY = GAME_HEIGHT -logoHeight
 
     fun createLogo(): Sprite {
         val sprite = Sprite(Texture("logo.png"))

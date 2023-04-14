@@ -1,9 +1,11 @@
 package com.mygdx.tdt4240.states
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -11,14 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.tdt4240.firebase.API
+import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.sprites.Logo
+import com.mygdx.tdt4240.utils.Constants.BUTTON_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
-import com.mygdx.tdt4240.sprites.BackBtn
-import com.mygdx.tdt4240.utils.Constants.BUTTON_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 
 class LoginState(
     stateManager: StateManager, private val api: API
@@ -27,13 +30,21 @@ class LoginState(
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     private val logo = Logo().createLogo()
-    private val username = TextField("", skin).apply {
+
+    private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java).apply {
+        font.data.setScale(FONT_SIZE)
+        cursor.minHeight = INPUT_HEIGHT
+        cursor.minWidth = INPUT_WIDTH / 100
+    }
+
+    private val username = TextField("", textFieldStyle).apply {
         color = Color.FIREBRICK
         messageText = "Username"
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.65f)
     }
-    private val password = TextField("", skin).apply {
+
+    private val password = TextField("", textFieldStyle).apply {
         color = Color.FIREBRICK
         messageText = "Password"
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
@@ -41,30 +52,31 @@ class LoginState(
         isPasswordMode = true
         setPasswordCharacter('*')
     }
+
     private val loginBtn = TextButton("Log in", skin).apply{
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, BUTTON_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.3f)
-
     }
+
     private val registerBtn = TextButton("Create a new user", skin).apply{
         color = Color.GRAY
         setSize(INPUT_WIDTH, BUTTON_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.15f)
     }
+
     private var errorLabel = Label("", skin).apply {
         color = Color.RED
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0f)
     }
-    private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
 
 
     init {
-        textFieldStyle.font.data.setScale(FONT_SIZE)
-
         handleLogIn(api)
         handleRegister()
+        handleKeyboard(username)
+        handleKeyboard(password)
 
         stage.addActor(username)
         stage.addActor(password)
@@ -99,12 +111,23 @@ class LoginState(
         })
     }
 
+    private fun handleKeyboard(textField: TextField) {
+        textField.addListener(object : InputListener() {
+            // close keyboard when enter is pressed
+            override fun keyDown(event: InputEvent, keycode: Int): Boolean {
+                if (keycode == Input.Keys.ENTER) {
+                    Gdx.input.setOnscreenKeyboardVisible(false)
+                }
+                return false
+            }
+        })
+    }
+
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
             stateManager.push(LoginState(stateManager, api))
         }
-
     }
 
     override fun render(sprites: SpriteBatch) {

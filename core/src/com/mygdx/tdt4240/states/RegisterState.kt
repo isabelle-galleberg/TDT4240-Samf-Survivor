@@ -21,6 +21,7 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
+import com.mygdx.tdt4240.utils.Globals.currentUser
 
 /**
  * State for the register form.
@@ -94,8 +95,9 @@ class RegisterState(
                 }
                 else {
                     api.submitUser(User(username.text, password.text, 0))
+                    currentUser = username.text
+                    stateManager.push(MainMenuState(stateManager,api))
                     errorLabel.remove()
-                    stateManager.push(MainMenuState(stateManager,api, username.text))
                 }
             }
         })

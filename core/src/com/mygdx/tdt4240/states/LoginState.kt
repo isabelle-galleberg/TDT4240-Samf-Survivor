@@ -22,6 +22,7 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
+import com.mygdx.tdt4240.utils.Globals.currentUser
 
 class LoginState(
     stateManager: StateManager, private val api: API
@@ -96,8 +97,9 @@ class LoginState(
                     stage.addActor(errorLabel)
                 }
                 else {
+                    currentUser = username.text
+                    stateManager.push(MainMenuState(stateManager, api))
                     errorLabel.remove()
-                    stateManager.push(MainMenuState(stateManager, api, username.text))
                 }
             }
         })

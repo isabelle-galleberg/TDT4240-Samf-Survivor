@@ -11,9 +11,10 @@ import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import java.util.*
 import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.sprites.Logo
+import com.mygdx.tdt4240.utils.Globals.currentUser
 
 class HighScoreListState(
-    stateManager: StateManager, private val api: API, private val username: String
+    stateManager: StateManager, private val api: API
 ) : State(stateManager) {
 
     private var highscores = ArrayList<User>()
@@ -35,7 +36,7 @@ class HighScoreListState(
 
     private fun getHighscoreRanking(): Int {
         for (i in 0 until highscores.size) {
-            if (highscores[i].username == username) {
+            if (highscores[i].username == currentUser) {
                 return i + 1
             }
         }
@@ -44,7 +45,7 @@ class HighScoreListState(
 
     override fun update(deltaTime: Float) {
      if (BackBtn().backBtnPressed()) {
-         stateManager.push(MainMenuState(stateManager,api, username))
+         stateManager.push(MainMenuState(stateManager,api))
      }
     }
 
@@ -60,7 +61,7 @@ class HighScoreListState(
 
             val number = "${i + 1}"
             val username = highscores[i].username
-            val score = highscores[i].score.toString()
+            val score = highscores[i].highscore.toString()
 
             font.draw(sprites, number, GAME_WIDTH * 0.175f, highscoreY + GAME_HEIGHT * 0.09f)
             font.draw(sprites, username, GAME_WIDTH * 0.25f, highscoreY + GAME_HEIGHT * 0.09f)
@@ -68,8 +69,8 @@ class HighScoreListState(
         }
 
         font.draw(sprites, getHighscoreRanking().toString(), GAME_WIDTH * 0.175f, GAME_HEIGHT * 0.13f)
-        font.draw(sprites, username, GAME_WIDTH * 0.25f, GAME_HEIGHT * 0.13f)
-        font.draw(sprites, api.getHighscore(username).toString(), GAME_WIDTH * 0.75f, GAME_HEIGHT * 0.13f)
+        font.draw(sprites, currentUser, GAME_WIDTH * 0.25f, GAME_HEIGHT * 0.13f)
+        font.draw(sprites, api.getHighscore(currentUser).toString(), GAME_WIDTH * 0.75f, GAME_HEIGHT * 0.13f)
 
         sprites.flush()
         sprites.end()

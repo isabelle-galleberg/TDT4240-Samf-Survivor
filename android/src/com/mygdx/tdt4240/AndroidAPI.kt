@@ -70,7 +70,7 @@ class AndroidAPI : API {
             val response = task.result.children
             for (child in response) {
                 if (child.getValue(User::class.java)?.username.toString() == username) {
-                    highscore = child.getValue(User::class.java)?.score ?: 0
+                    highscore = child.getValue(User::class.java)?.highscore ?: 0
                 }
             }
             completed = true

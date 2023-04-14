@@ -5,7 +5,9 @@ import com.github.quillraven.fleks.ComponentType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 data class BoostComponent(
-    var type: PowerupType = PowerupType.BOMB
+    var bombRange: PowerupType = PowerupType.RANGE,
+    var boostSpeed: PowerupType = PowerupType.SPEED,
+    var points: PowerupType = PowerupType.POINTS
 ) : Component<BoostComponent> {
 
     override fun type() = BoostComponent

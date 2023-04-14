@@ -3,27 +3,62 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
+import kotlin.math.abs
+import kotlin.random.Random
 
 /* System for the NPC*/
 object NPCSystem : IteratingSystem(
     World.family { all(CharacterComponent).none(ScoreComponent)}
 ) {
 
-    fun setDirection(direction: DirectionType) {
-        family.first().get(CharacterComponent).changeDirection(direction)
+    fun setDirection(entity: Entity,direction: DirectionType) {
+        entity.get(CharacterComponent).changeDirection(direction)
     }
 
-    fun getPosition():Pair<Int,Int> {
-        return Pair(family.first().get(SpriteComponent).x, family.first().get(SpriteComponent).y)
+    fun getPosition(entity: Entity):Pair<Int,Int> {
+        return Pair(entity.get(SpriteComponent).x, entity.get(SpriteComponent).y)
     }
 
-    fun getDirection(): DirectionType {
-        return family.first().get(CharacterComponent).direction
+    fun getDirection(entity: Entity): DirectionType {
+        return entity.get(CharacterComponent).direction
     }
+    fun getLives(entity: Entity): Int {
+        return entity.get(CharacterComponent).lives
+    }
+
+    fun avoidBomb(bombPos: Pair<Int, Int>) {
+        family.forEach { e ->
+            var NPCPosition = getPosition(e)
+            if (bombPos.first == NPCPosition.first && abs(bombPos.second - NPCPosition.second) <= 3) {
+                if (bombPos.second < NPCPosition.second) {
+                    setDirection(e,NPCBehavior.randomDirection(DirectionType.UP))
+                } else {
+                    setDirection(e,NPCBehavior.randomDirection(DirectionType.UP))
+                }
+                NPCBehavior.avoidCollision(e)
+            } else if (bombPos.second == NPCPosition.second && abs(bombPos.first - NPCPosition.first) <= 3) {
+                if (bombPos.first < NPCPosition.first) {
+                    setDirection(e,NPCBehavior.randomDirection(DirectionType.LEFT))
+                } else {
+                    setDirection(e,NPCBehavior.randomDirection(DirectionType.RIGHT))
+                }
+                NPCBehavior.avoidCollision(e)
+            }
+
+        }
+    }
+
+    fun getRandomNPC() : Entity {
+        var randIndex = Random.nextInt(0,family.numEntities)
+        return family.entities.get(randIndex)
+    }
+
 
     override fun onTickEntity(entity: Entity) {
         TODO("Not yet implemented")

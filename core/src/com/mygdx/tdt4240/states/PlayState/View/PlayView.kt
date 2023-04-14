@@ -7,6 +7,9 @@ import com.mygdx.tdt4240.states.StateManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.Texture
+import com.github.quillraven.fleks.World
+import com.github.quillraven.fleks.WorldConfiguration
+import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
@@ -49,36 +52,33 @@ class PlayView (
 
     val controller = PlayController()
 
+
+
     init {
         font.data.setScale(FONT_SIZE)
     }
 
     override fun update(deltaTime: Float) {
-        if (PauseBtn().pauseBtnPressed()) {
-            // need to change to PauseState view
-            stateManager.push(PauseState(stateManager, api))
-            //stateManager.push(MainMenuState(stateManager))
-        }
-        else if (UpBtn().upBtnPressed()) {
-            println("MOVE UP")
-            controller.updatePos("UP")
-        }
-        else if (DownBtn().downBtnPressed()) {
-            println("MOVE DOWN")
-            controller.updatePos("DOWN")
-        }
-        else if (LeftBtn().leftBtnPressed()) {
-            println("MOVE LEFT")
-            controller.updatePos("LEFT")
-        }
-        else if (RightBtn().rightBtnPressed()) {
-            println("MOVE RIGHT")
-            controller.updatePos("RIGHT")
-        }
-        else if (BombBtn().bombBtnPressed()) {
-            println("BOOMB!!")
-        }
 
+            if (PauseBtn().pauseBtnPressed()) {
+                // need to change to PauseState view
+                stateManager.push(PauseState(stateManager, api))
+                //stateManager.push(MainMenuState(stateManager))
+            } else if (UpBtn().upBtnPressed()) {
+                println("MOVE UP")
+                controller.updatePos("UP")
+            } else if (DownBtn().downBtnPressed()) {
+                println("MOVE DOWN")
+                controller.updatePos("DOWN")
+            } else if (LeftBtn().leftBtnPressed()) {
+                println("MOVE LEFT")
+                controller.updatePos("LEFT")
+            } else if (RightBtn().rightBtnPressed()) {
+                println("MOVE RIGHT")
+                controller.updatePos("RIGHT")
+            } else if (BombBtn().bombBtnPressed()) {
+                println("BOOMB!!")
+            }
 
     }
     override fun render(sprites: SpriteBatch) {

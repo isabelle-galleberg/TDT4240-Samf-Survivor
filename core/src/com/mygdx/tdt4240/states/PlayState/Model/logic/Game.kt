@@ -6,16 +6,11 @@ import com.badlogic.gdx.Input
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.CrateFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.EntityFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.PlayerFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.WallFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ObstacleSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
-
+import java.util.*
 
 
 /* Game logic */
@@ -29,6 +24,10 @@ class Game {
     private var score = PlayerSystem.getScore();
 
     private var timer = false;
+
+    private var bombCount = 0;
+
+    private var firePressed = false;
 
 
 
@@ -70,6 +69,7 @@ class Game {
     fun initGame() {
         initBoard(grid);
         PlayerSystem.setScore(0);
+        bombCount = 0;
         timer = true;
     }
 
@@ -95,6 +95,36 @@ class Game {
 
     }
 
+    fun getBombs(): Int {
+        if(PlayerSystem.getPosition() == BombSystem.getPosition()) {
+            bombCount += 1;
+        }
+        return bombCount;
+
+    }
+
+    fun placeBombs(world: World,x:Int, y:Int) {
+        if(firePressed && bombCount > 0 && !ObstacleSystem.getPositions().contains(Pair(x, y))) {
+            BombSystem.dropBomb(world,x,y);
+            Timer().schedule(object : TimerTask() {
+                override fun run() {
+                    FireFactory.createFire(world, x+3, y+3)
+                }
+            }, 2000)
+        }
+    }
+
+
+
+    fun randomSpawn() {
+        var randomTypes = PowerupType.values().toList().shuffled()
+        var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
+
+      //fix
+
+    }
+
+
     fun isGameOver(): Int {
         if(NPCSystem.getLives() == 0) {
             gameWon = true;
@@ -106,19 +136,6 @@ class Game {
 
         }
         return score
-    }
-
-    fun randomSpawn() {
-        var randomTypes = PowerupType.values().toList().shuffled()
-        var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
-
-        for(i in powerupPositions.indices) {
-
-
-
-        }
-
-
     }
 
 }

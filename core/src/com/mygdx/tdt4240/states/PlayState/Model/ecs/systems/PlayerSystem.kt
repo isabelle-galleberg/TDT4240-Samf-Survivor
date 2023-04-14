@@ -18,7 +18,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 /* System for the player and NPC*/
 object PlayerSystem : IteratingSystem(
-    family { all(CharacterComponent) }
+    family { all(ScoreComponent) }
 ) {
     private var isHit = false;
 

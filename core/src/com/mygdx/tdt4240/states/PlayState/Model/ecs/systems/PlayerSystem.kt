@@ -18,7 +18,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 /* System for the player and NPC*/
 object PlayerSystem : IteratingSystem(
-    family { all(CharacterComponent) }
+    family { all(ScoreComponent) }
 ) {
     private var isHit = false;
 
@@ -38,6 +38,16 @@ object PlayerSystem : IteratingSystem(
         return family.first().get(CharacterComponent).lives
     }
 
+    fun setPositionX(x:Int) {
+        family.first().get(SpriteComponent).changePositionX(x);
+    }
+    fun setPositionY(y:Int) {
+        family.first().get(SpriteComponent).changePositionY(y);
+    }
+    fun reduceLives() {
+        family.first().get(CharacterComponent).reduceLives()
+    }
+
     fun getScore():Int {
         return family.first().get(ScoreComponent).score
 
@@ -47,13 +57,6 @@ object PlayerSystem : IteratingSystem(
         family.first().get(ScoreComponent).changeScore(score)
     }
 
-    fun lives(entity: Entity): Int {
-        if(isHit) {
-                entity[CharacterComponent].lives -= 1;
-            }
-        return entity[CharacterComponent].lives
-        //fix, skriv kode for når isHit blir true.
-    }
 
 
 

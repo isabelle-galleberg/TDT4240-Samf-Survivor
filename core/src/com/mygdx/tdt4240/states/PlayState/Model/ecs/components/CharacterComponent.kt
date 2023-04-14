@@ -17,5 +17,9 @@ data class CharacterComponent(
         this@CharacterComponent.direction = direction
     }
 
+    fun reduceLives() {
+        this@CharacterComponent.lives -= 1
+    }
+
     companion object : ComponentType<CharacterComponent>()
 }

@@ -6,33 +6,50 @@ import com.badlogic.gdx.Input
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.CrateFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.EntityFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.PlayerFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.WallFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ObstacleSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
-
+import java.util.*
 
 
 /* Game logic */
-class Game {
+class Game (val world: World){
 
     private val entityFactory = EntityFactory
 
-    private var gameOver = false;
-    private var gameWon = false;
-
-    private var score = PlayerSystem.getScore();
 
     private var timer = false;
 
+    private var bombCount = 0;
+
+    private var firePressed = false;
 
 
-    val grid = Array(9) { arrayOfNulls<Entity>(9) }
+
+    val board = Array(9) { arrayOfNulls<Entity>(9) }
+
+    fun initBoard() {
+        //Player
+        board[0][0] = PlayerFactory.createPlayer(world, 0, 0)
+
+        //NPC
+        board[0][0] = NPCFactory.createNPC(world, 0, 0)
+        for (i in board.indices) {
+            for (j in board[i].indices) {
+                //Walls
+                if (i % 2 != 0 && j % 2 != 0){
+                    board[i][j] = WallFactory.createWall(world, i, j)
+                }
+
+                //Crates
+                //TO DO where crates??
+                else if (i == 3) {
+                    board[i][j] = CrateFactory.createCrate(world, i, j)
+                }
+            }
+        }
+    }
 
     fun initBoard(arr: Array<Array<Entity?>>) {
         for (i in arr.indices) {
@@ -68,69 +85,88 @@ class Game {
     }
 
     fun initGame() {
-        initBoard(grid);
-        PlayerSystem.setScore(0);
+        initBoard(board);
+        bombCount = 0;
         timer = true;
-    }
-
-    fun movePlayer() {
-        var playerPosition = PlayerSystem.getPosition();
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.D) && !ObstacleSystem.getPositions().contains(Pair(playerPosition.first + 1, playerPosition.second ))) {
-            PlayerSystem.setDirection(DirectionType.RIGHT)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.A) && !ObstacleSystem.getPositions().contains(Pair(playerPosition.first - 1, playerPosition.second ))) {
-            PlayerSystem.setDirection(DirectionType.LEFT)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W) &&  !ObstacleSystem.getPositions().contains(Pair(playerPosition.first, playerPosition.second + 1 ))) {
-            PlayerSystem.setDirection(DirectionType.UP)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.S) &&  !ObstacleSystem.getPositions().contains(Pair(playerPosition.first, playerPosition.second - 1))) {
-            PlayerSystem.setDirection(DirectionType.DOWN)
-        }
-        else {
-            PlayerSystem.setDirection(DirectionType.NONE)
-
-        }
 
     }
 
-    fun isGameOver(): Int {
-        if(NPCSystem.getLives() == 0) {
-            gameWon = true;
-            score = PlayerSystem.getLives() * 250 // * tid igjen på timer
+    fun movePlayerRight() {
+       var posX = PlayerSystem.getPosition().first
+        var posY = PlayerSystem.getPosition().second
+        if(!ObstacleSystem.getPositions().contains(Pair(posX+1,posY))) {
+                PlayerSystem.setPositionX(posX +1)
         }
-        if(timer) {
-            gameOver = true;
-            score = 0;
-
-        }
-        return score
     }
+
+    fun movePlayerLeft() {
+        var posX = PlayerSystem.getPosition().first
+        var posY = PlayerSystem.getPosition().second
+        if(!ObstacleSystem.getPositions().contains(Pair(posX-1,posY))) {
+            PlayerSystem.setPositionX(posX -1)
+        }
+    }
+
+    fun movePlayerUp() {
+        var posX = PlayerSystem.getPosition().first
+        var posY = PlayerSystem.getPosition().second
+        if(!ObstacleSystem.getPositions().contains(Pair(posX,posY+1))) {
+            PlayerSystem.setPositionX(posY +1)
+        }
+    }
+
+    fun movePlayerDown() {
+        var posX = PlayerSystem.getPosition().first
+        var posY = PlayerSystem.getPosition().second
+        if(!ObstacleSystem.getPositions().contains(Pair(posX,posY-1))) {
+            PlayerSystem.setPositionX(posY -1)
+        }
+    }
+
+
+    fun getBombs(): Int {
+        if(PlayerSystem.getPosition() == BombSystem.getPosition()) {
+            bombCount += 1;
+        }
+        return bombCount;
+
+    }
+
+    fun placeBombs(world: World,x:Int, y:Int) {
+        if(firePressed && bombCount > 0 && !ObstacleSystem.getPositions().contains(Pair(x, y))) {
+            BombSystem.dropBomb(world,x,y);
+            Timer().schedule(object : TimerTask() {
+                override fun run() {
+                    FireFactory.createFire(world, x+3, y+3) //fix range
+                }
+            }, 2000)
+        }
+    }
+
+
 
     fun randomSpawn() {
         var randomTypes = PowerupType.values().toList().shuffled()
         var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
 
-        for(i in powerupPositions.indices) {
-
-
-
-        }
-
+      //fix
 
     }
 
+
+
 }
 fun main() {
-    val b = Game()
-    val g = b.grid
     val world = world {}
+    val b = Game(world)
+    val g = b.board
+    b.initGame()
 
     b.drawBoard(g, world)
     b.drawPlayer(g,world,1,1)
 
     print(b.initBoard(g));
+
 
 
 }

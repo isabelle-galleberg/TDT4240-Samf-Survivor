@@ -10,7 +10,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 object PowerUpSystem : IteratingSystem(
-    World.family { all(SpriteComponent) }
+    World.family { all(BoostComponent) }
 ) {
 
     fun getPosition(): Pair<Int, Int> {

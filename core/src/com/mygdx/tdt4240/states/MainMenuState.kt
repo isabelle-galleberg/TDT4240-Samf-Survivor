@@ -23,7 +23,7 @@ import com.mygdx.tdt4240.utils.Globals.currentUser
 
 
 class MainMenuState(
-    stateManager: StateManager, api: API
+    stateManager: StateManager, private val api: API
 ) : State(stateManager) {
 
     private val stage = Stage()
@@ -71,7 +71,7 @@ class MainMenuState(
         handleClick(playBtn, PlayView(stateManager,api))
         handleClick(tutorialBtn, TutorialState(stateManager, api))
         handleClick(highscoreBtn, HighScoreListState(stateManager, api))
-        handleClick(logOutBtn, LoginState(stateManager, api))
+        handleLogout()
     }
 
     override fun update(deltaTime: Float) {
@@ -85,6 +85,11 @@ class MainMenuState(
                 Gdx.input.inputProcessor = null
             }
         })
+    }
+
+    private fun handleLogout() {
+        handleClick(logOutBtn, LoginState(stateManager, api))
+        currentUser = ""
     }
 
     override fun render(sprites: SpriteBatch) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.mygdx.tdt4240.sprites.Buttons
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -26,7 +27,9 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
 
     //#TODO-endre val+array til oppdaterte bilder av spillet
     private val logo2=Texture("logo.png")
-    private val imgArray= arrayOf(background,logo2)
+    private val testSprite= Sprite(logo2,Window().WIN_WIDTH.toInt(), Window().WIN_HEIGHT.toInt())
+    private val testSprite1= Sprite(background,Window().WIN_WIDTH.toInt(), Window().WIN_HEIGHT.toInt())
+    private val imgArray= arrayOf(testSprite1,testSprite)
     private var pointer=0
 
     private val stage = Stage()
@@ -93,8 +96,7 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
         sprites.begin()
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
         tutorialWindow.draw(sprites)
-        //sprites.draw(tutorialWindow,(GAME_WIDTH- TUTORIAL_WIDTH)/2,0f)
-        //sprites.draw(imgArray[pointer], 0f,0f)
+        //sprites.draw(imgArray[pointer], GAME_WIDTH-imgArray[pointer].width/2,GAME_HEIGHT-imgArray[pointer].height/2)
         logo.draw(sprites)
         backBtn.draw(sprites)
         sprites.end()

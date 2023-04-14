@@ -21,7 +21,7 @@ class Game {
     private var gameOver = false;
     private var gameWon = false;
 
-    private var score = PlayerSystem.getScore();
+    private var score = 0
 
     private var timer = false;
 
@@ -68,7 +68,6 @@ class Game {
 
     fun initGame() {
         initBoard(grid);
-        PlayerSystem.setScore(0);
         bombCount = 0;
         timer = true;
     }
@@ -95,6 +94,15 @@ class Game {
 
     }
 
+    fun move(world: World, x:Int, y: Int) {
+        drawPlayer(grid, world, x,y)
+
+    }
+
+    fun updateBoard() {
+
+    }
+
     fun getBombs(): Int {
         if(PlayerSystem.getPosition() == BombSystem.getPosition()) {
             bombCount += 1;
@@ -108,7 +116,7 @@ class Game {
             BombSystem.dropBomb(world,x,y);
             Timer().schedule(object : TimerTask() {
                 override fun run() {
-                    FireFactory.createFire(world, x+3, y+3)
+                    FireFactory.createFire(world, x+3, y+3) //fix range
                 }
             }, 2000)
         }
@@ -138,16 +146,20 @@ class Game {
         return score
     }
 
+
+
 }
 fun main() {
     val b = Game()
     val g = b.grid
     val world = world {}
+    b.initGame()
 
     b.drawBoard(g, world)
     b.drawPlayer(g,world,1,1)
 
     print(b.initBoard(g));
+
 
 
 }

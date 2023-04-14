@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.Logo
+import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -28,6 +29,7 @@ class MainMenuState(
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     private val logo = Logo().createLogo()
     private val background = Texture("samfundet.png")
+    private val mainMenuWindow= Window().createMainMenuWindow()
 
     private val playBtn = TextButton("PLAY", skin).apply {
         color = Color.RED
@@ -82,6 +84,7 @@ class MainMenuState(
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
+        mainMenuWindow.draw(sprites)
         logo.draw(sprites)
         sprites.end()
 

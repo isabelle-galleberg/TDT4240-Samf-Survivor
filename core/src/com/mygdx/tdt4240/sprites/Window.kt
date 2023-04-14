@@ -14,6 +14,9 @@ class Window {
 
     val WIN_PAUSE_HEIGHT=(GAME_HEIGHT /7).toInt()*5
 
+    val WIN_MAINMENU_HEIGHT=(GAME_HEIGHT/40).toInt()*33
+    val WIN_MAINMENU_HEIGHT_FILL=WIN_MAINMENU_HEIGHT*39/40
+
     fun createWindow(): Sprite {
         val pixmap = Pixmap(WIN_WIDTH, WIN_HEIGHT, Pixmap.Format.RGBA8888)
         pixmap.setColor(1F, 1f, 1f, 1f)
@@ -28,6 +31,16 @@ class Window {
         val pixmap = Pixmap(WIN_WIDTH, WIN_HEIGHT, Pixmap.Format.RGBA8888)
         pixmap.setColor(1F, 1f, 1f, 1f)
         pixmap.fillRectangle(0, 0, WIN_WIDTH, WIN_PAUSE_HEIGHT)
+        val winTex=Texture(pixmap)
+        val winSprite=Sprite(winTex)
+        winSprite.setPosition((GAME_WIDTH-WIN_WIDTH)/2, 0f)
+        return winSprite
+    }
+
+    fun createMainMenuWindow(): Sprite {
+        val pixmap = Pixmap(WIN_WIDTH, WIN_MAINMENU_HEIGHT, Pixmap.Format.RGBA8888)
+        pixmap.setColor(1F, 1f, 1f, 1f)
+        pixmap.fillRectangle(0, 0, WIN_WIDTH, WIN_MAINMENU_HEIGHT_FILL)
         val winTex=Texture(pixmap)
         val winSprite=Sprite(winTex)
         winSprite.setPosition((GAME_WIDTH-WIN_WIDTH)/2, 0f)

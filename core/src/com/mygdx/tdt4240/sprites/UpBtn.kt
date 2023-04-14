@@ -11,7 +11,7 @@ class UpBtn {
     private val upBtnY = Constants.GAME_HEIGHT * 0.05f + upBtnSize
 
     fun createUpBtn(): Sprite {
-        val sprite = Sprite(Texture("gameView/upBtn.png"))
+        val sprite = Sprite(Texture("gameView/arrowVerticalBtn.png"))
         sprite.setSize(upBtnSize, upBtnSize)
         sprite.setPosition(upBtnX, upBtnY)
         return sprite

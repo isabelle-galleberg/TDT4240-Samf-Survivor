@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.sprites.Window
@@ -20,7 +21,9 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
  * @param stateManager Manager of all game states.
  */
 
-class TutorialState(stateManager: StateManager) : State(stateManager) {
+class TutorialState(
+stateManager: StateManager, private val api: API
+) : State(stateManager) {
     private val logo = Logo().createLogo()
     private val background = Texture("samfundet.png")
     private val tutorialWindow=Window().createWindow()
@@ -88,7 +91,7 @@ class TutorialState(stateManager: StateManager) : State(stateManager) {
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
-            stateManager.push(MainMenuState(stateManager))
+            stateManager.push(MainMenuState(stateManager,api))
         }
     }
 

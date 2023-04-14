@@ -85,7 +85,7 @@ class RegisterState(
                 else {
                     api.submitUser(User(username.text, password.text, 0))
                     errorLabel.remove()
-                    stateManager.push(MainMenuState(stateManager,api))
+                    stateManager.push(MainMenuState(stateManager,api, username.text))
                 }
             }
         })

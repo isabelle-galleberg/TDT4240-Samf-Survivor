@@ -85,7 +85,7 @@ class LoginState(
                 }
                 else {
                     errorLabel.remove()
-                    stateManager.push(MainMenuState(stateManager, api))
+                    stateManager.push(MainMenuState(stateManager, api, username.text))
                 }
             }
         })
@@ -94,7 +94,7 @@ class LoginState(
     private fun handleRegister() {
         registerBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-              stateManager.push(RegisterState(stateManager, api))
+                stateManager.push(RegisterState(stateManager, api))
         }
         })
     }

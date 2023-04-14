@@ -133,8 +133,8 @@ class Game {
     }
 
 
-    fun isGameOver(): Int {
-        if(NPCSystem.getLives() == 0) {
+    fun isGameOver(entity: Entity): Int {
+        if(NPCSystem.getLives(entity) == 0) {
             gameWon = true;
             score = PlayerSystem.getLives() * 250 // * tid igjen på timer
         }

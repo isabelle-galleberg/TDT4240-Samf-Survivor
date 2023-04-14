@@ -47,11 +47,11 @@ object PlayerSystem : IteratingSystem(
         family.first().get(ScoreComponent).changeScore(score)
     }
 
-    fun lives(entity: Entity): Int {
+    fun lives(): Int {
         if(isHit) {
-                entity[CharacterComponent].lives -= 1;
+            family.first().get(CharacterComponent).reduceLives();
             }
-        return entity[CharacterComponent].lives
+        return family.first().get(CharacterComponent).lives
         //fix, skriv kode for når isHit blir true.
     }
 

@@ -4,15 +4,30 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.world
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.FireFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ObstacleSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
 import java.util.*
 
 class PlayController {
+    private val world = world {
+        systems {
+            add(BombSystem)
+            add(NPCSystem)
+            add(ObstacleSystem)
+            add(PlayerSystem)
+            add(PowerUpSystem)
+        }
+    }
+    private var game = Game(world)
+
+
 
     private var gameOver = false;
     private var gameWon = false;
@@ -22,9 +37,29 @@ class PlayController {
 
     private var lives = 3;
 
-    var gameObject = Game();
+    fun drawBoard(): Array<Array<String?>> {
+        game.initBoard()
+        var uiBoard = Array(9) { arrayOfNulls<String>(9) }
+        for (i in 0 until 9) {
+            for (j in 0 until 9) {
+                if (game.board[i][j]?.has(ObstacleComponent) == true) {
+                    if (game.board[i][j]?.get(ObstacleComponent)?.wall == true) {
+                        uiBoard[i][j] = "wall"
+                    } else {
+                        uiBoard[i][j] = "crate"
+                    }
+                } else if (game.board[i][j]?.has(CharacterComponent) == true) {
+                    if (game.board[i][j]?.has(ScoreComponent) == true) { //Player
+                        uiBoard[i][j] = "player"
+                    } else {
+                        uiBoard[i][j] = "npc"
+                    }
+                }
 
-    var world = world {  }
+            }
+        }
+        return uiBoard
+    }
 
 
 
@@ -36,25 +71,25 @@ class PlayController {
                     .contains(Pair(playerPosition.first + 1, playerPosition.second))
             ) {
                 PlayerSystem.setDirection(DirectionType.RIGHT)
-                gameObject.movePlayerRight()
+                game.movePlayerRight()
             }
             if (direction == "LEFT" && !ObstacleSystem.getPositions()
                     .contains(Pair(playerPosition.first - 1, playerPosition.second))
             ) {
                 PlayerSystem.setDirection(DirectionType.LEFT)
-                gameObject.movePlayerLeft()
+                game.movePlayerLeft()
             }
             if (direction == "UP" && !ObstacleSystem.getPositions()
                     .contains(Pair(playerPosition.first, playerPosition.second + 1))
             ) {
                 PlayerSystem.setDirection(DirectionType.UP)
-                gameObject.movePlayerUp()
+                game.movePlayerUp()
             }
             if (direction == "DOWN" && !ObstacleSystem.getPositions()
                     .contains(Pair(playerPosition.first, playerPosition.second - 1))
             ) {
                 PlayerSystem.setDirection(DirectionType.DOWN)
-                gameObject.movePlayerDown()
+                game.movePlayerDown()
             } else {
                 PlayerSystem.setDirection(DirectionType.NONE)
 

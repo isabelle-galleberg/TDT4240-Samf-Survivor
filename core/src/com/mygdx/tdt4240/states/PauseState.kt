@@ -59,7 +59,7 @@ class PauseState(
         stage.addActor(playBtn)
         stage.addActor(mainMenuBtn)
 
-        handleClick(playBtn, PlayView(stateManager, api))
+        handleClick(playBtn, PlayView(stateManager))
         handleClick(mainMenuBtn, MainMenuState(stateManager, api))
     }
 

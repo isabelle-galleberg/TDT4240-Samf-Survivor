@@ -7,10 +7,6 @@ import com.mygdx.tdt4240.states.StateManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.Texture
-import com.github.quillraven.fleks.World
-import com.github.quillraven.fleks.WorldConfiguration
-import com.github.quillraven.fleks.world
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
@@ -28,9 +24,7 @@ import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 
-class PlayView (
-    stateManager: StateManager, private val api: API
-) : State(stateManager) {
+class PlayView (stateManager: StateManager) : State(stateManager) {
 
     private var font = BitmapFont()
 
@@ -50,35 +44,34 @@ class PlayView (
     private val tileImg = Texture("gameView/tile.png")
     private val wallImg = Texture("gameView/wall.png")
 
-    val controller = PlayController()
-
-
+    private val playController = PlayController()
 
     init {
         font.data.setScale(FONT_SIZE)
     }
 
     override fun update(deltaTime: Float) {
+        if (PauseBtn().pauseBtnPressed()) {
+            // need to change to PauseState view
+         //   stateManager.push(PauseState(stateManager, api))
+            //stateManager.push(MainMenuState(stateManager))
+        } else if (UpBtn().upBtnPressed()) {
+            println("MOVE UP")
+            playController.updatePos("UP")
+        } else if (DownBtn().downBtnPressed()) {
+            println("MOVE DOWN")
+            playController.updatePos("DOWN")
+        } else if (LeftBtn().leftBtnPressed()) {
+            println("MOVE LEFT")
+            playController.updatePos("LEFT")
+        } else if (RightBtn().rightBtnPressed()) {
+            println("MOVE RIGHT")
+            playController.updatePos("RIGHT")
+        }
 
-            if (PauseBtn().pauseBtnPressed()) {
-                // need to change to PauseState view
-                stateManager.push(PauseState(stateManager, api))
-                //stateManager.push(MainMenuState(stateManager))
-            } else if (UpBtn().upBtnPressed()) {
-                println("MOVE UP")
-                controller.updatePos("UP")
-            } else if (DownBtn().downBtnPressed()) {
-                println("MOVE DOWN")
-                controller.updatePos("DOWN")
-            } else if (LeftBtn().leftBtnPressed()) {
-                println("MOVE LEFT")
-                controller.updatePos("LEFT")
-            } else if (RightBtn().rightBtnPressed()) {
-                println("MOVE RIGHT")
-                controller.updatePos("RIGHT")
-            } else if (BombBtn().bombBtnPressed()) {
-                println("BOOMB!!")
-            }
+        //else if (BombBtn().bombBtnPressed()) {
+            //println("BOOMB!!")
+       // }
 
     }
     override fun render(sprites: SpriteBatch) {
@@ -88,17 +81,33 @@ class PlayView (
         pauseBtn.draw(sprites)
 
         // Draw game board
+        var uiBoard = playController.drawBoard()
+
         sprites.draw(boardImg, GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f,  0f, GAME_HEIGHT, GAME_HEIGHT)
-        for (i in 0 until 9) {
-            for (j in 0 until 9) {
-                if (i % 2 != 0 && j % 2 != 0){
+
+        for (i in 0 until uiBoard.size) {
+            for (j in 0 until uiBoard.get(0).size) {
+                sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                if (uiBoard[i][j].equals("wall")) {
                     sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                } else if (uiBoard[i][j].equals("crate")) {
+
+                } else if (uiBoard[i][j].equals("player")) {
+
                 }
-                else {
-                    sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
-                }
-            }
-        }
+            }}
+
+
+        //for (i in 0 until 9) {
+            //for (j in 0 until 9) {
+                //if (i % 2 != 0 && j % 2 != 0){
+                    //sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                //}
+                //else (i=3){
+                    //sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                //}
+            //}
+        //}
 
         // Draw player
         player.draw(sprites)

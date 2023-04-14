@@ -88,8 +88,13 @@ class MainMenuState(
     }
 
     private fun handleLogout() {
-        handleClick(logOutBtn, LoginState(stateManager, api))
-        currentUser = ""
+        logOutBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                currentUser = ""
+                stateManager.push(LoginState(stateManager, api))
+                Gdx.input.inputProcessor = null
+            }
+        })
     }
 
     override fun render(sprites: SpriteBatch) {

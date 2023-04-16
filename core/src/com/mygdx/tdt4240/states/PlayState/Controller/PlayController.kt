@@ -1,18 +1,16 @@
 package com.mygdx.tdt4240.states.PlayState.Controller
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.FireFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
+import com.mygdx.tdt4240.utils.Constants
 import java.util.*
 
 class PlayController {
@@ -25,21 +23,19 @@ class PlayController {
             add(PowerUpSystem)
         }
     }
+    var uiBoard = Array(9) { arrayOfNulls<String>(9) }
     private var game = Game(world)
-
-
-
     private var gameOver = false;
     private var gameWon = false;
-
     private var score = 0
     private var timer = false;
-
     private var lives = 3;
 
-    fun drawBoard(): Array<Array<String?>> {
+    init {
         game.initBoard()
-        var uiBoard = Array(9) { arrayOfNulls<String>(9) }
+    }
+
+    fun drawBoard(): Array<Array<String?>> {
         for (i in 0 until 9) {
             for (j in 0 until 9) {
                 if (game.board[i][j]?.has(ObstacleComponent) == true) {
@@ -55,48 +51,36 @@ class PlayController {
                         uiBoard[i][j] = "npc"
                     }
                 }
-
             }
         }
         return uiBoard
     }
 
-
-
+    //!ObstacleSystem.getPositions().contains(Pair(playerPosition.first, playerPosition.second - 1)*/
 
     fun updatePos(direction: String) {
-            var playerPosition = PlayerSystem.getPosition();
 
-            if (direction == "RIGHT" && !ObstacleSystem.getPositions()
-                    .contains(Pair(playerPosition.first + 1, playerPosition.second))
-            ) {
+            if (direction == "RIGHT") {
                 PlayerSystem.setDirection(DirectionType.RIGHT)
-                game.movePlayerRight()
+                game.movePlayer(game.board, "RIGHT")
+
             }
-            if (direction == "LEFT" && !ObstacleSystem.getPositions()
-                    .contains(Pair(playerPosition.first - 1, playerPosition.second))
-            ) {
+            if (direction == "LEFT") {
                 PlayerSystem.setDirection(DirectionType.LEFT)
-                game.movePlayerLeft()
+                game.movePlayer(game.board, "LEFT")
             }
-            if (direction == "UP" && !ObstacleSystem.getPositions()
-                    .contains(Pair(playerPosition.first, playerPosition.second + 1))
-            ) {
+            if (direction == "UP") {
                 PlayerSystem.setDirection(DirectionType.UP)
-                game.movePlayerUp()
+                game.movePlayer(game.board, "UP")
             }
-            if (direction == "DOWN" && !ObstacleSystem.getPositions()
-                    .contains(Pair(playerPosition.first, playerPosition.second - 1))
-            ) {
+            if (direction == "DOWN") {
                 PlayerSystem.setDirection(DirectionType.DOWN)
-                game.movePlayerDown()
+                game.movePlayer(game.board, "DOWN")
+
             } else {
                 PlayerSystem.setDirection(DirectionType.NONE)
-
         }
-
     }
-
 
     fun isGameOver(entity: Entity): Int {
         if(NPCSystem.getLives(entity) == 0) {
@@ -115,12 +99,4 @@ class PlayController {
         }
         return score
     }
-
-
-
-
-
-
-
-
 }

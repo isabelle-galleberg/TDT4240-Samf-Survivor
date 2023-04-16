@@ -19,6 +19,6 @@ class DownBtn {
     }
 
     fun downBtnPressed(): Boolean {
-        return Gdx.input.justTouched() && Gdx.input.x > downBtnX && Gdx.input.x < downBtnX + downBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - downBtnY && Gdx.input.y > Constants.GAME_HEIGHT - downBtnY - downBtnSize
+        return Gdx.input.isTouched && Gdx.input.x > downBtnX && Gdx.input.x < downBtnX + downBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - downBtnY && Gdx.input.y > Constants.GAME_HEIGHT - downBtnY - downBtnSize
     }
 }

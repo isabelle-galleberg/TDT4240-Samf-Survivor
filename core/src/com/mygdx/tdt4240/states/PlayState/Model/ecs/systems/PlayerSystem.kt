@@ -23,49 +23,41 @@ object PlayerSystem : IteratingSystem(
     private var isHit = false;
 
     fun getDirection(): DirectionType {
-        return family.first().get(CharacterComponent).direction
+        return family.first()[CharacterComponent].direction
     }
 
     fun setDirection(direction: DirectionType) {
-        family.first().get(CharacterComponent).changeDirection(direction)
+        family.first()[CharacterComponent].changeDirection(direction)
     }
 
     fun getPosition():Pair<Int,Int> {
-        return Pair(family.first().get(SpriteComponent).x, family.first().get(SpriteComponent).y)
+        return Pair(family.first()[SpriteComponent].x, family.first()[SpriteComponent].y)
     }
 
     fun getLives(): Int {
-        return family.first().get(CharacterComponent).lives
+        return family.first()[CharacterComponent].lives
     }
 
     fun setPositionX(x:Int) {
-        family.first().get(SpriteComponent).changePositionX(x);
+        family.first()[SpriteComponent].changePositionX(x);
     }
     fun setPositionY(y:Int) {
-        family.first().get(SpriteComponent).changePositionY(y);
+        family.first()[SpriteComponent].changePositionY(y);
     }
     fun reduceLives() {
-        family.first().get(CharacterComponent).reduceLives()
+        family.first()[CharacterComponent].reduceLives()
     }
 
     fun getScore():Int {
-        return family.first().get(ScoreComponent).score
+        return family.first()[ScoreComponent].score
 
     }
 
     fun setScore(score: Int) {
-        family.first().get(ScoreComponent).changeScore(score)
+        family.first()[ScoreComponent].changeScore(score)
     }
 
-
-
-
-
     override fun onTickEntity(entity: Entity) {
-
-
-
-
 
     }
 }

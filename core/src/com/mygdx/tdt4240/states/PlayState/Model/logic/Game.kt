@@ -158,7 +158,7 @@ class Game (val world: World){
         }
 
         for (cor in fireCoordinates) {
-            board[cor.first][cor.second] = EntityFactory.createFire(world,cor.first,cor.second)
+            board[cor.first][cor.second] = EntityFactory.createFire(world,cor.first,cor.second, 2)
         }
 
         Timer().schedule(object : TimerTask() {

@@ -14,8 +14,8 @@ object EntityFactory {
         return CrateFactory.createCrate(world,x,y)
     }
 
-    fun createFire(world: World,x: Int, y: Int): Entity {
-        return FireFactory.createFire(world, x,y)
+    fun createFire(world: World,x: Int, y: Int, lifeTime: Int): Entity {
+        return FireFactory.createFire(world, x,y, lifeTime)
     }
 
     fun createNPC(world: World, x: Int, y: Int): Entity {

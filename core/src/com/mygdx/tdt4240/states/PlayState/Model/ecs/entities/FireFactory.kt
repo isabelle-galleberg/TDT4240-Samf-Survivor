@@ -8,10 +8,10 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
 
 /* The concrete factory following the abstract factory pattern for creating fire on gameboard */
 object FireFactory {
-    fun createFire(world: World,x: Int, y: Int): Entity {
+    fun createFire(world: World,x: Int, y: Int, lifeTime: Int): Entity {
         val entity: Entity = world.entity {
             it += SpriteComponent(x,y)
-            it += LifetimeComponent()
+            it += LifetimeComponent(lifeTime, true)
         }
         return entity
     }

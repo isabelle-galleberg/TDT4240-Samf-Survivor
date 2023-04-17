@@ -26,7 +26,7 @@ class Game (val world: World){
     private val npc = NPCFactory.createNPC(world, 0, 0)
 
     fun init() {
-        initBoard();
+        initBoard()
     }
 
     private fun initBoard(): Array<Array<Entity?>> {
@@ -45,6 +45,8 @@ class Game (val world: World){
                 }
             }
         }
+        ObstacleSystem.createPositionList()
+        println(ObstacleSystem.getPositions())
         return board
     }
 
@@ -52,16 +54,15 @@ class Game (val world: World){
         var x = PlayerSystem.getPosition().first
         var y = PlayerSystem.getPosition().second
         var direction = PlayerSystem.getDirection()
-        var obstacles = ObstacleSystem.getPositions()
         if (PlayerSystem.getDirection() == DirectionType.DOWN) {
-            if (y-1 < 0 || obstacles.contains(Pair(x,y-1))) {
+            if (y-1 < 0 || board[x][y-1]?.has(ObstacleComponent) == true) {
                 return
             }
             board[x][y] = null
             board[x][y-1] = player
 
         } else if (direction == DirectionType.UP) {
-            if (y+1 > 8 || obstacles.contains(Pair(x,y+1))) {
+            if (y+1 > 8 || board[x][y+1]?.has(ObstacleComponent) == true) {
                 return
 
             }
@@ -69,7 +70,7 @@ class Game (val world: World){
             board[x][y+1] = player
 
         } else if (direction == DirectionType.RIGHT) {
-            if (x+1 > 8 || obstacles.contains(Pair(x+1,y))) {
+            if (x+1 > 8 || board[x+1][y]?.has(ObstacleComponent) == true) {
                 return
             }
             board[x][y] = null
@@ -77,7 +78,7 @@ class Game (val world: World){
 
         } else if (direction == DirectionType.LEFT) {
 
-            if (x-1 < 0 || obstacles.contains(Pair(x-1,y))) {
+            if (x-1 < 0 || board[x-1][y]?.has(ObstacleComponent) == true) {
                 return
             }
             board[x][y] = null

@@ -94,19 +94,19 @@ class PlayController {
     fun updatePos(direction: String) {
         if (direction == "RIGHT") {
             PlayerSystem.setDirection(DirectionType.RIGHT)
-            game.movePlayer(game.board, "RIGHT")
+            game.movePlayer()
         }
         if (direction == "LEFT") {
             PlayerSystem.setDirection(DirectionType.LEFT)
-            game.movePlayer(game.board, "LEFT")
+            game.movePlayer()
         }
         if (direction == "UP") {
             PlayerSystem.setDirection(DirectionType.UP)
-            game.movePlayer(game.board, "UP")
+            game.movePlayer()
         }
         if (direction == "DOWN") {
             PlayerSystem.setDirection(DirectionType.DOWN)
-            game.movePlayer(game.board, "DOWN")
+            game.movePlayer()
         } else {
             PlayerSystem.setDirection(DirectionType.NONE)
         }
@@ -117,8 +117,8 @@ class PlayController {
     }
 
     fun booster(string: String, powerUp: PowerupType) {
-        var x = game.getPlayerCoordinate(game.board, "x")
-        var y = game.getPlayerCoordinate(game.board, "y")
+        var x = PlayerSystem.getPosition().first
+        var y = PlayerSystem.getPosition().second
 
         var boosterX = PowerUpSystem.getPosition().first
         var boosterY = PowerUpSystem.getPosition().second

@@ -72,8 +72,11 @@ class PlayController {
                 } else if (game.board[i][j]?.has(ObservableComponent) == true) {
                     uiBoard[i][j] = "bomb"
 
-                }else if (game.board[i][j]?.get(LifetimeComponent)?.fire == true) {
-                    uiBoard[i][j] = "fire"
+                } else if (game.board[i][j]?.has(LifetimeComponent) == true) {
+                    if (game.board[i][j]?.get(LifetimeComponent)?.fire == true) {
+                        uiBoard[i][j] = "fire"
+                    }
+
 
                 }else if (game.board[i][j]?.has(CharacterComponent) == true) {
                     if (game.board[i][j]?.has(PlayerComponent) == true) { //Player

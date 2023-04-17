@@ -45,8 +45,6 @@ class Game (val world: World){
                 }
             }
         }
-        ObstacleSystem.createPositionList()
-        println(ObstacleSystem.getPositions())
         return board
     }
 

@@ -32,8 +32,9 @@ class PlayController {
 
     var score = 0
     var gameOver = false
+    var gameWon = false
+    var timerOver = false
     private var worldTimer: Int? = 300
-    private var timeUp = false
     private var timeCount = 0f
 
     init {
@@ -46,7 +47,7 @@ class PlayController {
             if (worldTimer!! > 0) {
                 worldTimer = worldTimer!! - 1;
             } else {
-                timeUp = true;
+                timerOver = true;
             }
             timeCount = 0F;
         }
@@ -85,7 +86,6 @@ class PlayController {
     }
 
     fun updatePos(direction: String) {
-
         if (direction == "RIGHT") {
             PlayerSystem.setDirection(DirectionType.RIGHT)
             game.movePlayer(game.board, "RIGHT")
@@ -108,7 +108,6 @@ class PlayController {
 
     fun bomb() {
         game.placeBomb()
-
     }
 
     fun booster(string: String, powerUp: PowerupType) {
@@ -135,23 +134,15 @@ class PlayController {
             }, 3000)
         }
     }
-}
-    /*
-    fun isGameOver(entity: Entity): Int {
-        if(NPCSystem.getLives(entity) == 0) {
+
+    fun isGameOver(): Boolean {
+        if (NPCSystem.getLives() == 0) {
             gameWon = true;
             score = PlayerSystem.getLives() * 250 // * tid igjen på timer
+            return true
+        } else if (timerOver) {
+            return true
         }
-        Timer().schedule(object : TimerTask() {
-            override fun run() {
-
-            }
-        }, 2000)
-        if(true) {
-            gameOver = true;
-            score = 0;
-
-        }
-        return score
+        return false
     }
-    */
+}

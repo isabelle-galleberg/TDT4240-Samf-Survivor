@@ -1,18 +1,12 @@
 package com.mygdx.tdt4240.states.PlayState.View
 
-import com.badlogic.gdx.Gdx.gl
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
 import com.mygdx.tdt4240.states.State
 import com.mygdx.tdt4240.states.StateManager
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Sprite
-import com.mygdx.tdt4240.Game.Companion.sprites
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
@@ -33,8 +27,6 @@ import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
-import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
-import java.util.*
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
@@ -62,6 +54,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     private val playController = PlayController()
     var uiBoard = playController.drawBoard()
+    var gameOver = false
 
     init {
         font.data.setScale(FONT_SIZE)
@@ -91,12 +84,14 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
+        gameOver = playController.isGameOver()
 
-        // Pause button
-        pauseBtn.draw(sprites)
+        if (gameOver) {
+            //TODO
+        }
 
-        // Draw game board
-        uiBoard = playController.drawBoard()
+        pauseBtn.draw(sprites) // Pause button
+        uiBoard = playController.drawBoard() // Game board
 
         sprites.draw(boardImg, GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f,  0f, GAME_HEIGHT, GAME_HEIGHT)
 
@@ -118,28 +113,21 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
       //  Bomb().updatePosition(bomb, PlayerSystem.getPosition().first.toFloat(),PlayerSystem.getPosition().second.toFloat())
         //bomb.draw(sprites)
 
-
-
-        //Player and NPC
-        Player().updatePosition(player, PlayerSystem.getPosition().first.toFloat(), PlayerSystem.getPosition().second.toFloat())
+        Player().updatePosition(player, PlayerSystem.getPosition().first.toFloat(), PlayerSystem.getPosition().second.toFloat()) //Player
         player.draw(sprites)
 
-        NPC().updatePosition(nPC, 8.toFloat(), 0.toFloat())
+        NPC().updatePosition(nPC, 8.toFloat(), 0.toFloat()) //NPC
         nPC.draw(sprites)
 
-        // Game controller
-
-        upBtn.draw(sprites)
-        downBtn.draw(sprites)
-        leftBtn.draw(sprites)
-        rightBtn.draw(sprites)
+        upBtn.draw(sprites) // UP button
+        downBtn.draw(sprites) // DOWN button
+        leftBtn.draw(sprites) // LEFT button
+        rightBtn.draw(sprites) // RIGHT button
         bombBtn.draw(sprites)
 
-        // Lives display for player and NPC
-        LivesDisplay(sprites, PlayerSystem.getLives(),NPCSystem.getLives())
+        LivesDisplay(sprites, PlayerSystem.getLives(),NPCSystem.getLives()) // Lives
 
-        // Timer - must make it dynamic
-        var time = playController.getTime().toString()
+        var time = playController.getTime().toString() //Timer
         font.setColor(Color.BLACK)
         font.draw(sprites, time, GAME_HEIGHT * 0.4f,  GAME_HEIGHT * 0.92f)
 
@@ -151,15 +139,3 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     }
 }
-
-
-//for (i in 0 until 9) {
-//for (j in 0 until 9) {
-//if (i % 2 != 0 && j % 2 != 0){
-//sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
-//}
-//else (i=3){
-//sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
-//}
-//}
-//}

@@ -12,16 +12,13 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ObstacleSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PowerUpSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
-import com.mygdx.tdt4240.states.PlayState.View.PlayView
-import com.mygdx.tdt4240.utils.Constants
 import java.util.*
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
-import javax.swing.text.StyledEditorKit.BoldAction
-import kotlin.random.Random
 
 
 /* Game logic */
@@ -39,9 +36,6 @@ class Game (val world: World){
     val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
     val npc = NPCFactory.createNPC(world, 0, 0)
     val bomb = BombFactory.createBomb(world,0,0);
-
-
-
 
     fun init() {
         initBoard();
@@ -66,7 +60,7 @@ class Game (val world: World){
         }
         return board
     }
-/*
+
     fun drawBoard(arr: Array<Array<Entity?>>, world: World) {
         for (i in arr.indices) {
             for (j in arr[i].indices) {
@@ -81,20 +75,12 @@ class Game (val world: World){
             }
         }
     }
-
+/*
     fun drawPlayer(arr: Array<Array<Entity?>>,world: World, x: Int, y: Int) {
         arr[x][y] = PlayerFactory.createPlayer(world, x, y)
     }
-
-    private fun getPlayerCoordinate(arr: Array<Array<Entity?>>, component: String): Int {
-    fun initGame() {
-        initBoard();
-        bombCount = 0;
-        timer = true;
-
-    }
-
-    fun getPlayer(arr: Array<Array<Entity?>>, component: String): Int {
+ */
+    fun getPlayerCoordinate(arr: Array<Array<Entity?>>, component: String): Int {
         for (i in 0 until 9) {
             for (j in 0 until 9) {
                 if (arr[i][j]?.has(ScoreComponent) == true) { //Player
@@ -129,7 +115,6 @@ class Game (val world: World){
     fun moveNPC(arr: Array<Array<Entity?>>, direction: String) {
         var currentPosX = getNPCCoordinate(arr, "x")
         var currentPosY = getNPCCoordinate(arr, "y")
-
 
         moveObject(arr, direction, npc, currentPosX, currentPosY)
     }
@@ -191,24 +176,17 @@ class Game (val world: World){
             }, (2000))
         }
     }
- */
-
 
     fun powerUp(arr: Array<Array<Entity?>>, x:Int, y: Int) {
-        var currentPosX = getPlayer(arr, "x")
-        var currentPosY = getPlayer(arr, "y")
+        var currentPosX = getPlayerCoordinate(arr, "x")
+        var currentPosY = getPlayerCoordinate(arr, "y")
 
         var randomTypes = PowerupType.values().toList().shuffled()
         var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
 
         if(currentPosX == PowerUpSystem.getPosition().first && currentPosY == PowerUpSystem.getPosition().second) {
 
-
         }
-
-
-
-
       //fix
 
     }
@@ -218,7 +196,7 @@ fun main() {
     val world = world {}
     val b = Game(world)
     val g = b.board
-    b.initGame()
+    b.init()
 
     //b.drawBoard(g, world)
     //b.drawPlayer(g,world,1,1)

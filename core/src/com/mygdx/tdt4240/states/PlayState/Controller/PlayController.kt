@@ -15,6 +15,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
+import java.util.*
 
 class PlayController {
     private val world = world {
@@ -29,6 +30,7 @@ class PlayController {
     var uiBoard = Array(9) { arrayOfNulls<String>(9) }
     private var game = Game(world)
 
+    var score = 0
     var gameOver = false
     private var worldTimer: Int? = 300
     private var timeUp = false
@@ -64,18 +66,13 @@ class PlayController {
                     } else {
                         uiBoard[i][j] = "crate"
                     }
-                } else if (game.board[i][j]?.has(CharacterComponent) == true) {
-                    if (game.board[i][j]?.has(ScoreComponent) == true) {
-                }
-                else if(game.board[i][j]?.has(ObservableComponent) == true) {
+                } else if (game.board[i][j]?.has(ObservableComponent) == true) {
                     uiBoard[i][j] = "bomb"
-                }
-                    else if (game.board[i][j]?.has(CharacterComponent) == true) {
+                } else if (game.board[i][j]?.has(CharacterComponent) == true) {
                     if (game.board[i][j]?.has(ScoreComponent) == true) { //Player
                         uiBoard[i][j] = "player"
                         PlayerSystem.setPosition("x", i)
                         PlayerSystem.setPosition("y", j)
-
                     } else {
                         uiBoard[i][j] = "npc"
                         NPCSystem.setPosition("x", i)
@@ -89,66 +86,59 @@ class PlayController {
 
     fun updatePos(direction: String) {
 
-            if (direction == "RIGHT") {
-                PlayerSystem.setDirection(DirectionType.RIGHT)
-                game.movePlayer(game.board, "RIGHT")
-
-            }
-            if (direction == "LEFT") {
-                PlayerSystem.setDirection(DirectionType.LEFT)
-                game.movePlayer(game.board, "LEFT")
-            }
-            if (direction == "UP") {
-                PlayerSystem.setDirection(DirectionType.UP)
-                game.movePlayer(game.board, "UP")
-            }
-            if (direction == "DOWN") {
-                PlayerSystem.setDirection(DirectionType.DOWN)
-                game.movePlayer(game.board, "DOWN")
-
-            } else {
-                PlayerSystem.setDirection(DirectionType.NONE)
+        if (direction == "RIGHT") {
+            PlayerSystem.setDirection(DirectionType.RIGHT)
+            game.movePlayer(game.board, "RIGHT")
+        }
+        if (direction == "LEFT") {
+            PlayerSystem.setDirection(DirectionType.LEFT)
+            game.movePlayer(game.board, "LEFT")
+        }
+        if (direction == "UP") {
+            PlayerSystem.setDirection(DirectionType.UP)
+            game.movePlayer(game.board, "UP")
+        }
+        if (direction == "DOWN") {
+            PlayerSystem.setDirection(DirectionType.DOWN)
+            game.movePlayer(game.board, "DOWN")
+        } else {
+            PlayerSystem.setDirection(DirectionType.NONE)
         }
     }
 
     fun bombs(string: String) {
-        var x = game.getPlayer(game.board, "x")
-        var y = game.getPlayer(game.board, "y")
-        if(string == "FIRE") {
+        var x = game.getPlayerCoordinate(game.board, "x")
+        var y = game.getPlayerCoordinate(game.board, "y")
+        if (string == "FIRE") {
             game.placeBombs(game.board, x, y)
         }
-
     }
 
     fun booster(string: String, powerUp: PowerupType) {
-        var x = game.getPlayer(game.board, "x")
-        var y = game.getPlayer(game.board, "y")
+        var x = game.getPlayerCoordinate(game.board, "x")
+        var y = game.getPlayerCoordinate(game.board, "y")
 
         var boosterX = PowerUpSystem.getPosition().first
         var boosterY = PowerUpSystem.getPosition().second
 
-        if(x == boosterX && y == boosterY && powerUp == PowerupType.POINTS) {
+        if (x == boosterX && y == boosterY && powerUp == PowerupType.POINTS) {
             score++;
         }
 
-        if(x == boosterX && y == boosterY && powerUp == PowerupType.RANGE) { //fix
+        if (x == boosterX && y == boosterY && powerUp == PowerupType.RANGE) { //fix
             return
         }
-        if(x == boosterX && y == boosterY && powerUp == PowerupType.SPEED) {
+        if (x == boosterX && y == boosterY && powerUp == PowerupType.SPEED) {
             PlayerSystem.setspeed(PowerupType.SPEED.value + 5)
-
             Timer().schedule(object : TimerTask() {
                 override fun run() {
                     PlayerSystem.setspeed(5)
 
                 }
             }, 3000)
-
         }
-
     }
-
-
+}
     /*
     fun isGameOver(entity: Entity): Int {
         if(NPCSystem.getLives(entity) == 0) {
@@ -168,4 +158,3 @@ class PlayController {
         return score
     }
     */
-}

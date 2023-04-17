@@ -1,11 +1,8 @@
 package com.mygdx.tdt4240.states.PlayState.Model.logic
 
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
-import com.mygdx.tdt4240.sprites.Player
-import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
@@ -33,9 +30,9 @@ class Game (val world: World){
     private var firePressed = false;
 
     val board = Array(9) { arrayOfNulls<Entity>(9) }
-    val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
-    val npc = NPCFactory.createNPC(world, 0, 0)
-    val bomb = BombFactory.createBomb(world,0,0);
+    private val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
+    private val npc = NPCFactory.createNPC(world, 0, 0)
+    private val bomb = BombFactory.createBomb(world,0,0);
 
     fun init() {
         initBoard();
@@ -60,7 +57,7 @@ class Game (val world: World){
         }
         return board
     }
-
+/*
     fun drawBoard(arr: Array<Array<Entity?>>, world: World) {
         for (i in arr.indices) {
             for (j in arr[i].indices) {
@@ -74,10 +71,6 @@ class Game (val world: World){
                 }
             }
         }
-    }
-/*
-    fun drawPlayer(arr: Array<Array<Entity?>>,world: World, x: Int, y: Int) {
-        arr[x][y] = PlayerFactory.createPlayer(world, x, y)
     }
  */
     fun getPlayerCoordinate(arr: Array<Array<Entity?>>, component: String): Int {
@@ -195,11 +188,5 @@ class Game (val world: World){
 fun main() {
     val world = world {}
     val b = Game(world)
-    val g = b.board
     b.init()
-
-    //b.drawBoard(g, world)
-    //b.drawPlayer(g,world,1,1)
-
-    //print(b.initBoard(g));
 }

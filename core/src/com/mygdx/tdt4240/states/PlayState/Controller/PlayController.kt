@@ -7,8 +7,6 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponen
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObservableComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.FireFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.PlayerFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
@@ -32,8 +30,9 @@ class PlayController {
 
     var score = 0
     var gameOver = false
+    var gameWon = false
+    var timerOver = false
     private var worldTimer: Int? = 300
-    private var timeUp = false
     private var timeCount = 0f
 
     init {
@@ -46,7 +45,7 @@ class PlayController {
             if (worldTimer!! > 0) {
                 worldTimer = worldTimer!! - 1;
             } else {
-                timeUp = true;
+                timerOver = true;
             }
             timeCount = 0F;
         }
@@ -85,7 +84,6 @@ class PlayController {
     }
 
     fun updatePos(direction: String) {
-
         if (direction == "RIGHT") {
             PlayerSystem.setDirection(DirectionType.RIGHT)
             game.movePlayer(game.board, "RIGHT")
@@ -138,7 +136,19 @@ class PlayController {
             }, 3000)
         }
     }
+
+    fun isGameOver(): Boolean {
+        if (NPCSystem.getLives() == 0) {
+            gameWon = true;
+            score = PlayerSystem.getLives() * 250 // * tid igjen på timer
+            return true
+        } else if (timerOver) {
+            return true
+        }
+        return false
+    }
 }
+
     /*
     fun isGameOver(entity: Entity): Int {
         if(NPCSystem.getLives(entity) == 0) {

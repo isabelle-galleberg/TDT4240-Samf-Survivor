@@ -10,13 +10,22 @@ data class SpriteComponent(
     var y: Int = 0
 ) : Component<SpriteComponent> {
 
+    fun changePosition(position: Pair<Int,Int>) {
+        this@SpriteComponent.x = position.first
+        this@SpriteComponent.y = position.second
+
+    }
+
     fun changePositionX(x: Int) {
         this@SpriteComponent.x = x
+
     }
 
     fun changePositionY(y: Int) {
         this@SpriteComponent.y = y
+
     }
+
 
     override fun type() = SpriteComponent
 

@@ -127,10 +127,9 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                 }
             }
         }
-      //  Bomb().updatePosition(bomb, PlayerSystem.getPosition().first.toFloat(),PlayerSystem.getPosition().second.toFloat())
-        //bomb.draw(sprites)
 
-        Player().updatePosition(player, PlayerSystem.getPosition().first.toFloat(), PlayerSystem.getPosition().second.toFloat()) //Player
+        var playerPos = playController.getPlayerPosition()
+        Player().updatePosition(player, playerPos.first.toFloat(),playerPos.second.toFloat()) //Player
         player.draw(sprites)
 
         NPC().updatePosition(nPC, 8.toFloat(), 0.toFloat()) //NPC

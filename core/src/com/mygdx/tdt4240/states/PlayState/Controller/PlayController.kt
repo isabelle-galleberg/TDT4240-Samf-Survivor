@@ -85,20 +85,14 @@ class PlayController {
                         uiBoard[i][j] = "points"
                     }
 
-                }else if (game.board[i][j]?.has(CharacterComponent) == true) {
-                    if (game.board[i][j]?.has(PlayerComponent) == true) { //Player
-                        uiBoard[i][j] = "player"
-                        PlayerSystem.setPosition("x", i)
-                        PlayerSystem.setPosition("y", j)
-                    } else {
-                        uiBoard[i][j] = "npc"
-                        NPCSystem.setPosition("x", i)
-                        NPCSystem.setPosition("y", j)
-                    }
                 }
             }
         }
         return uiBoard
+    }
+
+    fun getPlayerPosition() : Pair<Int,Int> {
+        return PlayerSystem.getPosition()
     }
 
     fun updatePos(direction: String) {

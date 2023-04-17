@@ -36,12 +36,8 @@ object PlayerSystem : IteratingSystem(
         family.first()[CharacterComponent].changeSpeed(speed)
     }
 
-    fun setPosition(component: String, value: Int) {
-        if (component == "x") {
-            family.first()[SpriteComponent].changePositionX(value);
-        } else if (component == "y") {
-            family.first()[SpriteComponent].changePositionY(value);
-        }
+    fun setPosition(position: Pair<Int,Int>) {
+        family.first()[SpriteComponent].changePosition(position)
     }
 
     fun reduceLives() {

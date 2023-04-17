@@ -19,8 +19,8 @@ class Player {
     }
 
     fun updatePosition(player: Sprite, i: Float, j: Float) {
-        playerX = GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f
-        playerY = GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f
+        playerX = Constants.GAME_HEIGHT * 0.05f + Constants.GAME_WIDTH * 0.5f - Constants.GAME_HEIGHT * 0.5f + i * Constants.GAME_HEIGHT * 0.1f
+        playerY = Constants.GAME_HEIGHT * 0.05f + j * Constants.GAME_HEIGHT * 0.1f
 
         player.setPosition(playerX, playerY)
     }

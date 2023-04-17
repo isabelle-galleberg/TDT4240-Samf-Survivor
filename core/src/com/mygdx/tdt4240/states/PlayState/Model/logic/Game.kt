@@ -35,7 +35,7 @@ class Game (val world: World){
 
     private fun initBoard(): Array<Array<Entity?>> {
         //Player
-        board[0][8] = player
+        PlayerSystem.setPosition(Pair(0,8))
         //NPC
         board[8][0] = npc
 
@@ -60,31 +60,27 @@ class Game (val world: World){
             if (y-1 < 0 || board[x][y-1]?.has(ObstacleComponent) == true) {
                 return
             }
-            board[x][y] = null
-            board[x][y-1] = player
+            PlayerSystem.setPosition(Pair(x,y-1))
 
         } else if (direction == DirectionType.UP) {
             if (y+1 > 8 || board[x][y+1]?.has(ObstacleComponent) == true) {
                 return
 
             }
-            board[x][y] = null
-            board[x][y+1] = player
+            PlayerSystem.setPosition(Pair(x, y+1))
 
         } else if (direction == DirectionType.RIGHT) {
             if (x+1 > 8 || board[x+1][y]?.has(ObstacleComponent) == true) {
                 return
             }
-            board[x][y] = null
-            board[x+1][y] = player
+            PlayerSystem.setPosition(Pair(x+1,y))
 
         } else if (direction == DirectionType.LEFT) {
 
             if (x-1 < 0 || board[x-1][y]?.has(ObstacleComponent) == true) {
                 return
             }
-            board[x][y] = null
-            board[x-1][y] = player
+            PlayerSystem.setPosition(Pair(x-1,y))
         }
 
     }

@@ -34,6 +34,7 @@ import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
+import java.util.*
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
@@ -116,6 +117,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         }
       //  Bomb().updatePosition(bomb, PlayerSystem.getPosition().first.toFloat(),PlayerSystem.getPosition().second.toFloat())
         //bomb.draw(sprites)
+
+
 
         //Player and NPC
         Player().updatePosition(player, PlayerSystem.getPosition().first.toFloat(), PlayerSystem.getPosition().second.toFloat())

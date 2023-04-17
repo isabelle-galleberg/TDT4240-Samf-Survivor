@@ -8,7 +8,6 @@ data class CharacterComponent(
     var direction:DirectionType = DirectionType.DOWN,
     var speed:Int = 5,
     var lives:Int = 3,
-    var fireLength:Int = 3
 ) : Component<CharacterComponent> {
 
     override fun type() = CharacterComponent

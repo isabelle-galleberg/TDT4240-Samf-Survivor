@@ -84,7 +84,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         }
         else if(BombBtn().bombBtnPressed()) {
             println("BOMB")
-            playController.bombs();
+            playController.bomb();
 
         }
     }

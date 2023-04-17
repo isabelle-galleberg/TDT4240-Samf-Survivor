@@ -10,7 +10,7 @@ object PlayerFactory {
         val entity: Entity = world.entity {
             it += SpriteComponent(x, y)
             it += CharacterComponent()
-            it += ScoreComponent()
+            it += PlayerComponent()
         }
         return entity
     }

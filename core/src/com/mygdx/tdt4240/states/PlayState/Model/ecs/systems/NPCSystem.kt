@@ -5,7 +5,7 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.PlayerComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import kotlin.math.abs
@@ -13,7 +13,7 @@ import kotlin.random.Random
 
 /* System for the NPC*/
 object NPCSystem : IteratingSystem(
-    World.family { all(CharacterComponent).none(ScoreComponent)}
+    World.family { all(CharacterComponent).none(PlayerComponent)}
 ) {
 
     fun setDirection(entity: Entity,direction: DirectionType) {

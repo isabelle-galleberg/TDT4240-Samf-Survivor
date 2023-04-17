@@ -4,10 +4,7 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.world
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.BombFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
@@ -16,7 +13,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 /* System for the player and NPC*/
 object PlayerSystem : IteratingSystem(
-    family { all(ScoreComponent) }
+    family { all(PlayerComponent) }
 ) {
     private var isHit = false;
 
@@ -52,12 +49,17 @@ object PlayerSystem : IteratingSystem(
     }
 
     fun getScore():Int {
-        return family.first()[ScoreComponent].score
+        return family.first()[PlayerComponent].score
+
+    }
+
+    fun getFireLength():Int {
+        return family.first()[PlayerComponent].fireLength
 
     }
 
     fun setScore(score: Int) {
-        family.first()[ScoreComponent].changeScore(score)
+        family.first()[PlayerComponent].changeScore(score)
     }
 
     override fun onTickEntity(entity: Entity) {

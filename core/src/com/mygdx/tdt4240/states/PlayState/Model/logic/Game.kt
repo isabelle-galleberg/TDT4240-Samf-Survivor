@@ -8,7 +8,7 @@ import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.PlayerComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
@@ -32,7 +32,7 @@ class Game (val world: World){
 
     private var firePressed = false;
 
-    val board = Array(9) { arrayOfNulls<Entity>(9) }
+    var board = Array(9) { arrayOfNulls<Entity>(9) }
     val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
     val npc = NPCFactory.createNPC(world, 0, 0)
     val bomb = BombFactory.createBomb(world,0,0);
@@ -83,7 +83,7 @@ class Game (val world: World){
     fun getPlayerCoordinate(arr: Array<Array<Entity?>>, component: String): Int {
         for (i in 0 until 9) {
             for (j in 0 until 9) {
-                if (arr[i][j]?.has(ScoreComponent) == true) { //Player
+                if (arr[i][j]?.has(PlayerComponent) == true) { //Player
                     if (component == "x") {
                         return i
                     } else if (component == "y") {
@@ -99,7 +99,7 @@ class Game (val world: World){
         for (i in 0 until 9) {
             for (j in 0 until 9) {
                 if (arr[i][j]?.has(CharacterComponent) == true) {
-                    if (arr[i][j]?.has(ScoreComponent) == false) { //NPC
+                    if (arr[i][j]?.has(PlayerComponent) == false) { //NPC
                         if (component == "x") {
                             return i
                         } else if (component == "y") {
@@ -160,28 +160,57 @@ class Game (val world: World){
     }
 
 
-    fun placeBombs(arr: Array<Array<Entity?>>, x:Int, y: Int) {
-        if( !ObstacleSystem.getPositions().contains(Pair(x,y))) {
-            println("yoyo")
-            arr[x][y] = bomb
-            Timer().schedule(object : TimerTask() {
-                override fun run() {
-                    arr[x][y] = null
-                }
-            }, (2000))
+    fun placeBomb() {
+        var x = PlayerSystem.getPosition().first
+        var y = PlayerSystem.getPosition().second
+        board[x][y] = EntityFactory.createBomb(world,x,y)
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                board[x][y] = null
+                fire(x,y)
+            } }, (2000))
         }
+
+    fun fire(x: Int, y:Int) {
+        var fireLength = PlayerSystem.getFireLength()
+        var fireCoordinates = arrayOfNulls<Pair<Int,Int>>(fireLength*4)
+        board[x][y] = EntityFactory.createFire(world,x,y)
+        var stop = false
+        //fix fire when crate is threr
+        while(!stop) {
+            for (i in 1 until PlayerSystem.getFireLength()) {
+                if (ObstacleSystem.getPositions().contains(Pair(x+i,y))) {
+                    break
+                }
+                board[x+i][y] = EntityFactory.createFire(world,x+i,y)
+            }
+        }
+        for (i in 1 until PlayerSystem.getFireLength()) {
+            if (!ObstacleSystem.getPositions().contains(Pair(x+i,y))) {
+                board[x+i][y] = EntityFactory.createFire(world,x+i,y)
+            }
+            if (!ObstacleSystem.getPositions().contains(Pair(x,y+i))) {
+                board[x][y+i] = EntityFactory.createFire(world,x+i,y+i)
+            }
+
+        }
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                board[x][y] = null
+            } }, (2000))
+
     }
 
     fun powerUp(arr: Array<Array<Entity?>>, x:Int, y: Int) {
-        var currentPosX = getPlayerCoordinate(arr, "x")
-        var currentPosY = getPlayerCoordinate(arr, "y")
+        //var currentPosX = getPlayerCoordinate(arr, "x")
+        //var currentPosY = getPlayerCoordinate(arr, "y")
 
         var randomTypes = PowerupType.values().toList().shuffled()
         var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
 
-        if(currentPosX == PowerUpSystem.getPosition().first && currentPosY == PowerUpSystem.getPosition().second) {
+        //if(currentPosX == PowerUpSystem.getPosition().first && currentPosY == PowerUpSystem.getPosition().second) {
 
-        }
+        //}
       //fix
 
     }

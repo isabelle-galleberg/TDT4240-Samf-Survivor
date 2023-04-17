@@ -10,6 +10,8 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import java.util.*
 import kotlin.random.Random
 
@@ -18,8 +20,8 @@ import kotlin.random.Random
 class Game (val world: World){
 
     val board = Array(9) { arrayOfNulls<Entity>(9) }
-    //private val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
-    //private val npc = NPCFactory.createNPC(world, 0, 0)
+    private val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
+    private val npc = NPCFactory.createNPC(world, 0, 0)
 
     private var game = false
 
@@ -82,7 +84,7 @@ class Game (val world: World){
             override fun run() {
                 board[x][y] = null
                 fire(x,y)
-            } }, (1000))
+            } }, (2000))
     }
 
     fun fire(x: Int, y:Int) {

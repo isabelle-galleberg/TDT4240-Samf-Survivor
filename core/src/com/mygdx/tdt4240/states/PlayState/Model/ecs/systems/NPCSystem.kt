@@ -7,7 +7,6 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import kotlin.math.abs
 import kotlin.random.Random
@@ -18,18 +17,30 @@ object NPCSystem : IteratingSystem(
 ) {
 
     fun setDirection(entity: Entity,direction: DirectionType) {
-        entity.get(CharacterComponent).changeDirection(direction)
+        entity[CharacterComponent].changeDirection(direction)
+    }
+
+    fun getPosition():Pair<Int,Int> {
+        return Pair(family.first()[SpriteComponent].x, family.first()[SpriteComponent].y)
     }
 
     fun getPosition(entity: Entity):Pair<Int,Int> {
-        return Pair(entity.get(SpriteComponent).x, entity.get(SpriteComponent).y)
+        return Pair(entity[SpriteComponent].x, entity[SpriteComponent].y)
+    }
+
+    fun setPosition(component: String, value: Int) {
+        if (component == "x") {
+            family.first()[SpriteComponent].changePositionX(value);
+        } else if (component == "y") {
+            family.first()[SpriteComponent].changePositionY(value);
+        }
     }
 
     fun getDirection(entity: Entity): DirectionType {
-        return entity.get(CharacterComponent).direction
+        return entity[CharacterComponent].direction
     }
-    fun getLives(entity: Entity): Int {
-        return entity.get(CharacterComponent).lives
+    fun getLives(): Int {
+        return family.first()[CharacterComponent].lives
     }
 
     fun avoidBomb(bombPos: Pair<Int, Int>) {
@@ -50,15 +61,13 @@ object NPCSystem : IteratingSystem(
                 }
                 NPCBehavior.avoidCollision(e)
             }
-
         }
     }
 
     fun getRandomNPC() : Entity {
         var randIndex = Random.nextInt(0,family.numEntities)
-        return family.entities.get(randIndex)
+        return family.entities[randIndex]
     }
-
 
     override fun onTickEntity(entity: Entity) {
         TODO("Not yet implemented")

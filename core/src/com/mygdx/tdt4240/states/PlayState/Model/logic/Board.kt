@@ -11,7 +11,7 @@ class Board  {
 
     val grid = Array(9) { arrayOfNulls<Entity>(9) }
 
-    fun initBoard(arr: Array<Array<Entity?>>) {
+    private fun initBoard(arr: Array<Array<Entity?>>) {
         for (i in arr.indices) {
             for (j in arr[i].indices) {
                 print("${arr[i][j]} ")
@@ -23,18 +23,12 @@ class Board  {
     fun drawBoard(arr: Array<Array<Entity?>>, world: World) {
         for (i in arr.indices) {
             for (j in arr[i].indices) {
-
-                //Walls
                 if (i == 0 || j == 0 || i == arr.size -1 || j == arr[i].size -1) {
-                    arr[i][j] = WallFactory.createWall(world, i,j)
-
-
+                    arr[i][j] = WallFactory.createWall(world, i,j)  //Walls
                 }
-
-                //Crates
                 else
                      {
-                    arr[i][j] = CrateFactory.createCrate(world, i,j)
+                    arr[i][j] = CrateFactory.createCrate(world, i,j) //Crates
                 }
             }
         }
@@ -43,7 +37,6 @@ class Board  {
         arr[7][7] = PlayerFactory.createPlayer(world, 7,7)
 
         initBoard(arr)
-
     }
 
 }
@@ -53,7 +46,5 @@ fun main() {
     val world = world {}
 
     print(b.drawBoard(g, world))
-
-
 }
 

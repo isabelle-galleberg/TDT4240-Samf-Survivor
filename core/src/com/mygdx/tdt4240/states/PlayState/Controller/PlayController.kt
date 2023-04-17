@@ -1,6 +1,5 @@
 package com.mygdx.tdt4240.states.PlayState.Controller
 
-import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
@@ -10,8 +9,6 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
-import com.mygdx.tdt4240.utils.Constants
-import java.util.*
 
 class PlayController {
     private val world = world {
@@ -25,14 +22,30 @@ class PlayController {
     }
     var uiBoard = Array(9) { arrayOfNulls<String>(9) }
     private var game = Game(world)
-    private var gameOver = false;
-    private var gameWon = false;
-    private var score = 0
-    private var timer = false;
-    private var lives = 3;
+
+    var gameOver = false
+    private var worldTimer: Int? = 300
+    private var timeUp = false
+    private var timeCount = 0f
 
     init {
-        game.initBoard()
+        game.init()
+    }
+
+    fun updateTime(dt: Float) {
+        timeCount += dt;
+        if (timeCount >= 1) {
+            if (worldTimer!! > 0) {
+                worldTimer = worldTimer!! - 1;
+            } else {
+                timeUp = true;
+            }
+            timeCount = 0F;
+        }
+    }
+
+    fun getTime(): Int? {
+        return worldTimer
     }
 
     fun drawBoard(): Array<Array<String?>> {
@@ -45,18 +58,21 @@ class PlayController {
                         uiBoard[i][j] = "crate"
                     }
                 } else if (game.board[i][j]?.has(CharacterComponent) == true) {
-                    if (game.board[i][j]?.has(ScoreComponent) == true) { //Player
+                    if (game.board[i][j]?.has(ScoreComponent) == true) {
                         uiBoard[i][j] = "player"
+                        PlayerSystem.setPosition("x", i)
+                        PlayerSystem.setPosition("y", j)
+
                     } else {
                         uiBoard[i][j] = "npc"
+                        NPCSystem.setPosition("x", i)
+                        NPCSystem.setPosition("y", j)
                     }
                 }
             }
         }
         return uiBoard
     }
-
-    //!ObstacleSystem.getPositions().contains(Pair(playerPosition.first, playerPosition.second - 1)*/
 
     fun updatePos(direction: String) {
 
@@ -82,6 +98,7 @@ class PlayController {
         }
     }
 
+    /*
     fun isGameOver(entity: Entity): Int {
         if(NPCSystem.getLives(entity) == 0) {
             gameWon = true;
@@ -99,4 +116,5 @@ class PlayController {
         }
         return score
     }
+    */
 }

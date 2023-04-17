@@ -1,27 +1,24 @@
 package com.mygdx.tdt4240.states.PlayState.Model.logic
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ObstacleSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PowerUpSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
-import com.mygdx.tdt4240.states.PlayState.View.PlayView
-import com.mygdx.tdt4240.utils.Constants
 import java.util.*
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
-import javax.swing.text.StyledEditorKit.BoldAction
-import kotlin.random.Random
 
 
 /* Game logic */
@@ -40,38 +37,28 @@ class Game (val world: World){
     val npc = NPCFactory.createNPC(world, 0, 0)
     val bomb = BombFactory.createBomb(world,0,0);
 
+    fun init() {
+        initBoard();
+        bombCount = 0;
+    }
 
-
-
-    fun initBoard(): Array<Array<Entity?>> {
+    private fun initBoard(): Array<Array<Entity?>> {
         //Player
         board[0][8] = player
         //NPC
-        board[0][0] = npc
+        board[8][0] = npc
 
         for (i in board.indices) {
             for (j in board[i].indices) {
                 //Walls
                 if (i % 2 != 0 && j % 2 != 0){
                     board[i][j] = WallFactory.createWall(world, i, j)
-                }
-                //Crates
-                //TO DO where crates??
-                else if (i == 3) {
+                } else if (i == 3) {
                     board[i][j] = CrateFactory.createCrate(world, i, j)
                 }
             }
         }
         return board
-    }
-
-    fun initBoard(arr: Array<Array<Entity?>>) {
-        for (i in arr.indices) {
-            for (j in arr[i].indices) {
-                print("${arr[i][j]} ")
-            }
-            println()
-        }
     }
 
     fun drawBoard(arr: Array<Array<Entity?>>, world: World) {
@@ -88,19 +75,12 @@ class Game (val world: World){
             }
         }
     }
-
+/*
     fun drawPlayer(arr: Array<Array<Entity?>>,world: World, x: Int, y: Int) {
         arr[x][y] = PlayerFactory.createPlayer(world, x, y)
     }
-
-    fun initGame() {
-        initBoard();
-        bombCount = 0;
-        timer = true;
-
-    }
-
-    fun getPlayer(arr: Array<Array<Entity?>>, component: String): Int {
+ */
+    fun getPlayerCoordinate(arr: Array<Array<Entity?>>, component: String): Int {
         for (i in 0 until 9) {
             for (j in 0 until 9) {
                 if (arr[i][j]?.has(ScoreComponent) == true) { //Player
@@ -115,50 +95,74 @@ class Game (val world: World){
         return 0
     }
 
-    fun movePlayer(arr: Array<Array<Entity?>>, direction: String) {
-        var currentPosX = getPlayer(arr, "x")
-        var currentPosY = getPlayer(arr, "y")
+    private fun getNPCCoordinate(arr: Array<Array<Entity?>>, component: String): Int {
+        for (i in 0 until 9) {
+            for (j in 0 until 9) {
+                if (arr[i][j]?.has(CharacterComponent) == true) {
+                    if (arr[i][j]?.has(ScoreComponent) == false) { //NPC
+                        if (component == "x") {
+                            return i
+                        } else if (component == "y") {
+                            return j
+                        }
+                    }
+                }
+            }
+        }
+        return 0
+    }
 
+    fun moveNPC(arr: Array<Array<Entity?>>, direction: String) {
+        var currentPosX = getNPCCoordinate(arr, "x")
+        var currentPosY = getNPCCoordinate(arr, "y")
+
+        moveObject(arr, direction, npc, currentPosX, currentPosY)
+    }
+
+    fun movePlayer(arr: Array<Array<Entity?>>, direction: String) {
+        var currentPosX = getPlayerCoordinate(arr, "x")
+        var currentPosY = getPlayerCoordinate(arr, "y")
+
+        moveObject(arr, direction, player, currentPosX, currentPosY)
+    }
+
+    private fun moveObject(arr: Array<Array<Entity?>>, direction: String, character: Entity?, x: Int, y: Int) {
         if (direction == "DOWN") {
-            if (currentPosY-1 < 0 ) {
+            if (y-1 < 0 || arr[x][y-1]?.has(ObstacleComponent) == true) {
                 return
             }
-            arr[currentPosX][currentPosY] = null
-            arr[currentPosX][currentPosY-1] = player
+            arr[x][y] = null
+            arr[x][y-1] = character
 
         } else if (direction == "UP") {
-            if (currentPosY+1 > 8) {
+            if (y+1 > 8 || arr[x][y+1]?.has(ObstacleComponent) == true) {
                 return
+
             }
-            arr[currentPosX][currentPosY] = null
-            arr[currentPosX][currentPosY+1] = player
+            arr[x][y] = null
+            arr[x][y+1] = character
 
         } else if (direction == "RIGHT") {
-            if (currentPosX+1 > 8) {
+            if (x+1 > 8 || arr[x+1][y]?.has(ObstacleComponent) == true) {
                 return
             }
-            arr[currentPosX][currentPosY] = null
-            arr[currentPosX+1][currentPosY] = player
+            arr[x][y] = null
+            arr[x+1][y] = character
 
         } else if (direction == "LEFT") {
 
-            if (currentPosX-1 < 0) {
+            if (x-1 < 0 || arr[x-1][y]?.has(ObstacleComponent) == true) {
                 return
             }
-            arr[currentPosX][currentPosY] = null
-            arr[currentPosX-1][currentPosY] = player
+            arr[x][y] = null
+            arr[x-1][y] = character
         }
     }
 
-     fun getBombs(): Int {
-        if(PlayerSystem.getPosition() == BombSystem.getPosition()) {
-            bombCount += 1;
-        }
-        return bombCount;
-    }
 
     fun placeBombs(arr: Array<Array<Entity?>>, x:Int, y: Int) {
-        if(!ObstacleSystem.getPositions().contains(Pair(x,y))) {
+        if( !ObstacleSystem.getPositions().contains(Pair(x,y))) {
+            println("yoyo")
             arr[x][y] = bomb
             Timer().schedule(object : TimerTask() {
                 override fun run() {
@@ -168,29 +172,26 @@ class Game (val world: World){
         }
     }
 
-
     fun powerUp(arr: Array<Array<Entity?>>, x:Int, y: Int) {
-        var currentPosX = getPlayer(arr, "x")
-        var currentPosY = getPlayer(arr, "y")
+        var currentPosX = getPlayerCoordinate(arr, "x")
+        var currentPosY = getPlayerCoordinate(arr, "y")
 
         var randomTypes = PowerupType.values().toList().shuffled()
         var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
 
         if(currentPosX == PowerUpSystem.getPosition().first && currentPosY == PowerUpSystem.getPosition().second) {
 
-
         }
-
-
       //fix
 
     }
 }
+
 fun main() {
     val world = world {}
     val b = Game(world)
     val g = b.board
-    b.initGame()
+    b.init()
 
     //b.drawBoard(g, world)
     //b.drawPlayer(g,world,1,1)

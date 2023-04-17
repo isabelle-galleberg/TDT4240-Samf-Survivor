@@ -1,7 +1,5 @@
 package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
@@ -37,17 +35,18 @@ object PlayerSystem : IteratingSystem(
     fun getLives(): Int {
         return family.first()[CharacterComponent].lives
     }
-
     fun setspeed(speed: Int) {
         family.first()[CharacterComponent].changeSpeed(speed)
     }
 
-    fun setPositionX(x:Int) {
-        family.first()[SpriteComponent].changePositionX(x);
+    fun setPosition(component: String, value: Int) {
+        if (component == "x") {
+            family.first()[SpriteComponent].changePositionX(value);
+        } else if (component == "y") {
+            family.first()[SpriteComponent].changePositionY(value);
+        }
     }
-    fun setPositionY(y:Int) {
-        family.first()[SpriteComponent].changePositionY(y);
-    }
+
     fun reduceLives() {
         family.first()[CharacterComponent].reduceLives()
     }

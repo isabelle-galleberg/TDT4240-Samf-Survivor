@@ -7,20 +7,22 @@ import java.util.*
 
 class Bomb {
     private val bombSize = Constants.GAME_HEIGHT * 0.1f
-    private val bombX = Constants.GAME_WIDTH * 0.5f + Constants.GAME_HEIGHT * 0.35f
-    private val bombY = Constants.GAME_HEIGHT * 0.05f
+    private var bombX = Constants.GAME_WIDTH * 0.5f + Constants.GAME_HEIGHT * 0.35f
+    private var bombY = Constants.GAME_HEIGHT * 0.05f
 
     fun createBomb(): Sprite {
         val sprite = Sprite(Texture("gameView/bomb.png"))
         sprite.setSize(bombSize, bombSize)
         sprite.setPosition(bombX, bombY)
-        Timer().schedule(object : TimerTask() {
-            override fun run() {
-
-            }
-        }, (2000))
 
         return sprite
+    }
+
+    fun updatePosition(bomb: Sprite, i: Float, j: Float) {
+        bombX = Constants.GAME_HEIGHT * 0.05f + Constants.GAME_WIDTH * 0.5f - Constants.GAME_HEIGHT * 0.5f + i * Constants.GAME_HEIGHT * 0.1f
+        bombY = Constants.GAME_HEIGHT * 0.05f + j * Constants.GAME_HEIGHT * 0.1f
+
+        bomb.setPosition(bombX, bombY)
     }
 
 

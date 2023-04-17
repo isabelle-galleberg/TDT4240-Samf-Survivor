@@ -17,6 +17,7 @@ import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants
+import com.mygdx.tdt4240.utils.Globals
 
 class PauseState(
     stateManager: StateManager, private val api: API
@@ -32,19 +33,26 @@ class PauseState(
     private var label = Label("You have paused the game.", skin).apply {
         color = Color.BLACK
         setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
-        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.55f)
+        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.60f)
     }
+
 
     private val playBtn = TextButton("CONTINUE GAME", skin).apply {
         color = Color.RED
         setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
-        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.35f)
+        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.45f)
+    }
+
+    private val soundBtn = TextButton("TURN SOUND OFF", skin).apply {
+        color = Color.FIREBRICK
+        setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
+        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.25f)
     }
 
     private val mainMenuBtn = TextButton("QUIT GAME", skin).apply {
         color = Color.FIREBRICK
         setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
-        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.15f)
+        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.05f)
     }
 
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
@@ -54,13 +62,19 @@ class PauseState(
 
         label.setAlignment(Align.center)
 
+        if(!Globals.soundOn){
+            soundBtn.setText("TURN SOUND ON")
+        }
+
         stage.addActor(label)
 
         stage.addActor(playBtn)
+        stage.addActor(soundBtn)
         stage.addActor(mainMenuBtn)
 
         handleClick(playBtn, PlayView(stateManager, api))
         handleClick(mainMenuBtn, MainMenuState(stateManager, api))
+        handleSoundClick(soundBtn)
     }
 
     override fun update(deltaTime: Float) {
@@ -72,6 +86,19 @@ class PauseState(
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 stateManager.push(state)
                 Gdx.input.inputProcessor = null
+            }
+        })
+    }
+
+    private fun handleSoundClick(button: TextButton){
+        button.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Globals.soundOn = !Globals.soundOn
+                if(Globals.soundOn){
+                    soundBtn.setText("TURN SOUND OFF")
+                } else {
+                    soundBtn.setText("TURN SOUND ON")
+                }
             }
         })
     }

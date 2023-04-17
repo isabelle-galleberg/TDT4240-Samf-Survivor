@@ -3,11 +3,7 @@ package com.mygdx.tdt4240.states.PlayState.Controller
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObservableComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.PlayerComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
 
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.FireFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.PlayerFactory
@@ -60,6 +56,7 @@ class PlayController {
     }
 
     fun drawBoard(): Array<Array<String?>> {
+        uiBoard = Array(9){ arrayOfNulls<String>(9) }
         for (i in 0 until 9) {
             for (j in 0 until 9) {
 
@@ -76,6 +73,18 @@ class PlayController {
                     if (game.board[i][j]?.get(LifetimeComponent)?.fire == true) {
                         uiBoard[i][j] = "fire"
                     }
+
+                }else if (game.board[i][j]?.has(BoostComponent) == true) {
+                    if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.SPEED) {
+                        uiBoard[i][j] = "speed"
+                    }
+                    else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.RANGE) {
+                        uiBoard[i][j] = "range"
+                    }
+                    else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.POINTS) {
+                        uiBoard[i][j] = "points"
+                    }
+
                 }else if (game.board[i][j]?.has(CharacterComponent) == true) {
                     if (game.board[i][j]?.has(PlayerComponent) == true) { //Player
                         uiBoard[i][j] = "player"
@@ -117,6 +126,8 @@ class PlayController {
         game.placeBomb()
     }
 
+
+
     fun booster(string: String, powerUp: PowerupType) {
         var x = PlayerSystem.getPosition().first
         var y = PlayerSystem.getPosition().second
@@ -143,6 +154,7 @@ class PlayController {
     }
 
     fun isGameOver(): Boolean {
+
         if (NPCSystem.getLives() == 0) {
             gameWon = true;
             score = PlayerSystem.getLives() * 250 // * tid igjen på timer

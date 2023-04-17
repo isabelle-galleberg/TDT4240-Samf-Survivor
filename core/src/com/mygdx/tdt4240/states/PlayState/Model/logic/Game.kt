@@ -16,6 +16,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import java.util.*
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
+import kotlin.random.Random
 
 
 /* Game logic */
@@ -25,8 +26,11 @@ class Game (val world: World){
     private val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
     private val npc = NPCFactory.createNPC(world, 0, 0)
 
+    private var game = false
+
     fun init() {
         initBoard()
+        game=true
     }
 
     private fun initBoard(): Array<Array<Entity?>> {
@@ -170,17 +174,23 @@ class Game (val world: World){
 
     }
 
-    fun powerUp(arr: Array<Array<Entity?>>, x:Int, y: Int) {
-        //var currentPosX = getPlayerCoordinate(arr, "x")
-        //var currentPosY = getPlayerCoordinate(arr, "y")
+    fun powerUp() {
+        while(game) {
+            var x = Random.nextInt(0,9);
+            var y = Random.nextInt(0,9);
 
-        var randomTypes = PowerupType.values().toList().shuffled()
-        var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
+            var randomTypes = PowerupType.values().toList().shuffled()
 
-        //if(currentPosX == PowerUpSystem.getPosition().first && currentPosY == PowerUpSystem.getPosition().second) {
+            if(board[x][y]?.has(ObstacleComponent) == false) {
+                Timer().schedule(object : TimerTask() {
+                    override fun run() {
+                        EntityFactory.createPowerup(world, x, y, randomTypes.first())
+                    }
+                }, Random.nextLong(2000,10000))
 
-        //}
-        //fix
+            }
+
+        }
 
     }
 }

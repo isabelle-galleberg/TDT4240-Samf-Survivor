@@ -7,6 +7,8 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponen
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObservableComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.PlayerComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
+
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.FireFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.PlayerFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
@@ -69,7 +71,11 @@ class PlayController {
                     }
                 } else if (game.board[i][j]?.has(ObservableComponent) == true) {
                     uiBoard[i][j] = "bomb"
-                } else if (game.board[i][j]?.has(CharacterComponent) == true) {
+
+                }else if (game.board[i][j]?.get(LifetimeComponent)?.fire == true) {
+                    uiBoard[i][j] = "fire"
+
+                }else if (game.board[i][j]?.has(CharacterComponent) == true) {
                     if (game.board[i][j]?.has(PlayerComponent) == true) { //Player
                         uiBoard[i][j] = "player"
                         PlayerSystem.setPosition("x", i)

@@ -22,6 +22,7 @@ import com.mygdx.tdt4240.sprites.LivesDisplay
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.sprites.Bomb
+import com.mygdx.tdt4240.sprites.Fire
 import com.mygdx.tdt4240.states.MainMenuState
 import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
@@ -44,6 +45,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
     private val bomb = Bomb().createBomb()
+    private val fire = Fire().createFire()
 
 
     private val boardImg = Texture("gameView/board.png")
@@ -79,6 +81,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         else if(BombBtn().bombBtnPressed()) {
             println("BOMB")
             playController.bomb();
+            //fix, lag timer og bruk fire
+
 
         }
     }
@@ -104,6 +108,10 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                    bomb.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
                     bomb.draw(sprites)
                 }
+             //   else if (uiBoard[i][j].equals("fire")) {
+               //     fire.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
+                 //   fire.draw(sprites)
+            //    }
                 else if (uiBoard[i][j].equals("crate")) {
                     sprites.draw(crateImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
 

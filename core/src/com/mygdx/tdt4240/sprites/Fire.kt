@@ -12,7 +12,7 @@ class Fire {
     private var fireY = Constants.GAME_HEIGHT * 0.05f
 
     fun createFire(): Sprite {
-        var sprite = Sprite(Texture("gameView/star.png"))
+        var sprite = Sprite(Texture("gameView/fire.png"))
         sprite.setSize(fireSize, fireSize)
         sprite.setPosition(fireX, fireY)
         return sprite

@@ -36,7 +36,10 @@ In `core/src/com/mygdx/tdt4240`:
 3. Find the compiled .apk file in TDT4240-SAMF-SURVIVOR\android\build\outputs\apk\debug
 
 **Run .apk**
-1. Må prøves ut 
+1. Download the .apk file on your Android phone
+2. Install the application
+3. In settings, enable the "Storage" permission to allow the web browser to save files to your deivce or the "Install unknown apps"
+4. Open the application on your phone
 
 ### In Android Studio
 1. Create an Android emulator with an Android device

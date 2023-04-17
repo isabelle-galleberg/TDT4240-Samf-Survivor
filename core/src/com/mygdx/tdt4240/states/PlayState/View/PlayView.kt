@@ -78,7 +78,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         }
         else if(BombBtn().bombBtnPressed()) {
             println("BOMB")
-            playController.bombs("FIRE");
+            playController.bomb();
 
         }
     }
@@ -101,7 +101,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                 if (uiBoard[i][j].equals("wall")) {
                     sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
                 } else if (uiBoard[i][j].equals("bomb")) {
-                    bomb.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
+                   bomb.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
                     bomb.draw(sprites)
                 }
                 else if (uiBoard[i][j].equals("crate")) {
@@ -110,6 +110,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                 }
             }
         }
+      //  Bomb().updatePosition(bomb, PlayerSystem.getPosition().first.toFloat(),PlayerSystem.getPosition().second.toFloat())
+        //bomb.draw(sprites)
 
         Player().updatePosition(player, PlayerSystem.getPosition().first.toFloat(), PlayerSystem.getPosition().second.toFloat()) //Player
         player.draw(sprites)
@@ -121,6 +123,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         downBtn.draw(sprites) // DOWN button
         leftBtn.draw(sprites) // LEFT button
         rightBtn.draw(sprites) // RIGHT button
+        bombBtn.draw(sprites)
 
         LivesDisplay(sprites, PlayerSystem.getLives(),NPCSystem.getLives()) // Lives
 

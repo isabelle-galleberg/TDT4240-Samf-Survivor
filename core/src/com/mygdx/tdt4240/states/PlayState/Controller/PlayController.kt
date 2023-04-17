@@ -6,7 +6,9 @@ import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObservableComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.PlayerComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.FireFactory
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.PlayerFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
@@ -68,7 +70,7 @@ class PlayController {
                 } else if (game.board[i][j]?.has(ObservableComponent) == true) {
                     uiBoard[i][j] = "bomb"
                 } else if (game.board[i][j]?.has(CharacterComponent) == true) {
-                    if (game.board[i][j]?.has(ScoreComponent) == true) { //Player
+                    if (game.board[i][j]?.has(PlayerComponent) == true) { //Player
                         uiBoard[i][j] = "player"
                         PlayerSystem.setPosition("x", i)
                         PlayerSystem.setPosition("y", j)
@@ -104,12 +106,8 @@ class PlayController {
         }
     }
 
-    fun bombs(string: String) {
-        var x = game.getPlayerCoordinate(game.board, "x")
-        var y = game.getPlayerCoordinate(game.board, "y")
-        if (string == "FIRE") {
-            game.placeBombs(game.board, x, y)
-        }
+    fun bomb() {
+        game.placeBomb()
     }
 
     fun booster(string: String, powerUp: PowerupType) {
@@ -148,23 +146,3 @@ class PlayController {
         return false
     }
 }
-
-    /*
-    fun isGameOver(entity: Entity): Int {
-        if(NPCSystem.getLives(entity) == 0) {
-            gameWon = true;
-            score = PlayerSystem.getLives() * 250 // * tid igjen på timer
-        }
-        Timer().schedule(object : TimerTask() {
-            override fun run() {
-
-            }
-        }, 2000)
-        if(true) {
-            gameOver = true;
-            score = 0;
-
-        }
-        return score
-    }
-    */

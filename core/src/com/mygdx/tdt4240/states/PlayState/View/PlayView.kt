@@ -85,7 +85,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         }
         else if(BombBtn().bombBtnPressed()) {
             println("BOMB")
-            playController.bombs("FIRE");
+            playController.bombs();
 
         }
         //uiBoard = playController.drawBoard()
@@ -126,6 +126,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         downBtn.draw(sprites)
         leftBtn.draw(sprites)
         rightBtn.draw(sprites)
+        bombBtn.draw(sprites)
 
         // Lives display for player and NPC
         LivesDisplay(sprites, 3,2)

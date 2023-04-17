@@ -91,12 +91,12 @@ class PlayController {
         }
     }
 
-    fun bombs(string: String) {
+    fun bombs() {
         var x = game.getPlayer(game.board, "x")
         var y = game.getPlayer(game.board, "y")
-        if(string == "FIRE") {
-            game.placeBombs(game.board, x, y)
-        }
+
+        game.placeBombs(game.board, x, y)
+        println("yoyo")
 
     }
 

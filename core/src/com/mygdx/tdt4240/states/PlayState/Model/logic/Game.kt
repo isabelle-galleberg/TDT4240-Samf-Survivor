@@ -158,7 +158,7 @@ class Game (val world: World){
     }
 
     fun placeBombs(arr: Array<Array<Entity?>>, x:Int, y: Int) {
-        if(getBombs() > 0 && !ObstacleSystem.getPositions().contains(Pair(x,y))) {
+        if(!ObstacleSystem.getPositions().contains(Pair(x,y))) {
             arr[x][y] = bomb
             Timer().schedule(object : TimerTask() {
                 override fun run() {
@@ -180,8 +180,6 @@ class Game (val world: World){
 
 
         }
-
-
 
 
       //fix

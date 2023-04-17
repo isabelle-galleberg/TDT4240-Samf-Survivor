@@ -22,22 +22,6 @@ object PowerUpSystem : IteratingSystem(
         return family.first().get(LifetimeComponent).lifetime
     }
 
-    fun powerUps(entity: Entity, type: PowerupType) {
-
-        if(type == PowerupType.POINTS) {
-            entity[ScoreComponent].score += entity[BoostComponent].points.value
-
-        }
-        if (type == PowerupType.RANGE) {
-            entity[CharacterComponent].fireLength +=  entity[BoostComponent].bombRange.value
-        }
-
-        if(type == PowerupType.SPEED) {
-            entity[CharacterComponent].speed += entity[BoostComponent].boostSpeed.value
-
-        }
-
-    }
 
 
 

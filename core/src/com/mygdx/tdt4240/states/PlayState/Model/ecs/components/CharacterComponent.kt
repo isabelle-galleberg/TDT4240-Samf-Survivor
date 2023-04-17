@@ -17,6 +17,10 @@ data class CharacterComponent(
         this@CharacterComponent.direction = direction
     }
 
+    fun changeSpeed(speed: Int) {
+        this@CharacterComponent.speed = speed
+    }
+
     fun reduceLives() {
         this@CharacterComponent.lives -= 1
     }

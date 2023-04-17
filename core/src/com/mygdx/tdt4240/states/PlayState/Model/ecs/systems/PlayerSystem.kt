@@ -35,6 +35,9 @@ object PlayerSystem : IteratingSystem(
     fun getLives(): Int {
         return family.first()[CharacterComponent].lives
     }
+    fun setspeed(speed: Int) {
+        family.first()[CharacterComponent].changeSpeed(speed)
+    }
 
     fun setPosition(component: String, value: Int) {
         if (component == "x") {

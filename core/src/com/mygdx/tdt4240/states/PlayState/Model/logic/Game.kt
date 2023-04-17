@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
+import com.mygdx.tdt4240.sprites.Player
+import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
@@ -11,21 +13,34 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PowerUpSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.View.PlayView
+import com.mygdx.tdt4240.utils.Constants
+import java.util.*
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
+import javax.swing.text.StyledEditorKit.BoldAction
+import kotlin.random.Random
 
 
 /* Game logic */
 class Game (val world: World){
 
     private val entityFactory = EntityFactory
-    private var bombCount = 0
-    private var firePressed = false
+
+    private var timer = false;
+
+    private var bombCount = 0;
+
+    private var firePressed = false;
 
     val board = Array(9) { arrayOfNulls<Entity>(9) }
     val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
     val npc = NPCFactory.createNPC(world, 0, 0)
+    val bomb = BombFactory.createBomb(world,0,0);
+
+
 
 
     fun init() {
@@ -66,9 +81,20 @@ class Game (val world: World){
             }
         }
     }
- */
+
+    fun drawPlayer(arr: Array<Array<Entity?>>,world: World, x: Int, y: Int) {
+        arr[x][y] = PlayerFactory.createPlayer(world, x, y)
+    }
 
     private fun getPlayerCoordinate(arr: Array<Array<Entity?>>, component: String): Int {
+    fun initGame() {
+        initBoard();
+        bombCount = 0;
+        timer = true;
+
+    }
+
+    fun getPlayer(arr: Array<Array<Entity?>>, component: String): Int {
         for (i in 0 until 9) {
             for (j in 0 until 9) {
                 if (arr[i][j]?.has(ScoreComponent) == true) { //Player
@@ -148,28 +174,40 @@ class Game (val world: World){
         }
     }
 
-    fun getBombs(): Int {
+     fun getBombs(): Int {
         if(PlayerSystem.getPosition() == BombSystem.getPosition()) {
             bombCount += 1;
         }
         return bombCount;
     }
-/*
-    fun placeBombs(world: World,x:Int, y:Int) {
-        if(firePressed && bombCount > 0 && !ObstacleSystem.getPositions().contains(Pair(x, y))) {
-            BombSystem.dropBomb(world,x,y);
+
+    fun placeBombs(arr: Array<Array<Entity?>>, x:Int, y: Int) {
+        if(getBombs() > 0 && !ObstacleSystem.getPositions().contains(Pair(x,y))) {
+            arr[x][y] = bomb
             Timer().schedule(object : TimerTask() {
                 override fun run() {
-                    FireFactory.createFire(world, x+3, y+3) //fix range
+                    arr[x][y] = null
                 }
-            }, 2000)
+            }, (2000))
         }
     }
  */
 
-    fun randomSpawn() {
+
+    fun powerUp(arr: Array<Array<Entity?>>, x:Int, y: Int) {
+        var currentPosX = getPlayer(arr, "x")
+        var currentPosY = getPlayer(arr, "y")
+
         var randomTypes = PowerupType.values().toList().shuffled()
         var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
+
+        if(currentPosX == PowerUpSystem.getPosition().first && currentPosY == PowerUpSystem.getPosition().second) {
+
+
+        }
+
+
+
 
       //fix
 
@@ -180,4 +218,10 @@ fun main() {
     val world = world {}
     val b = Game(world)
     val g = b.board
+    b.initGame()
+
+    //b.drawBoard(g, world)
+    //b.drawPlayer(g,world,1,1)
+
+    //print(b.initBoard(g));
 }

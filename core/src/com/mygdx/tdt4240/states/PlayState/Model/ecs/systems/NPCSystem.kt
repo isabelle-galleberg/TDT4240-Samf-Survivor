@@ -30,22 +30,34 @@ object NPCSystem : IteratingSystem(
 
     fun setPosition(component: String, value: Int) {
         if (component == "x") {
-            family.first()[SpriteComponent].changePositionX(value);
+            family.first()[SpriteComponent].changePositionX(value)
         } else if (component == "y") {
-            family.first()[SpriteComponent].changePositionY(value);
+            family.first()[SpriteComponent].changePositionY(value)
         }
+    }
+    fun setPosition(position: Pair<Int,Int>) {
+        family.first()[SpriteComponent].changePosition(position)
     }
 
     fun getDirection(entity: Entity): DirectionType {
         return entity[CharacterComponent].direction
     }
+
     fun getLives(): Int {
         return family.first()[CharacterComponent].lives
     }
 
+    fun reduceLives() {
+        family.first()[CharacterComponent].reduceLives()
+    }
+
+    fun resetLives() {
+        family.first()[CharacterComponent].resetLives()
+    }
+
     fun avoidBomb(bombPos: Pair<Int, Int>) {
         family.forEach { e ->
-            var NPCPosition = getPosition(e)
+            val NPCPosition = getPosition(e)
             if (bombPos.first == NPCPosition.first && abs(bombPos.second - NPCPosition.second) <= 3) {
                 if (bombPos.second < NPCPosition.second) {
                     setDirection(e,NPCBehavior.randomDirection(DirectionType.UP))
@@ -65,7 +77,7 @@ object NPCSystem : IteratingSystem(
     }
 
     fun getRandomNPC() : Entity {
-        var randIndex = Random.nextInt(0,family.numEntities)
+        val randIndex = Random.nextInt(0,family.numEntities)
         return family.entities[randIndex]
     }
 

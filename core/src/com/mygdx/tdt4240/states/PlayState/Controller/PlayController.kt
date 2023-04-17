@@ -1,12 +1,7 @@
 package com.mygdx.tdt4240.states.PlayState.Controller
 
-import com.github.quillraven.fleks.Entity
-import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
-
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.FireFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.PlayerFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
@@ -25,13 +20,12 @@ class PlayController {
             add(PowerUpSystem)
         }
     }
-    var uiBoard = Array(9) { arrayOfNulls<String>(9) }
-    private var game = Game(world)
 
-    var score = 0
-    var gameOver = false
-    var gameWon = false
-    var timerOver = false
+    private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
+    private var game = Game(world)
+    private var score = 0
+    private var gameWon = false
+    private var timerOver = false
     private var worldTimer: Int? = 300
     private var timeCount = 0f
 
@@ -40,14 +34,14 @@ class PlayController {
     }
 
     fun updateTime(dt: Float) {
-        timeCount += dt;
+        timeCount += dt
         if (timeCount >= 1) {
             if (worldTimer!! > 0) {
-                worldTimer = worldTimer!! - 1;
+                worldTimer = worldTimer!! - 1
             } else {
-                timerOver = true;
+                timerOver = true
             }
-            timeCount = 0F;
+            timeCount = 0F
         }
     }
 
@@ -56,7 +50,7 @@ class PlayController {
     }
 
     fun drawBoard(): Array<Array<String?>> {
-        uiBoard = Array(9){ arrayOfNulls<String>(9) }
+        uiBoard = Array(9){ arrayOfNulls(9) }
         for (i in 0 until 9) {
             for (j in 0 until 9) {
 
@@ -120,27 +114,25 @@ class PlayController {
         game.placeBomb()
     }
 
+    fun booster(powerUp: PowerupType) {
+        val x = PlayerSystem.getPosition().first
+        val y = PlayerSystem.getPosition().second
 
-
-    fun booster(string: String, powerUp: PowerupType) {
-        var x = PlayerSystem.getPosition().first
-        var y = PlayerSystem.getPosition().second
-
-        var boosterX = PowerUpSystem.getPosition().first
-        var boosterY = PowerUpSystem.getPosition().second
+        val boosterX = PowerUpSystem.getPosition().first
+        val boosterY = PowerUpSystem.getPosition().second
 
         if (x == boosterX && y == boosterY && powerUp == PowerupType.POINTS) {
-            score++;
+            score++
         }
 
         if (x == boosterX && y == boosterY && powerUp == PowerupType.RANGE) { //fix
             return
         }
         if (x == boosterX && y == boosterY && powerUp == PowerupType.SPEED) {
-            PlayerSystem.setspeed(PowerupType.SPEED.value + 5)
+            PlayerSystem.setSpeed(PowerupType.SPEED.value + 5)
             Timer().schedule(object : TimerTask() {
                 override fun run() {
-                    PlayerSystem.setspeed(5)
+                    PlayerSystem.setSpeed(5)
 
                 }
             }, 3000)
@@ -148,10 +140,13 @@ class PlayController {
     }
 
     fun isGameOver(): Boolean {
-
         if (NPCSystem.getLives() == 0) {
-            gameWon = true;
-            score = PlayerSystem.getLives() * 250 // * tid igjen på timer
+            gameWon = true
+            score = PlayerSystem.getLives() * 250
+            return true
+        } else if (PlayerSystem.getLives() == 0) {
+            gameWon = false
+            score = 0
             return true
         } else if (timerOver) {
             return true

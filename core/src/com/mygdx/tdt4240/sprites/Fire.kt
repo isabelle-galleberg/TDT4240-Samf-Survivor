@@ -3,7 +3,6 @@ package com.mygdx.tdt4240.sprites
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.mygdx.tdt4240.utils.Constants
-import java.util.*
 
 class Fire {
 
@@ -16,5 +15,4 @@ class Fire {
         sprite.setPosition(fireX, fireY)
         return sprite
     }
-
 }

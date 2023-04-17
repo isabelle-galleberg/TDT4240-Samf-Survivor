@@ -24,5 +24,9 @@ data class CharacterComponent(
         this@CharacterComponent.lives -= 1
     }
 
+    fun resetLives() {
+        this@CharacterComponent.lives = 3
+    }
+
     companion object : ComponentType<CharacterComponent>()
 }

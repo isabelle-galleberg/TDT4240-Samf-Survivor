@@ -1,6 +1,6 @@
 package com.mygdx.tdt4240.states
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import java.util.Stack;
+import java.util.Stack
 
 /**
  * Class for managing which game state is currently rendered.

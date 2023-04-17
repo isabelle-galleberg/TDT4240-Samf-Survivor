@@ -23,8 +23,6 @@ import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.sprites.Bomb
 import com.mygdx.tdt4240.sprites.Fire
-import com.mygdx.tdt4240.states.MainMenuState
-import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
@@ -41,34 +39,30 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val leftBtn = LeftBtn().createLeftBtn()
     private val rightBtn = RightBtn().createRightBtn()
 
-
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
     private val bomb = Bomb().createBomb()
     private val fire = Fire().createFire()
 
-
     private val boardImg = Texture("gameView/board.png")
     private val tileImg = Texture("gameView/tile.png")
     private val wallImg = Texture("gameView/wall.png")
-
     private val crateImg = Texture("gameView/crate1.png")
 
     private val playController = PlayController()
-    var uiBoard = playController.drawBoard()
-    var gameOver = false
+    private var uiBoard = playController.drawBoard()
+    private var gameOver = false
 
     init {
         font.data.setScale(FONT_SIZE)
     }
 
     override fun update(deltaTime: Float) {
-
-        playController.updateTime(deltaTime);
+        playController.updateTime(deltaTime)
         if (PauseBtn().pauseBtnPressed()) {
-            // need to change to PauseState view
-            //stateManager.push(PauseState(stateManager))
-            //stateManager.push(MainMenuState(stateManager))
+         // need to change to PauseState view
+         // stateManager.push(PauseState(stateManager))
+         // stateManager.push(MainMenuState(stateManager))
         } else if (UpBtn().upBtnPressed()) {
             playController.updatePos("UP")
         } else if (DownBtn().downBtnPressed()) {
@@ -77,13 +71,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
             playController.updatePos("LEFT")
         } else if (RightBtn().rightBtnPressed()) {
             playController.updatePos("RIGHT")
-        }
-        else if(BombBtn().bombBtnPressed()) {
-            println("BOMB")
-            playController.bomb();
-            //fix, lag timer og bruk fire
-
-
+        } else if(BombBtn().bombBtnPressed()) {
+            playController.bomb()
         }
     }
     override fun render(sprites: SpriteBatch) {
@@ -91,7 +80,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         gameOver = playController.isGameOver()
 
         if (gameOver) {
-            //TODO
+            PlayerSystem.resetLives()
+            NPCSystem.resetLives()
         }
 
         pauseBtn.draw(sprites) // Pause button
@@ -104,11 +94,12 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                 sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
                 if (uiBoard[i][j].equals("wall")) {
                     sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                } else if (uiBoard[i][j].equals("crate")) {
+                    sprites.draw(crateImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
                 } else if (uiBoard[i][j].equals("bomb")) {
                    bomb.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
                     bomb.draw(sprites)
-                }
-                else if (uiBoard[i][j].equals("fire")) {
+                } else if (uiBoard[i][j].equals("fire")) {
                     fire.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
                     fire.draw(sprites)
                 }/*
@@ -121,30 +112,27 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                 else if (uiBoard[i][j].equals("points")) {
 
                 }*/
-                else if (uiBoard[i][j].equals("crate")) {
-                    sprites.draw(crateImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
-
-                }
             }
         }
 
-        var playerPos = playController.getPlayerPosition()
-        Player().updatePosition(player, playerPos.first.toFloat(),playerPos.second.toFloat()) //Player
-        player.draw(sprites)
+        val playerPos = playController.getPlayerPosition()
+        Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
+        player.draw(sprites) //Player
 
-        NPC().updatePosition(nPC, 8.toFloat(), 0.toFloat()) //NPC
-        nPC.draw(sprites)
+        val npcPos = NPCSystem.getPosition()
+        NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
+        nPC.draw(sprites) //NPC
 
         upBtn.draw(sprites) // UP button
         downBtn.draw(sprites) // DOWN button
         leftBtn.draw(sprites) // LEFT button
         rightBtn.draw(sprites) // RIGHT button
-        bombBtn.draw(sprites)
+        bombBtn.draw(sprites) // Bomb
 
-        LivesDisplay(sprites, PlayerSystem.getLives(),NPCSystem.getLives()) // Lives
+        LivesDisplay(sprites, PlayerSystem.getLives(), NPCSystem.getLives()) // Lives
 
-        var time = playController.getTime().toString() //Timer
-        font.setColor(Color.BLACK)
+        val time = playController.getTime().toString() //Timer
+        font.color = Color.BLACK
         font.draw(sprites, time, GAME_HEIGHT * 0.4f,  GAME_HEIGHT * 0.92f)
 
         sprites.flush()
@@ -152,6 +140,5 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
     override fun dispose() {
         font.dispose()
-
     }
 }

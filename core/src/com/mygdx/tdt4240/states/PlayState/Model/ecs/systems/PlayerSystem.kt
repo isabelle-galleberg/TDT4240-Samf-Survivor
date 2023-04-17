@@ -3,19 +3,15 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
-import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.BombFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 
 /* System for the player and NPC*/
 object PlayerSystem : IteratingSystem(
     family { all(PlayerComponent) }
 ) {
-    private var isHit = false;
 
     fun getDirection(): DirectionType {
         return family.first()[CharacterComponent].direction
@@ -32,7 +28,7 @@ object PlayerSystem : IteratingSystem(
     fun getLives(): Int {
         return family.first()[CharacterComponent].lives
     }
-    fun setspeed(speed: Int) {
+    fun setSpeed(speed: Int) {
         family.first()[CharacterComponent].changeSpeed(speed)
     }
 
@@ -42,6 +38,10 @@ object PlayerSystem : IteratingSystem(
 
     fun reduceLives() {
         family.first()[CharacterComponent].reduceLives()
+    }
+
+    fun resetLives() {
+        family.first()[CharacterComponent].resetLives()
     }
 
     fun getScore():Int {

@@ -100,11 +100,13 @@ class Game (val world: World){
         var fireLength = PlayerSystem.getFireLength()
         var fireCoordinates = mutableListOf<Pair<Int,Int>>()
         fireCoordinates.add(Pair(x,y))
-        var stop = false
 
         //Fire right
-        for (i in 1 until PlayerSystem.getFireLength()) {
-            if (ObstacleSystem.getPositions().contains(Pair(x+i,y))) {
+        for (i in 1 until fireLength) {
+            if (x+1 == 9) {
+                break
+            }
+            if (board[x+1][y]?.has(ObstacleComponent) == true) {
                 if (board[x+i][y]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x+1,y))
 
@@ -114,36 +116,45 @@ class Game (val world: World){
             fireCoordinates.add(Pair(x+1,y))
         }
         //Fire left
-        for (i in 1 until PlayerSystem.getFireLength()) {
-            if (ObstacleSystem.getPositions().contains(Pair(x-i,y))) {
+        for (i in 1 until fireLength) {
+            if (x-1 < 0) {
+                break
+            }
+            if (board[x-1][y]?.has(ObstacleComponent) == true) {
                 if (board[x-i][y]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x-1,y))
 
                 }
                 break
             }
-            fireCoordinates.add(Pair(x+1,y))
+            fireCoordinates.add(Pair(x-1,y))
         }
         //Fire down
-        for (i in 1 until PlayerSystem.getFireLength()) {
-            if (ObstacleSystem.getPositions().contains(Pair(x,y+i))) {
+        for (i in 1 until fireLength) {
+            if (y+1 == 9) {
+                break
+            }
+            if (board[x][y+1]?.has(ObstacleComponent) == true) {
                 if (board[x][y+i]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x,y+i))
                 }
                 break
             }
-            fireCoordinates.add(Pair(x+1,y))
+            fireCoordinates.add(Pair(x,y+1))
         }
 
         //Fire up
-        for (i in 1 until PlayerSystem.getFireLength()) {
-            if (ObstacleSystem.getPositions().contains(Pair(x,y-i))) {
+        for (i in 1 until fireLength) {
+            if (y-1 < 0) {
+                break
+            }
+            if (board[x][y-1]?.has(ObstacleComponent) == true) {
                 if (board[x][y-i]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x,y-i))
                 }
                 break
             }
-            fireCoordinates.add(Pair(x+1,y))
+            fireCoordinates.add(Pair(x,y-1))
         }
 
         for (cor in fireCoordinates) {
@@ -155,7 +166,7 @@ class Game (val world: World){
                 for (cor in fireCoordinates) {
                     board[cor.first][cor.second] = null
                 }
-            } }, (1000))
+            } }, (2000))
 
     }
 

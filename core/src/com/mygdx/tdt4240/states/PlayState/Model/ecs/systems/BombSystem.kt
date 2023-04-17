@@ -17,6 +17,7 @@ object BombSystem: IteratingSystem(
 
     }
 
+
     fun dropBomb(world: World, x: Int, y: Int) {
         BombFactory.createBomb(world, x, y)
     }

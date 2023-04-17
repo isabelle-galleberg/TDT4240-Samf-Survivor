@@ -38,6 +38,10 @@ object PlayerSystem : IteratingSystem(
         return family.first()[CharacterComponent].lives
     }
 
+    fun setspeed(speed: Int) {
+        family.first()[CharacterComponent].changeSpeed(speed)
+    }
+
     fun setPositionX(x:Int) {
         family.first()[SpriteComponent].changePositionX(x);
     }

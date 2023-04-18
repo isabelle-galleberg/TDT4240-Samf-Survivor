@@ -68,7 +68,7 @@ class MainMenuState(
         stage.addActor(logOutBtn)
         stage.addActor(usernameLabel)
 
-        handleClick(playBtn, PlayView(stateManager,api))
+        handleClick(playBtn, PlayView(stateManager))
         handleClick(tutorialBtn, TutorialState(stateManager, api))
         handleClick(highscoreBtn, HighScoreListState(stateManager, api))
         handleLogout()

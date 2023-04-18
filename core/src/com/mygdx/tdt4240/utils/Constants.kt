@@ -13,12 +13,9 @@ object Constants {
 
     val BUTTON_HEIGHT = GAME_HEIGHT * 0.12f
 
-
     const val SAMF_RED= "A03033"
     const val SAMF_RED_DARK="5B0E10"
     const val BLACK="190304"
     const val CREAM="BBAEAE"
     const val WHITE="F1F1F1"
-
-
 }

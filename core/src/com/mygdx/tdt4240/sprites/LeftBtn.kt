@@ -19,6 +19,6 @@ class LeftBtn {
     }
 
     fun leftBtnPressed(): Boolean {
-        return Gdx.input.justTouched() && Gdx.input.x > leftBtnX && Gdx.input.x < leftBtnX + leftBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - leftBtnY && Gdx.input.y > Constants.GAME_HEIGHT - leftBtnY - leftBtnSize
+        return Gdx.input.isTouched && Gdx.input.x > leftBtnX && Gdx.input.x < leftBtnX + leftBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - leftBtnY && Gdx.input.y > Constants.GAME_HEIGHT - leftBtnY - leftBtnSize
     }
 }

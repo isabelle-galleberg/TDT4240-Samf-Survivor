@@ -19,10 +19,10 @@ object ObstacleSystem : IteratingSystem(
         TODO("Funksjon som oppdaterer alle spillerne (f.eks. sprites og posisjon")
     }
 
-    fun createPositionList(): MutableList<Pair<Int, Int>> {
-        var newPositions: MutableList<Pair<Int,Int>> = mutableListOf()
+    private fun createPositionList(): MutableList<Pair<Int, Int>> {
+        val newPositions: MutableList<Pair<Int,Int>> = mutableListOf()
         family.entities.forEach {
-            newPositions.add(Pair(it.get(SpriteComponent).x, it.get(SpriteComponent).y))
+            newPositions.add(Pair(it[SpriteComponent].x, it[SpriteComponent].y))
         }
         return newPositions
     }

@@ -9,8 +9,8 @@ import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 
 class Window {
 
-    val WIN_WIDTH=(GAME_WIDTH /10).toInt()*7
-    val WIN_HEIGHT=(GAME_HEIGHT /8).toInt()*6
+    val WIN_WIDTH= (GAME_WIDTH /10).toInt()*7
+    val WIN_HEIGHT= (GAME_HEIGHT /8).toInt()*6
 
     val WIN_PAUSE_HEIGHT=(GAME_HEIGHT /7).toInt()*5
 

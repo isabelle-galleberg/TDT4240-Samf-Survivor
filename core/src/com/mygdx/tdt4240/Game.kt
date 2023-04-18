@@ -23,7 +23,7 @@ class Game(private var gameAPI: API) : ApplicationAdapter() {
 		api = gameAPI
 		Gdx.input.inputProcessor = InputMultiplexer()
 		Gdx.gl.glClearColor(237F, 232F, 232F, 1F)
-		stateManager?.push(HighScoreListState(stateManager!!))
+		stateManager?.push(LoginState(stateManager!!))
 	}
 
 	override fun render() {

@@ -8,7 +8,6 @@ data class CharacterComponent(
     var direction:DirectionType = DirectionType.DOWN,
     var speed:Int = 5,
     var lives:Int = 3,
-    var fireLength:Int = 3
 ) : Component<CharacterComponent> {
 
     override fun type() = CharacterComponent
@@ -17,8 +16,16 @@ data class CharacterComponent(
         this@CharacterComponent.direction = direction
     }
 
+    fun changeSpeed(speed: Int) {
+        this@CharacterComponent.speed = speed
+    }
+
     fun reduceLives() {
         this@CharacterComponent.lives -= 1
+    }
+
+    fun resetLives() {
+        this@CharacterComponent.lives = 3
     }
 
     companion object : ComponentType<CharacterComponent>()

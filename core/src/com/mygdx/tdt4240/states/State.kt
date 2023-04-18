@@ -11,7 +11,7 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 abstract class State(
     protected var stateManager: StateManager
 ) {
-    protected val camera: OrthographicCamera = OrthographicCamera()
+    private val camera: OrthographicCamera = OrthographicCamera()
 
     init {
         camera.setToOrtho(false, GAME_WIDTH, GAME_HEIGHT)

@@ -18,6 +18,6 @@ class RightBtn {
     }
 
     fun rightBtnPressed(): Boolean {
-        return Gdx.input.justTouched() && Gdx.input.x > rightBtnX && Gdx.input.x < rightBtnX + rightBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - rightBtnY && Gdx.input.y > Constants.GAME_HEIGHT - rightBtnY - rightBtnSize
+        return Gdx.input.isTouched && Gdx.input.x > rightBtnX && Gdx.input.x < rightBtnX + rightBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - rightBtnY && Gdx.input.y > Constants.GAME_HEIGHT - rightBtnY - rightBtnSize
     }
 }

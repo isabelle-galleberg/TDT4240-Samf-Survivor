@@ -1,68 +1,64 @@
 package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
-import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.SpriteComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.BombFactory
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
-
 
 /* System for the player and NPC*/
 object PlayerSystem : IteratingSystem(
-    family { all(ScoreComponent) }
+    family { all(PlayerComponent) }
 ) {
-    private var isHit = false;
 
     fun getDirection(): DirectionType {
-        return family.first().get(CharacterComponent).direction
+        return family.first()[CharacterComponent].direction
     }
 
     fun setDirection(direction: DirectionType) {
-        family.first().get(CharacterComponent).changeDirection(direction)
+        family.first()[CharacterComponent].changeDirection(direction)
     }
 
     fun getPosition():Pair<Int,Int> {
-        return Pair(family.first().get(SpriteComponent).x, family.first().get(SpriteComponent).y)
+        return Pair(family.first()[SpriteComponent].x, family.first()[SpriteComponent].y)
     }
 
     fun getLives(): Int {
-        return family.first().get(CharacterComponent).lives
+        return family.first()[CharacterComponent].lives
+    }
+    fun setSpeed(speed: Int) {
+        family.first()[CharacterComponent].changeSpeed(speed)
+    }
+
+    fun setPosition(position: Pair<Int,Int>) {
+        family.first()[SpriteComponent].changePosition(position)
+    }
+
+    fun reduceLives() {
+        family.first()[CharacterComponent].reduceLives()
+    }
+
+    fun resetLives() {
+        family.first()[CharacterComponent].resetLives()
     }
 
     fun getScore():Int {
-        return family.first().get(ScoreComponent).score
+        return family.first()[PlayerComponent].score
+
+    }
+
+    fun getFireLength():Int {
+        return family.first()[PlayerComponent].fireLength
 
     }
 
     fun setScore(score: Int) {
-        family.first().get(ScoreComponent).changeScore(score)
+        family.first()[PlayerComponent].changeScore(score)
     }
-
-    fun lives(): Int {
-        if(isHit) {
-            family.first().get(CharacterComponent).reduceLives();
-            }
-        return family.first().get(CharacterComponent).lives
-        //fix, skriv kode for når isHit blir true.
-    }
-
-
-
 
     override fun onTickEntity(entity: Entity) {
-
-
-
-
 
     }
 }

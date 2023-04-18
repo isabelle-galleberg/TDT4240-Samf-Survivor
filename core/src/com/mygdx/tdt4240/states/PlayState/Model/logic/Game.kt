@@ -1,153 +1,189 @@
 package com.mygdx.tdt4240.states.PlayState.Model.logic
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import java.util.*
+import kotlin.random.Random
 
 
 /* Game logic */
-class Game {
+class Game (val world: World){
 
-    private val entityFactory = EntityFactory
+    val board = Array(9) { arrayOfNulls<Entity>(9) }
+    private val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
+    private val npc = NPCFactory.createNPC(world, 0, 0)
 
-    private var gameOver = false;
-    private var gameWon = false;
+    private var game = false
 
-    private var score = PlayerSystem.getScore();
-
-    private var timer = false;
-
-    private var bombCount = 0;
-
-    private var firePressed = false;
-
-
-
-    val grid = Array(9) { arrayOfNulls<Entity>(9) }
-
-    fun initBoard(arr: Array<Array<Entity?>>) {
-        for (i in arr.indices) {
-            for (j in arr[i].indices) {
-                print("${arr[i][j]} ")
-            }
-            println()
-        }
+    fun init() {
+        initBoard()
+        game = true
     }
 
-    fun drawBoard(arr: Array<Array<Entity?>>, world: World) {
-        for (i in arr.indices) {
-            for (j in arr[i].indices) {
+    private fun initBoard(): Array<Array<Entity?>> {
+        PlayerSystem.setPosition(Pair(0,8)) //Player
+        NPCSystem.setPosition(Pair(8,0)) //NPC
 
-                //Walls
-                if (i == 0 || j == 0 || i == arr.size -1 || j == arr[i].size -1) {
-                    arr[i][j] = WallFactory.createWall(world, i,j)
-
-                }
-
-                //Crates
-                else
-                {
-                    arr[i][j] = CrateFactory.createCrate(world, i,j)
+        for (i in board.indices) {
+            for (j in board[i].indices) {
+                if (i % 2 != 0 && j % 2 != 0) {
+                    board[i][j] = WallFactory.createWall(world, i, j) //Wall
+                } else if (i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6 || i == 7) {
+                    board[i][j] = CrateFactory.createCrate(world, i, j) //Crate
                 }
             }
         }
-    }
-
-    fun drawPlayer(arr: Array<Array<Entity?>>,world: World, x: Int, y: Int) {
-        arr[x][y] = PlayerFactory.createPlayer(world, x, y)
-
-    }
-
-    fun initGame() {
-        initBoard(grid);
-        PlayerSystem.setScore(0);
-        bombCount = 0;
-        timer = true;
+        return board
     }
 
     fun movePlayer() {
-        var playerPosition = PlayerSystem.getPosition();
+        val x = PlayerSystem.getPosition().first
+        val y = PlayerSystem.getPosition().second
+        val direction = PlayerSystem.getDirection()
+        if (PlayerSystem.getDirection() == DirectionType.DOWN) {
+            if (y-1 < 0 || board[x][y-1]?.has(ObstacleComponent) == true) {
+                return
+            }
+            PlayerSystem.setPosition(Pair(x,y-1))
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.D) && !ObstacleSystem.getPositions().contains(Pair(playerPosition.first + 1, playerPosition.second ))) {
-            PlayerSystem.setDirection(DirectionType.RIGHT)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.A) && !ObstacleSystem.getPositions().contains(Pair(playerPosition.first - 1, playerPosition.second ))) {
-            PlayerSystem.setDirection(DirectionType.LEFT)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W) &&  !ObstacleSystem.getPositions().contains(Pair(playerPosition.first, playerPosition.second + 1 ))) {
-            PlayerSystem.setDirection(DirectionType.UP)
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.S) &&  !ObstacleSystem.getPositions().contains(Pair(playerPosition.first, playerPosition.second - 1))) {
-            PlayerSystem.setDirection(DirectionType.DOWN)
-        }
-        else {
-            PlayerSystem.setDirection(DirectionType.NONE)
+        } else if (direction == DirectionType.UP) {
+            if (y+1 > 8 || board[x][y+1]?.has(ObstacleComponent) == true) {
+                return
+            }
+            PlayerSystem.setPosition(Pair(x, y+1))
 
-        }
+        } else if (direction == DirectionType.RIGHT) {
+            if (x+1 > 8 || board[x+1][y]?.has(ObstacleComponent) == true) {
+                return
+            }
+            PlayerSystem.setPosition(Pair(x+1,y))
 
+        } else if (direction == DirectionType.LEFT) {
+            if (x-1 < 0 || board[x-1][y]?.has(ObstacleComponent) == true) {
+                return
+            }
+            PlayerSystem.setPosition(Pair(x-1,y))
+        }
     }
 
-    fun getBombs(): Int {
-        if(PlayerSystem.getPosition() == BombSystem.getPosition()) {
-            bombCount += 1;
-        }
-        return bombCount;
-
+    fun placeBomb() {
+        val x = PlayerSystem.getPosition().first
+        val y = PlayerSystem.getPosition().second
+        board[x][y] = EntityFactory.createBomb(world,x,y)
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                board[x][y] = null
+                fire(x,y)
+            } }, (2000))
     }
 
-    fun placeBombs(world: World,x:Int, y:Int) {
-        if(firePressed && bombCount > 0 && !ObstacleSystem.getPositions().contains(Pair(x, y))) {
-            BombSystem.dropBomb(world,x,y);
-            Timer().schedule(object : TimerTask() {
-                override fun run() {
-                    FireFactory.createFire(world, x+3, y+3)
+    fun fire(x: Int, y:Int) {
+        val fireLength = PlayerSystem.getFireLength()
+        val fireCoordinates = mutableListOf<Pair<Int,Int>>()
+        fireCoordinates.add(Pair(x,y))
+
+        //Fire right
+        for (i in 1 until fireLength) {
+            if (x+1 == 9) {
+                break
+            }
+            if (board[x+1][y]?.has(ObstacleComponent) == true) {
+                if (board[x+i][y]?.get(ObstacleComponent)?.wall == false) {
+                    fireCoordinates.add(Pair(x+1,y))
                 }
-            }, 2000)
+                break
+            }
+            fireCoordinates.add(Pair(x+1,y))
         }
+        //Fire left
+        for (i in 1 until fireLength) {
+            if (x-1 < 0) {
+                break
+            }
+            if (board[x-1][y]?.has(ObstacleComponent) == true) {
+                if (board[x-i][y]?.get(ObstacleComponent)?.wall == false) {
+                    fireCoordinates.add(Pair(x-1,y))
+
+                }
+                break
+            }
+            fireCoordinates.add(Pair(x-1,y))
+        }
+        //Fire down
+        for (i in 1 until fireLength) {
+            if (y+1 == 9) {
+                break
+            }
+            if (board[x][y+1]?.has(ObstacleComponent) == true) {
+                if (board[x][y+i]?.get(ObstacleComponent)?.wall == false) {
+                    fireCoordinates.add(Pair(x,y+i))
+                }
+                break
+            }
+            fireCoordinates.add(Pair(x,y+1))
+        }
+        //Fire up
+        for (i in 1 until fireLength) {
+            if (y-1 < 0) {
+                break
+            }
+            if (board[x][y-1]?.has(ObstacleComponent) == true) {
+                if (board[x][y-i]?.get(ObstacleComponent)?.wall == false) {
+                    fireCoordinates.add(Pair(x,y-i))
+                }
+                break
+            }
+            fireCoordinates.add(Pair(x,y-1))
+        }
+
+        for (cor in fireCoordinates) {
+            board[cor.first][cor.second] = EntityFactory.createFire(world,cor.first,cor.second, 2)
+        }
+
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                for (cor in fireCoordinates) {
+                    if (cor.first == PlayerSystem.getPosition().first && cor.second == PlayerSystem.getPosition().second) {
+                        PlayerSystem.reduceLives()
+                    } else if(cor.first == NPCSystem.getPosition().first && cor.second == NPCSystem.getPosition().second) {
+                        NPCSystem.reduceLives()
+                    }
+                    board[cor.first][cor.second] = null
+                }
+            } }, (1000))
     }
 
+    fun powerUp() {
+        while(game) {
+            val x = Random.nextInt(0,9)
+            val y = Random.nextInt(0,9)
 
+            val randomTypes = PowerupType.values().toList().shuffled()
 
-    fun randomSpawn() {
-        var randomTypes = PowerupType.values().toList().shuffled()
-        var powerupPositions: MutableList<Pair<Int,Int>> = mutableListOf()
-
-      //fix
-
-    }
-
-
-    fun isGameOver(entity: Entity): Int {
-        if(NPCSystem.getLives(entity) == 0) {
-            gameWon = true;
-            score = PlayerSystem.getLives() * 250 // * tid igjen på timer
+            if(board[x][y]?.has(ObstacleComponent) == false) {
+                Timer().schedule(object : TimerTask() {
+                    override fun run() {
+                        EntityFactory.createPowerup(world, x, y, randomTypes.first())
+                    }
+                }, Random.nextLong(2000,10000))
+            }
         }
-        if(timer) {
-            gameOver = true;
-            score = 0;
-
-        }
-        return score
     }
-
 }
+
 fun main() {
-    val b = Game()
-    val g = b.grid
     val world = world {}
-
-    b.drawBoard(g, world)
-    b.drawPlayer(g,world,1,1)
-
-    print(b.initBoard(g));
-
-
+    val b = Game(world)
+    b.init()
 }
+

@@ -18,6 +18,6 @@ class UpBtn {
     }
 
     fun upBtnPressed(): Boolean {
-        return Gdx.input.justTouched() && Gdx.input.x > upBtnX && Gdx.input.x < upBtnX + upBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - upBtnY && Gdx.input.y > Constants.GAME_HEIGHT - upBtnY - upBtnSize
+        return Gdx.input.isTouched && Gdx.input.x > upBtnX && Gdx.input.x < upBtnX + upBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - upBtnY && Gdx.input.y > Constants.GAME_HEIGHT - upBtnY - upBtnSize
     }
 }

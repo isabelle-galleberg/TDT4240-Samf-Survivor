@@ -46,9 +46,9 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val crateImg = Texture("gameView/crate.png")
     private val fireImg = Texture("gameView/fire.png")
     private val bombImg = Texture("gameView/bomb.png")
-    private val powerUpSpeedImg = Texture("gameView/speed.png")
-    private val powerUpRangeImg = Texture("gameView/bombRange.png")
-    private val powerUpPointsImg = Texture("gameView/points.png")
+    private val powerUpSpeedImg = Texture("gameView/powerUpSpeed.png")
+    private val powerUpRangeImg = Texture("gameView/powerUpRange.png")
+    private val powerUpPointsImg = Texture("gameView/powerUpPoints.png")
 
 
 

@@ -17,14 +17,10 @@ import com.mygdx.tdt4240.sprites.RightBtn
 import com.mygdx.tdt4240.sprites.LivesDisplay
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
+
 import com.mygdx.tdt4240.states.State
 import com.mygdx.tdt4240.states.StateManager
-import com.mygdx.tdt4240.sprites.Speed
-import com.mygdx.tdt4240.sprites.Range
-import com.mygdx.tdt4240.sprites.Points
 import com.mygdx.tdt4240.states.GameOverState
-
-
 import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 
@@ -43,16 +39,15 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
 
-    private val speed = Speed().createSpeed()
-    private val points = Points().createPoints()
-    private val range = Range().createRange()
-
     private val boardFrameImg = Texture("gameView/boardFrame.png")
     private val tileImg = Texture("gameView/tile.png")
     private val wallImg = Texture("gameView/wall.png")
     private val crateImg = Texture("gameView/crate.png")
     private val fireImg = Texture("gameView/fire.png")
     private val bombImg = Texture("gameView/bomb.png")
+    private val powerUpSpeedImg = Texture("gameView/powerUpSpeed.png")
+    private val powerUpRangeImg = Texture("gameView/powerUpRange.png")
+    private val powerUpPointsImg = Texture("gameView/powerUpPoints.png")
 
     private val playController = PlayController()
     private var uiBoard = playController.drawBoard()
@@ -115,19 +110,13 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                     sprites.draw(fireImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 }
                 else if (uiBoard[i][j].equals("speed")) {
-                    speed.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
-                    speed.draw(sprites)
-
+                    sprites.draw(powerUpSpeedImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 }
                 else if (uiBoard[i][j].equals("range")) {
-                    range.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
-                    range.draw(sprites)
-
+                    sprites.draw(powerUpRangeImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 }
                 else if (uiBoard[i][j].equals("points")) {
-                points.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
-                points.draw(sprites)
-
+                    sprites.draw(powerUpPointsImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 }
             }
         }

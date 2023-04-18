@@ -2,7 +2,7 @@ package com.mygdx.tdt4240.states
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.mygdx.tdt4240.firebase.User
+import com.mygdx.tdt4240.api.User
 import com.badlogic.gdx.graphics.Texture
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH

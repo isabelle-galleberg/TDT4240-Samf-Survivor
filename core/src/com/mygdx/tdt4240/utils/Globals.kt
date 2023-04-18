@@ -1,6 +1,6 @@
 package com.mygdx.tdt4240.utils
 
-import com.mygdx.tdt4240.firebase.API
+import com.mygdx.tdt4240.api.API
 
 object Globals {
     var api: API? = null

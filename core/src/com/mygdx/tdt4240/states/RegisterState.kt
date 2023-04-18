@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.firebase.API
-import com.mygdx.tdt4240.firebase.User
+import com.mygdx.tdt4240.api.API
+import com.mygdx.tdt4240.api.User
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT

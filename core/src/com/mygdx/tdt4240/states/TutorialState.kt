@@ -1,6 +1,5 @@
 package com.mygdx.tdt4240.states
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Pixmap
 import com.mygdx.tdt4240.sprites.Buttons
 
 import com.badlogic.gdx.graphics.Texture
@@ -9,9 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.BackBtn
-import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH

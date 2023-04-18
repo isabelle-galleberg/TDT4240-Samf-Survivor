@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.mygdx.tdt4240.firebase.API
+import com.mygdx.tdt4240.api.API
 import com.mygdx.tdt4240.states.*
 import com.mygdx.tdt4240.utils.Globals.api
 
@@ -23,7 +23,7 @@ class Game(private var gameAPI: API) : ApplicationAdapter() {
 		api = gameAPI
 		Gdx.input.inputProcessor = InputMultiplexer()
 		Gdx.gl.glClearColor(237F, 232F, 232F, 1F)
-		stateManager?.push(LoginState(stateManager!!))
+		stateManager?.push(HighScoreListState(stateManager!!))
 	}
 
 	override fun render() {

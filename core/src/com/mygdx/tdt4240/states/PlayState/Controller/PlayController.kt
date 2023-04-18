@@ -153,10 +153,7 @@ class PlayController {
         if(!gameWon) {
             return 0;
         }
-        var score = PlayerSystem.getScore()
-        score += PlayerSystem.getLives() * 250 * (getTime()?.toInt() ?: 1)
-
-        return score
+        return PlayerSystem.getScore() + PlayerSystem.getLives() * 250 * (getTime()?.toInt() ?: 1)
 
 
 

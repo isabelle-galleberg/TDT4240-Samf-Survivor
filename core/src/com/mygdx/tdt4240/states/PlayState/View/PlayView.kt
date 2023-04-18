@@ -23,6 +23,7 @@ import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.sprites.Bomb
 import com.mygdx.tdt4240.sprites.Fire
+import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem

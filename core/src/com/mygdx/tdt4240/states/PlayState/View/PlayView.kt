@@ -83,6 +83,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         }
         playController.spawnPowerUp()
         playController.updatePosNPC()
+
     }
     override fun render(sprites: SpriteBatch) {
 
@@ -98,12 +99,11 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         sprites.begin()
         gameOver = playController.isGameOver()
 
-
-
-
         if (gameOver) {
             PlayerSystem.resetLives()
             NPCSystem.resetLives()
+            playController.score() //Isabelle
+            playController.isGameWon() //Isabelle
         }
 
         pauseBtn.draw(sprites) // Pause button

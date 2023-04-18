@@ -23,7 +23,7 @@ import com.mygdx.tdt4240.states.StateManager
 import com.mygdx.tdt4240.sprites.Speed
 import com.mygdx.tdt4240.sprites.Range
 import com.mygdx.tdt4240.sprites.Points
-
+import com.mygdx.tdt4240.states.GameOverState
 
 
 import com.mygdx.tdt4240.states.PauseState
@@ -83,6 +83,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         }
         playController.spawnPowerUp()
         playController.updatePosNPC()
+
     }
     override fun render(sprites: SpriteBatch) {
 
@@ -98,12 +99,10 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         sprites.begin()
         gameOver = playController.isGameOver()
 
-
-
-
         if (gameOver) {
             PlayerSystem.resetLives()
             NPCSystem.resetLives()
+            stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.score()))
         }
 
         pauseBtn.draw(sprites) // Pause button

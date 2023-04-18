@@ -3,6 +3,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
+import com.github.quillraven.fleks.collection.EntityBag
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.PlayerComponent
@@ -47,6 +48,10 @@ object NPCSystem : IteratingSystem(
         return family.first()[CharacterComponent].lives
     }
 
+    fun getSpeed(): Int {
+        return family.first()[CharacterComponent].speed
+    }
+
     fun reduceLives() {
         family.first()[CharacterComponent].reduceLives()
     }
@@ -55,25 +60,8 @@ object NPCSystem : IteratingSystem(
         family.first()[CharacterComponent].resetLives()
     }
 
-    fun avoidBomb(bombPos: Pair<Int, Int>) {
-        family.forEach { e ->
-            val NPCPosition = getPosition(e)
-            if (bombPos.first == NPCPosition.first && abs(bombPos.second - NPCPosition.second) <= 3) {
-                if (bombPos.second < NPCPosition.second) {
-                    setDirection(e,NPCBehavior.randomDirection(DirectionType.UP))
-                } else {
-                    setDirection(e,NPCBehavior.randomDirection(DirectionType.UP))
-                }
-                NPCBehavior.avoidCollision(e)
-            } else if (bombPos.second == NPCPosition.second && abs(bombPos.first - NPCPosition.first) <= 3) {
-                if (bombPos.first < NPCPosition.first) {
-                    setDirection(e,NPCBehavior.randomDirection(DirectionType.LEFT))
-                } else {
-                    setDirection(e,NPCBehavior.randomDirection(DirectionType.RIGHT))
-                }
-                NPCBehavior.avoidCollision(e)
-            }
-        }
+    fun getNPCs() : EntityBag {
+        return family.entities
     }
 
     fun getRandomNPC() : Entity {

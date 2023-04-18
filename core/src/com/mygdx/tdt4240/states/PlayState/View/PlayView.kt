@@ -17,9 +17,12 @@ import com.mygdx.tdt4240.sprites.RightBtn
 import com.mygdx.tdt4240.sprites.LivesDisplay
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
-
 import com.mygdx.tdt4240.states.State
 import com.mygdx.tdt4240.states.StateManager
+import com.mygdx.tdt4240.sprites.Bomb
+import com.mygdx.tdt4240.sprites.Fire
+
+import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
@@ -57,7 +60,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     override fun update(deltaTime: Float) {
         playController.updateTime(deltaTime)
         if (PauseBtn().pauseBtnPressed()) {
-         //stateManager.push(PauseState(stateManager))
+            stateManager.push(PauseState(stateManager))
         } else if (UpBtn().upBtnPressed()) {
             playController.updatePos("UP")
         } else if (DownBtn().downBtnPressed()) {
@@ -69,6 +72,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         } else if(BombBtn().bombBtnPressed()) {
             playController.bomb()
         }
+        playController.updatePosNPC()
     }
     override fun render(sprites: SpriteBatch) {
 
@@ -122,7 +126,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
         player.draw(sprites) //Player
 
-        val npcPos = NPCSystem.getPosition()
+        val npcPos = playController.getNPCPosition()
         NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
         nPC.draw(sprites) //NPC
 

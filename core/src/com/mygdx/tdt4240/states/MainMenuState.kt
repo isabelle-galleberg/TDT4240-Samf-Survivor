@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
@@ -18,6 +19,7 @@ import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
+import com.mygdx.tdt4240.utils.Globals.currentUser
 
 
 class MainMenuState(
@@ -49,6 +51,11 @@ class MainMenuState(
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.05f)
     }
+    private val usernameLabel = Label(currentUser, skin).apply {
+        color = Color.FIREBRICK
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition(0f, GAME_HEIGHT * 0.85f)
+    }
 
     private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java)
 
@@ -59,11 +66,12 @@ class MainMenuState(
         stage.addActor(tutorialBtn)
         stage.addActor(highscoreBtn)
         stage.addActor(logOutBtn)
+        stage.addActor(usernameLabel)
 
         handleClick(playBtn, PlayView(stateManager))
         handleClick(tutorialBtn, TutorialState(stateManager, api))
         handleClick(highscoreBtn, HighScoreListState(stateManager, api))
-        handleClick(logOutBtn, LoginState(stateManager, api))
+        handleLogout()
     }
 
     override fun update(deltaTime: Float) {
@@ -74,6 +82,16 @@ class MainMenuState(
         button.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 stateManager.push(state)
+                Gdx.input.inputProcessor = null
+            }
+        })
+    }
+
+    private fun handleLogout() {
+        logOutBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                currentUser = ""
+                stateManager.push(LoginState(stateManager, api))
                 Gdx.input.inputProcessor = null
             }
         })

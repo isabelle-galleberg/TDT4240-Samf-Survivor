@@ -63,6 +63,25 @@ class AndroidAPI : API {
         }
     }
 
+    override fun getHighscore(username: String): Int {
+        var highscore = 0
+        var completed = false
+        users.get().addOnCompleteListener { task ->
+            val response = task.result.children
+            for (child in response) {
+                if (child.getValue(User::class.java)?.username.toString() == username) {
+                    highscore = child.getValue(User::class.java)?.highscore ?: 0
+                }
+            }
+            completed = true
+        }
+        // wait for the database to respond
+        while (!completed) {
+            Thread.sleep(100)
+        }
+        return highscore
+    }
+
 }
 
 

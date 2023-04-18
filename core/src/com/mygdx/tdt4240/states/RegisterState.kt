@@ -1,8 +1,10 @@
 package com.mygdx.tdt4240.states
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -19,6 +21,7 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
+import com.mygdx.tdt4240.utils.Globals.currentUser
 
 /**
  * State for the register form.
@@ -34,13 +37,21 @@ class RegisterState(
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     private val logo = Logo().createLogo()
     private val backBtn = BackBtn().createBackBtn()
-    private val username = TextField("", skin).apply {
+
+    private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java).apply {
+        font.data.setScale(FONT_SIZE)
+        cursor.minHeight = INPUT_HEIGHT
+        cursor.minWidth = INPUT_WIDTH / 100
+    }
+
+    private val username = TextField("", textFieldStyle).apply {
         color = Color.FIREBRICK
         messageText = "Username"
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.6f)
     }
-    private val password = TextField("", skin).apply {
+
+    private val password = TextField("", textFieldStyle).apply {
         color = Color.FIREBRICK
         messageText = "Password"
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
@@ -48,6 +59,7 @@ class RegisterState(
         isPasswordMode = true
         setPasswordCharacter('*')
     }
+
     private val button = TextButton("Register", skin).apply{
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
@@ -59,12 +71,11 @@ class RegisterState(
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0f)
     }
-    private val textFieldStyle: TextFieldStyle = skin.get(TextFieldStyle::class.java)
 
     init {
-        textFieldStyle.font.data.setScale(FONT_SIZE)
-
         handleRegister(api)
+        handleKeyboard(username)
+        handleKeyboard(password)
 
         stage.addActor(username)
         stage.addActor(password)
@@ -84,9 +95,22 @@ class RegisterState(
                 }
                 else {
                     api.submitUser(User(username.text, password.text, 0))
-                    errorLabel.remove()
+                    currentUser = username.text
                     stateManager.push(MainMenuState(stateManager,api))
+                    errorLabel.remove()
                 }
+            }
+        })
+    }
+
+    private fun handleKeyboard(textField: TextField) {
+        textField.addListener(object : InputListener() {
+            // close keyboard when enter is pressed
+            override fun keyDown(event: InputEvent, keycode: Int): Boolean {
+                if (keycode == Input.Keys.ENTER) {
+                    Gdx.input.setOnscreenKeyboardVisible(false)
+                }
+                return false
             }
         })
     }

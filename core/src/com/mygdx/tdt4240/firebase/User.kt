@@ -1,6 +1,6 @@
 package com.mygdx.tdt4240.firebase
 
-class User(val username: String, val password: String, val highscore: Int ) : Comparable<User> {
+class User(val username: String, val password: String, val highscore: Int, ) : Comparable<User> {
 
     // Firebase requires an empty constructor
     constructor() : this("", "", 0)

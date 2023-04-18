@@ -13,7 +13,6 @@ object PowerupFactory {
     fun createPowerup(world: World,x: Int, y: Int, powerupType: PowerupType ): Entity {
         val entity: Entity = world.entity {
             it += SpriteComponent(x,y)
-            it += LifetimeComponent()
             it += BoostComponent(powerupType)
         }
         return entity

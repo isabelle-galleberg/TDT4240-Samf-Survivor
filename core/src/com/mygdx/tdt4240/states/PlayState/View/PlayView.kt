@@ -78,6 +78,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         } else if(BombBtn().bombBtnPressed()) {
             playController.bomb()
         }
+        playController.updatePosNPC()
     }
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
@@ -123,7 +124,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
         player.draw(sprites) //Player
 
-        val npcPos = NPCSystem.getPosition()
+        val npcPos = playController.getNPCPosition()
         NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
         nPC.draw(sprites) //NPC
 

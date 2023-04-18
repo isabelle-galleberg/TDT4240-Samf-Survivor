@@ -6,7 +6,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 
 data class CharacterComponent(
     var direction:DirectionType = DirectionType.DOWN,
-    var speed:Int = 5,
+    var speed:Int = 10,
     var lives:Int = 3,
 ) : Component<CharacterComponent> {
 

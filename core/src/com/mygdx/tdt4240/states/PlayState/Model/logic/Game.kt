@@ -5,6 +5,7 @@ import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
@@ -26,6 +27,7 @@ class Game (val world: World){
     private val npc = NPCFactory.createNPC(world, 0, 0)
 
     private var game = false
+    private var NPCmove = 0
 
     private var movePlayer = 0;
 
@@ -58,8 +60,7 @@ class Game (val world: World){
         val x = PlayerSystem.getPosition().first
         val y = PlayerSystem.getPosition().second
         val direction = PlayerSystem.getDirection()
-
-        if (PlayerSystem.getDirection() == DirectionType.DOWN) {
+        if (direction == DirectionType.DOWN) {
             if (y-1 < 0 || board[x][y-1]?.has(ObstacleComponent) == true) {
                 return
             } else if(board[x][y-1]?.has(BoostComponent) == true)
@@ -223,6 +224,27 @@ fun booster(powerUp: PowerupType?) {
                 PlayerSystem.setSpeed(5)
             }
         }, 5000)
+    fun moveNPC() {
+        if (NPCmove < NPCSystem.getSpeed()) {
+            NPCmove += 1
+            return
+        }
+        NPCBehavior.setBombs(world,npc,board, this)
+        val x = NPCSystem.getPosition(npc).first
+        val y = NPCSystem.getPosition(npc).second
+        val direction = NPCSystem.getDirection(npc)
+        if (direction == DirectionType.DOWN) {
+            NPCSystem.setPosition(Pair(x,y-1))
+        } else if (direction == DirectionType.UP) {
+            NPCSystem.setPosition(Pair(x, y+1))
+        } else if (direction == DirectionType.RIGHT) {
+            NPCSystem.setPosition(Pair(x+1,y))
+
+        } else if (direction == DirectionType.LEFT) {
+            NPCSystem.setPosition(Pair(x-1,y))
+        }
+        NPCmove = 0
+
     }
 }
 

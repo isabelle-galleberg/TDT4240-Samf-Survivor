@@ -1,4 +1,4 @@
-package com.mygdx.tdt4240.firebase
+package com.mygdx.tdt4240.api
 import java.util.ArrayList
 
 interface API {

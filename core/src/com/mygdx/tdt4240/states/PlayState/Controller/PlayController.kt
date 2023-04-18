@@ -94,6 +94,10 @@ class PlayController {
         return PlayerSystem.getPosition()
     }
 
+    fun getNPCPosition() : Pair<Int,Int> {
+        return NPCSystem.getPosition()
+    }
+
     fun updatePos(direction: String) {
         if (direction == "RIGHT") {
             PlayerSystem.setDirection(DirectionType.RIGHT)
@@ -113,6 +117,10 @@ class PlayController {
         } else {
             PlayerSystem.setDirection(DirectionType.NONE)
         }
+    }
+
+    fun updatePosNPC() {
+        game.moveNPC()
     }
 
     fun bomb() {

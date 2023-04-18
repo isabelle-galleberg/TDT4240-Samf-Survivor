@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.firebase.API
+import com.mygdx.tdt4240.api.API
 import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.utils.Constants.BUTTON_HEIGHT
@@ -23,9 +23,10 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.mygdx.tdt4240.utils.Globals.currentUser
+import com.mygdx.tdt4240.utils.Globals.api
 
 class LoginState(
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private val stage = Stage()
@@ -54,13 +55,13 @@ class LoginState(
         setPasswordCharacter('*')
     }
 
-    private val loginBtn = TextButton("Log in", skin).apply{
+    private val loginBtn = TextButton("LOG IN", skin).apply{
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, BUTTON_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.3f)
     }
 
-    private val registerBtn = TextButton("Create a new user", skin).apply{
+    private val registerBtn = TextButton("CREATE A NEW USER", skin).apply{
         color = Color.GRAY
         setSize(INPUT_WIDTH, BUTTON_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.15f)
@@ -74,7 +75,7 @@ class LoginState(
 
 
     init {
-        handleLogIn(api)
+        handleLogIn(api!!)
         handleRegister()
         handleKeyboard(username)
         handleKeyboard(password)
@@ -98,7 +99,7 @@ class LoginState(
                 }
                 else {
                     currentUser = username.text
-                    stateManager.push(MainMenuState(stateManager, api))
+                    stateManager.push(MainMenuState(stateManager))
                     errorLabel.remove()
                 }
             }
@@ -108,7 +109,7 @@ class LoginState(
     private fun handleRegister() {
         registerBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                stateManager.push(RegisterState(stateManager, api))
+                stateManager.push(RegisterState(stateManager))
         }
         })
     }
@@ -128,7 +129,7 @@ class LoginState(
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
-            stateManager.push(LoginState(stateManager, api))
+            stateManager.push(LoginState(stateManager))
         }
     }
 

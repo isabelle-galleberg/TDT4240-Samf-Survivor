@@ -8,8 +8,12 @@ data class PlayerComponent(
     var fireLength:Int = 3
 ) : Component<PlayerComponent> {
 
-    fun changeScore(score: Int) {
-        this@PlayerComponent.score = score
+    fun addScore(score: Int) {
+        this@PlayerComponent.score += score
+    }
+
+    fun changeFirelength(range: Int) {
+        this@PlayerComponent.fireLength = range
     }
 
     override fun type() = PlayerComponent

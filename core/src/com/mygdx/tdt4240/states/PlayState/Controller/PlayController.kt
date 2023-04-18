@@ -1,42 +1,38 @@
 package com.mygdx.tdt4240.states.PlayState.Controller
 
-import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.EntityFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
-import java.util.*
 import kotlin.random.Random
 
-class PlayController {
-    private val world = world {
-        systems {
-            add(BombSystem)
-            add(NPCSystem)
-            add(ObstacleSystem)
-            add(PlayerSystem)
-            add(PowerUpSystem)
-        }
-    }
+class PlayController(npcNum: Int = 1) {
 
     private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
-    private var game = Game(world)
+    private var game = Game(npcNum)
     private var gameWon = false
     private var timerOver = false
     private var worldTimer: Int? = 300
     private var timeCount = 0f
-    val timerTasks = mutableListOf<TimerTask>()
 
     init {
         game.init()
 
     }
 
-    fun updateTime(dt: Float) {
+    fun resetGame() {
+        game.resetGame()
+        uiBoard = drawBoard()
+        worldTimer = 300
+        timeCount = 0f
+        timerOver = false
+        gameWon = false
+    }
+
+    fun update(dt: Float) {
         timeCount += dt
         if (timeCount >= 1) {
             if (worldTimer!! > 0) {
@@ -46,6 +42,8 @@ class PlayController {
             }
             timeCount = 0F
         }
+        spawnPowerUp()
+        updatePosNPC()
     }
 
     fun getTime(): Int? {
@@ -53,52 +51,56 @@ class PlayController {
     }
 
     fun drawBoard(): Array<Array<String?>> {
-        uiBoard = Array(9){ arrayOfNulls(9) }
+        uiBoard = Array(9) { arrayOfNulls(9) }
         for (i in 0 until 9) {
             for (j in 0 until 9) {
-
                 if (game.board[i][j]?.has(ObstacleComponent) == true) {
                     if (game.board[i][j]?.get(ObstacleComponent)?.wall == true) {
                         uiBoard[i][j] = "wall"
                     } else {
                         uiBoard[i][j] = "crate"
                     }
-                } else if (game.board[i][j]?.has(ObservableComponent) == true) {
-                    uiBoard[i][j] = "bomb"
+                } else if (game.board[i][j]?.has(BoostComponent) == true) {
+                    if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.SPEED) {
+                        uiBoard[i][j] = "speed"
+                    } else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.RANGE) {
+                        uiBoard[i][j] = "range"
+                    } else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.POINTS) {
+                        uiBoard[i][j] = "points"
+                    }
 
                 } else if (game.board[i][j]?.has(LifetimeComponent) == true) {
                     if (game.board[i][j]?.get(LifetimeComponent)?.fire == true) {
                         uiBoard[i][j] = "fire"
-                    }
-
-                }else if (game.board[i][j]?.has(BoostComponent) == true) {
-                    if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.SPEED) {
-                        uiBoard[i][j] = "speed"
-                    }
-                    else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.RANGE) {
-                        uiBoard[i][j] = "range"
-                    }
-                    else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.POINTS) {
-                        uiBoard[i][j] = "points"
+                    } else {
+                        uiBoard[i][j] = "bomb"
                     }
 
                 }
-            }
-        }
-        return uiBoard
-    }
+            }}
+            return uiBoard
 
+    }
 
     fun getPlayerPosition() : Pair<Int,Int> {
         return PlayerSystem.getPosition()
     }
 
-    fun getNPCPosition() : Pair<Int,Int> {
-        return NPCSystem.getPosition()
+    fun getNPCPositions() : Array<Pair<Int,Int>> {
+        return NPCSystem.getPositions()
     }
 
     fun isGameWon(): Boolean {
         return this.gameWon
+    }
+
+    fun getPlayerLives(): Int {
+        return PlayerSystem.getLives()
+    }
+
+    fun getNPCLives() : Array<Int> {
+        return NPCSystem.getLives()
+
     }
 
     fun updatePos(direction: String) {
@@ -127,21 +129,19 @@ class PlayController {
     }
 
     fun bomb() {
-        game.placeBomb()
+        game.bomb()
     }
     fun spawnPowerUp() {
-        var randInt = Random.nextInt(0,500)
+        val randInt = Random.nextInt(0,500)
         if(randInt < 2) {
             game.powerUp()
         }
     }
 
     fun isGameOver(): Boolean {
-        if (NPCSystem.getLives() == 0) {
-            gameWon = true
-            return true
-        } else if (PlayerSystem.getLives() == 0) {
-            gameWon = false
+        if (game.gameOver()) {
+            println("game is over")
+            gameWon = game.gameWon()
             return true
         } else if (timerOver) {
             return true
@@ -151,9 +151,9 @@ class PlayController {
 
     fun score(): Int {
         if(!gameWon) {
-            return 0;
+            return 0
         }
-        return PlayerSystem.getScore() + PlayerSystem.getLives() * 250 * (getTime()?.toInt() ?: 1)
+        return PlayerSystem.getScore() + PlayerSystem.getLives() * 100 + (getTime() ?: 1)
 
 
 

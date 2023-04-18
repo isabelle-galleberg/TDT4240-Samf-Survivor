@@ -23,8 +23,6 @@ import com.mygdx.tdt4240.states.StateManager
 import com.mygdx.tdt4240.states.GameOverState
 import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
@@ -60,7 +58,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
 
     override fun update(deltaTime: Float) {
-        playController.updateTime(deltaTime)
+        playController.update(deltaTime)
         if (PauseBtn().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))
         } else if (UpBtn().upBtnPressed()) {
@@ -73,10 +71,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
             playController.updatePos("RIGHT")
         } else if(BombBtn().bombBtnPressed()) {
             playController.bomb()
-
         }
-        playController.spawnPowerUp()
-        playController.updatePosNPC()
 
     }
     override fun render(sprites: SpriteBatch) {
@@ -92,10 +87,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
         sprites.begin()
         gameOver = playController.isGameOver()
-
         if (gameOver) {
-            PlayerSystem.resetLives()
-            NPCSystem.resetLives()
+            //playController.resetGame()
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.score()))
         }
 
@@ -132,7 +125,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
         player.draw(sprites) //Player
 
-        val npcPos = playController.getNPCPosition()
+        val npcPos = playController.getNPCPositions().first()
         NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
         nPC.draw(sprites) //NPC
 
@@ -142,7 +135,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         rightBtn.draw(sprites) // RIGHT button
         bombBtn.draw(sprites) // Bomb button
 
-        LivesDisplay(sprites, PlayerSystem.getLives(), NPCSystem.getLives()) // Lives
+        LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives().first()) // Lives
 
         val time = playController.getTime().toString() //Timer
         font.color = Color.BLACK

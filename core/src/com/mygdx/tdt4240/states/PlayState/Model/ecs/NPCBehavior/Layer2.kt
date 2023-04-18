@@ -1,22 +1,18 @@
 package com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior
 
 import com.github.quillraven.fleks.Entity
-import com.github.quillraven.fleks.World
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ObstacleSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.CharacterSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
-import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
 
 /* Avoid collision with fire, bombs, walls, crates*/
 open class Layer2 : Layer1() {
     fun avoidCollision(entity: Entity, board : Array<Array<Entity?>>) : DirectionType {
-        var NPCDirection = NPCSystem.getDirection(entity)
-        var x = NPCSystem.getPosition(entity).first
-        var y = NPCSystem.getPosition(entity).second
+        var NPCDirection = CharacterSystem.getDirection(entity)
+        val x = CharacterSystem.getPosition(entity).first
+        val y = CharacterSystem.getPosition(entity).second
         var collision = true
         while (collision) {
             if (NPCDirection == DirectionType.DOWN) {

@@ -1,7 +1,6 @@
 package com.mygdx.tdt4240.states.PlayState.Model.logic
 
 import com.github.quillraven.fleks.Entity
-import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
@@ -9,43 +8,44 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
-import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
-import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import java.util.*
 import kotlin.random.Random
 
 
 /* Game logic */
-class Game (val world: World){
+class Game (npcNum: Int = 1){ //set number of NPCs default to 1
+    private val world = world {
+        systems {
+            add(NPCSystem)
+            add(PlayerSystem)
+            add(LifeSystem)
+            add(CharacterSystem)
+        }}
 
     val board = Array(9) { arrayOfNulls<Entity>(9) }
-    private val player = PlayerFactory.createPlayer(world, (GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.45f).toInt(),(GAME_HEIGHT * 0.85f).toInt())
-    private val npc = NPCFactory.createNPC(world, 0, 0)
-
-    private var game = false
-    private var NPCmove = 0
-
-    private var movePlayer = 0;
+    private var player = EntityFactory.createPlayer(world,0,8)
+    private var npcList = arrayOfNulls<Entity>(npcNum)
+    private var npcMove = 0
+    private var playerMove = 0
 
     fun init() {
+        for (i in npcList.indices) {
+            npcList[i] = EntityFactory.createNPC(world,8,0)
+        }
         initBoard()
-        game = true
     }
 
     private fun initBoard(): Array<Array<Entity?>> {
-        PlayerSystem.setPosition(Pair(0,8)) //Player
-        NPCSystem.setPosition(Pair(8,0)) //NPC
-
         for (i in board.indices) {
             for (j in board[i].indices) {
                 if (i % 2 != 0 && j % 2 != 0) {
-                    board[i][j] = WallFactory.createWall(world, i, j) //Wall
-                } else if (i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6 || i == 7) {
-                    board[i][j] = CrateFactory.createCrate(world, i, j) //Crate
+                    board[i][j] = EntityFactory.createWall(world) //Wall
+                } else if (i == 1 || i == 3 || i == 5 || i == 7) {
+                    board[i][j] = EntityFactory.createCrate(world) //Crate
                 }
             }
         }
@@ -53,69 +53,74 @@ class Game (val world: World){
     }
 
     fun movePlayer() {
-        if(movePlayer < PlayerSystem.getSpeed()) {
-            movePlayer++
+        if(playerMove < CharacterSystem.getSpeed(player)) {
+            playerMove++
             return
         }
-        val x = PlayerSystem.getPosition().first
-        val y = PlayerSystem.getPosition().second
+        val x = CharacterSystem.getPosition(player).first
+        val y = CharacterSystem.getPosition(player).second
         val direction = PlayerSystem.getDirection()
         if (direction == DirectionType.DOWN) {
             if (y-1 < 0 || board[x][y-1]?.has(ObstacleComponent) == true) {
                 return
             } else if(board[x][y-1]?.has(BoostComponent) == true)
             {
-                booster(board[x][y-1]?.get(BoostComponent)?.powerupType);
+                booster(board[x][y-1])
                 board[x][y-1] = null
             }
-            PlayerSystem.setPosition(Pair(x,y-1))
+            CharacterSystem.setPosition(player,x,y-1)
 
         } else if (direction == DirectionType.UP) {
             if (y+1 > 8 || board[x][y+1]?.has(ObstacleComponent) == true) {
                 return
             }else if(board[x][y+1]?.has(BoostComponent) == true)
             {
-                booster(board[x][y+1]?.get(BoostComponent)?.powerupType);
+                booster(board[x][y+1])
                 board[x][y+1] = null
             }
-            PlayerSystem.setPosition(Pair(x, y+1))
+            CharacterSystem.setPosition(player,x, y+1)
 
         } else if (direction == DirectionType.RIGHT) {
             if (x+1 > 8 || board[x+1][y]?.has(ObstacleComponent) == true) {
                 return
             }else if(board[x+1][y]?.has(BoostComponent) == true)
             {
-                booster(board[x+1][y]?.get(BoostComponent)?.powerupType);
+                booster(board[x+1][y])
                 board[x+1][y] = null
             }
-            PlayerSystem.setPosition(Pair(x+1,y))
+            CharacterSystem.setPosition(player,x+1,y)
 
         } else if (direction == DirectionType.LEFT) {
             if (x-1 < 0 || board[x-1][y]?.has(ObstacleComponent) == true) {
                 return
             }else if(board[x-1][y]?.has(BoostComponent) == true)
             {
-                booster(board[x-1][y]?.get(BoostComponent)?.powerupType);
+                booster(board[x-1][y])
                 board[x-1][y] = null
             }
-            PlayerSystem.setPosition(Pair(x-1,y))
-            movePlayer = 0;
+            CharacterSystem.setPosition(player,x-1,y)
         }
+        playerMove = 0
     }
 
-    fun placeBomb() {
-        val x = PlayerSystem.getPosition().first
-        val y = PlayerSystem.getPosition().second
-        board[x][y] = EntityFactory.createBomb(world,x,y)
+    /*function for when player places bomb*/
+    fun bomb() {
+        placeBomb(player)
+    }
+
+    fun placeBomb(entity: Entity) {
+        val x = CharacterSystem.getPosition(entity).first
+        val y = CharacterSystem.getPosition(entity).second
+        board[x][y] = EntityFactory.createBomb(world)
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 board[x][y] = null
-                fire(x,y)
-            } }, (2000))
+                fire(entity,x,y)
+            } }, LifeSystem.getLifeTime(board[x][y]))
     }
 
-    fun fire(x: Int, y:Int) {
-        val fireLength = PlayerSystem.getFireLength()
+    fun fire(entity: Entity,x: Int, y:Int) {
+        val fireLength = CharacterSystem.getFirelength(entity)
         val fireCoordinates = mutableListOf<Pair<Int,Int>>()
         fireCoordinates.add(Pair(x,y))
 
@@ -174,20 +179,24 @@ class Game (val world: World){
         }
 
         for (cor in fireCoordinates) {
-            board[cor.first][cor.second] = EntityFactory.createFire(world,cor.first,cor.second, 2)
-            if (cor.first == PlayerSystem.getPosition().first && cor.second == PlayerSystem.getPosition().second) {
-                PlayerSystem.reduceLives()
-            } else if(cor.first == NPCSystem.getPosition().first && cor.second == NPCSystem.getPosition().second) {
-                NPCSystem.reduceLives()
-            }
+            board[cor.first][cor.second] = EntityFactory.createFire(world)
         }
+        if (fireCoordinates.contains(CharacterSystem.getPosition(player))) {
+            CharacterSystem.reduceLives(player)
+        }
+
+        NPCSystem.getNPCs().forEach { npc ->
+            if (fireCoordinates.contains(CharacterSystem.getPosition(npc))) {
+                CharacterSystem.reduceLives(npc)
+            }}
+
 
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 for (cor in fireCoordinates) {
                     board[cor.first][cor.second] = null
                 }
-            } }, (1000))
+            } }, LifeSystem.getLifeTime(board[x][y]) )
     }
     fun powerUp() {
         var x = Random.nextInt(0, 8)
@@ -198,65 +207,68 @@ class Game (val world: World){
         }
 
         val randomTypes = PowerupType.values().toList().shuffled()
-        board[x][y] = EntityFactory.createPowerup(world, x, y, randomTypes.first())
+        board[x][y] = EntityFactory.createPowerup(world, randomTypes.first())
         }
 
 
-fun booster(powerUp: PowerupType?) {
+private fun booster(entity: Entity?) {
+    val powerUp = LifeSystem.getPowerupType(entity)
 
     if (powerUp == PowerupType.POINTS) {
-        PlayerSystem.addScore(PowerupType.POINTS.value);
+        PlayerSystem.addScore(PowerupType.POINTS.value)
     }
-
     else if (powerUp == PowerupType.RANGE) {
-        PlayerSystem.setFireLength(PowerupType.RANGE.value)
+        CharacterSystem.setFirelength(player,PowerupType.RANGE.value)
         Timer().schedule(object : TimerTask() {
             override fun run() {
-                PlayerSystem.setFireLength(3)
+                CharacterSystem.setFirelength(player,3)
             }
-        }, 7000)
+        }, LifeSystem.getLifeTime(entity))
     }
 
     else if ( powerUp == PowerupType.SPEED) {
-        PlayerSystem.setSpeed(PowerupType.SPEED.value)
+        PlayerSystem.setSpeed(20-PowerupType.SPEED.value)
         Timer().schedule(object : TimerTask() {
             override fun run() {
-                PlayerSystem.setSpeed(5)
+                CharacterSystem.setSpeed(player,20)
             }
-        }, 5000)
+        }, LifeSystem.getLifeTime(entity))
 
     }}
 
     fun moveNPC() {
-        if (NPCmove < NPCSystem.getSpeed()) {
-            NPCmove += 1
+        if (npcMove < NPCSystem.getSpeed()) {
+            npcMove += 1
             return
         }
-        NPCBehavior.setBombs(world,npc,board, this)
-        val x = NPCSystem.getPosition(npc).first
-        val y = NPCSystem.getPosition(npc).second
-        val direction = NPCSystem.getDirection(npc)
-        if (direction == DirectionType.DOWN) {
-            NPCSystem.setPosition(Pair(x,y-1))
-        } else if (direction == DirectionType.UP) {
-            NPCSystem.setPosition(Pair(x, y+1))
-        } else if (direction == DirectionType.RIGHT) {
-            NPCSystem.setPosition(Pair(x+1,y))
-
-        } else if (direction == DirectionType.LEFT) {
-            NPCSystem.setPosition(Pair(x-1,y))
+        NPCSystem.getNPCs().forEach {npc ->
+            NPCBehavior.setBombs(npc,board, this)
+            val x = CharacterSystem.getPosition(npc).first
+            val y = CharacterSystem.getPosition(npc).second
+            val direction = CharacterSystem.getDirection(npc)
+            if (direction == DirectionType.DOWN) {
+                CharacterSystem.setPosition(npc,x,y-1)
+            } else if (direction == DirectionType.UP) {
+                CharacterSystem.setPosition(npc,x, y+1)
+            } else if (direction == DirectionType.RIGHT) {
+                CharacterSystem.setPosition(npc,x+1,y)
+            } else if (direction == DirectionType.LEFT) {
+                CharacterSystem.setPosition(npc,x-1,y)
+            }
+            npcMove = 0
         }
-        NPCmove = 0
 
     }
+
+    fun gameWon(): Boolean {
+        return CharacterSystem.getLives(player) != 0
+    }
+
+    fun gameOver(): Boolean {
+        return CharacterSystem.getLives(player) == 0 || CharacterSystem.getLives(npcList.first()) == 0
+    }
+
+    fun resetGame() {
+        initBoard()
+    }
 }
-
-
-
-
-fun main() {
-    val world = world {}
-    val b = Game(world)
-    b.init()
-}
-

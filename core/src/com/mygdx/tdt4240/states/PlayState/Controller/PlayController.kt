@@ -25,7 +25,6 @@ class PlayController {
 
     private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
     private var game = Game(world)
-    private var score = 0
     private var gameWon = false
     private var timerOver = false
     private var worldTimer: Int? = 300
@@ -98,6 +97,10 @@ class PlayController {
         return NPCSystem.getPosition()
     }
 
+    fun isGameWon(): Boolean {
+        return this.gameWon
+    }
+
     fun updatePos(direction: String) {
         if (direction == "RIGHT") {
             PlayerSystem.setDirection(DirectionType.RIGHT)
@@ -133,21 +136,26 @@ class PlayController {
         }
     }
 
-
-
-
     fun isGameOver(): Boolean {
         if (NPCSystem.getLives() == 0) {
             gameWon = true
-            score = PlayerSystem.getLives() * 250
             return true
         } else if (PlayerSystem.getLives() == 0) {
             gameWon = false
-            score = 0
             return true
         } else if (timerOver) {
             return true
         }
         return false
+    }
+
+    fun score(): Int {
+        if(!gameWon) {
+            return 0;
+        }
+        return PlayerSystem.getScore() + PlayerSystem.getLives() * 250 * (getTime()?.toInt() ?: 1)
+
+
+
     }
 }

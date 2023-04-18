@@ -20,6 +20,7 @@ import com.mygdx.tdt4240.sprites.NPC
 
 import com.mygdx.tdt4240.states.State
 import com.mygdx.tdt4240.states.StateManager
+import com.mygdx.tdt4240.states.GameOverState
 import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
@@ -50,8 +51,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val powerUpRangeImg = Texture("gameView/powerUpRange.png")
     private val powerUpPointsImg = Texture("gameView/powerUpPoints.png")
 
-
-
     private val playController = PlayController()
     private var uiBoard = playController.drawBoard()
     private var gameOver = false
@@ -78,6 +77,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         }
         playController.spawnPowerUp()
         playController.updatePosNPC()
+
     }
     override fun render(sprites: SpriteBatch) {
 
@@ -96,6 +96,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         if (gameOver) {
             PlayerSystem.resetLives()
             NPCSystem.resetLives()
+            stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.score()))
         }
 
         pauseBtn.draw(sprites) // Pause button

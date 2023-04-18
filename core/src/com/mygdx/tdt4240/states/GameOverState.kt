@@ -19,10 +19,9 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 
-class GameOverState(stateManager: StateManager, isVictory: Boolean) : State(stateManager) {
+class GameOverState(stateManager: StateManager, isVictory: Boolean, score: Int) : State(stateManager) {
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
-    private val score: Int = 0
     private val background = Texture("gameOver/background.png")
 
     private var gameOverLabel = Label("", skin).apply {

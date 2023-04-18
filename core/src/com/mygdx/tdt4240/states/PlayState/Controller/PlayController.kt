@@ -119,7 +119,7 @@ class PlayController {
         game.placeBomb()
     }
     fun spawnPowerUp() {
-        var randInt = Random.nextInt(0,15)
+        var randInt = Random.nextInt(0,100)
         if(randInt < 3) {
             game.powerUp()
         }

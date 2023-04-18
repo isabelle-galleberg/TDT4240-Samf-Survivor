@@ -164,22 +164,19 @@ class Game (val world: World){
             } }, (1000))
     }
     fun powerUp() {
-        val x = Random.nextInt(0, 8)
-        val y = Random.nextInt(0, 8)
+        var x = Random.nextInt(0, 8)
+        var y = Random.nextInt(0, 8)
+        while (board[x][y]?.has(ObstacleComponent) == true || board[x][y]?.has(LifetimeComponent) == true) {
+            x = Random.nextInt(0, 8)
+            y = Random.nextInt(0, 8)
+        }
 
         val randomTypes = PowerupType.values().toList().shuffled()
-
-        if (board[x][y]?.has(ObstacleComponent) == false) {
-            board[x][y] = EntityFactory.createPowerup(world, x, y, randomTypes.first())
-            println("hey")
-            println(x)
-            println(y)
-
+        board[x][y] = EntityFactory.createPowerup(world, x, y, randomTypes.first())
         }
     }
 
 
-}
 
 fun main() {
     val world = world {}

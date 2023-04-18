@@ -180,13 +180,15 @@ class Game (npcNum: Int = 1){ //set number of NPCs default to 1
 
         for (cor in fireCoordinates) {
             board[cor.first][cor.second] = EntityFactory.createFire(world)
-            if (cor.first == PlayerSystem.getPosition().first && cor.second == PlayerSystem.getPosition().second) {
-                CharacterSystem.reduceLives(player)
-            }
-            NPCSystem.getNPCs().forEach { npc ->
-                cor.first == CharacterSystem.getPosition(npc).first && cor.second == CharacterSystem.getPosition(npc).second
+        }
+        if (fireCoordinates.contains(CharacterSystem.getPosition(player))) {
+            CharacterSystem.reduceLives(player)
+        }
+
+        NPCSystem.getNPCs().forEach { npc ->
+            if (fireCoordinates.contains(CharacterSystem.getPosition(npc))) {
                 CharacterSystem.reduceLives(npc)
-        }}
+            }}
 
 
         Timer().schedule(object : TimerTask() {
@@ -263,6 +265,7 @@ private fun booster(entity: Entity?) {
     }
 
     fun gameOver(): Boolean {
+        println(CharacterSystem.getLives(npcList.first()))
         return CharacterSystem.getLives(player) == 0 || CharacterSystem.getLives(npcList.first()) == 0
     }
 

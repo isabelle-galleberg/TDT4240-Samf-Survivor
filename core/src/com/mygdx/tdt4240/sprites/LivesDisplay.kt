@@ -36,13 +36,12 @@ class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Int){
         sprites.draw(playerImg, x,  iconPlayerY, iconSize, iconSize)
 
         for (i in 0 until 3) {
-            if(i < livesPlayer){
-                sprites.draw(heartFullImg, heartX - i * heartSize,  heartFullY, heartSize, heartSize)
-            }
-            else {
+            if(i < 3-livesPlayer){
                 sprites.draw(heartEmptyImg, heartX - i * heartSize,  heartFullY, heartSize, heartSize)
             }
-
+            else {
+                sprites.draw(heartFullImg, heartX - i * heartSize,  heartFullY, heartSize, heartSize)
+            }
         }
 
         // Lives display for NPC
@@ -51,11 +50,11 @@ class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Int){
         sprites.draw(npcImg, x,  iconNPCY, iconSize, iconSize)
 
         for (i in 0 until 3) {
-            if(i < livesNPC){
-                sprites.draw(heartFullImg, heartX - i * heartSize,  heartEmptyY, heartSize, heartSize)
+            if(i < 3-livesNPC){
+                sprites.draw(heartEmptyImg, heartX - i * heartSize,  heartEmptyY, heartSize, heartSize)
             }
             else {
-                sprites.draw(heartEmptyImg, heartX - i * heartSize,  heartEmptyY, heartSize, heartSize)
+                sprites.draw(heartFullImg, heartX - i * heartSize,  heartEmptyY, heartSize, heartSize)
             }
         }
     }

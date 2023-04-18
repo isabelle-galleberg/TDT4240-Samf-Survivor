@@ -227,10 +227,10 @@ private fun booster(entity: Entity?) {
     }
 
     else if ( powerUp == PowerupType.SPEED) {
-        PlayerSystem.setSpeed(30-PowerupType.SPEED.value)
+        PlayerSystem.setSpeed(20-PowerupType.SPEED.value)
         Timer().schedule(object : TimerTask() {
             override fun run() {
-                CharacterSystem.setSpeed(player,30)
+                CharacterSystem.setSpeed(player,20)
             }
         }, LifeSystem.getLifeTime(entity))
 

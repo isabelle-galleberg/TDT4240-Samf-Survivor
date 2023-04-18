@@ -23,6 +23,7 @@ import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.sprites.Bomb
 import com.mygdx.tdt4240.sprites.Fire
+import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
@@ -60,6 +61,9 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     override fun update(deltaTime: Float) {
         playController.updateTime(deltaTime)
         if (PauseBtn().pauseBtnPressed()) {
+            // need to change to PauseState view
+            stateManager.push(PauseState(stateManager))
+            //stateManager.push(MainMenuState(stateManager))
          // need to change to PauseState view
          // stateManager.push(PauseState(stateManager))
          // stateManager.push(MainMenuState(stateManager))

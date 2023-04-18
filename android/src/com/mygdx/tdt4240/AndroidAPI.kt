@@ -1,8 +1,8 @@
 package com.mygdx.tdt4240
 
 import com.google.firebase.database.*
-import com.mygdx.tdt4240.firebase.API
-import com.mygdx.tdt4240.firebase.User
+import com.mygdx.tdt4240.api.API
+import com.mygdx.tdt4240.api.User
 import java.util.*
 
 

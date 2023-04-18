@@ -20,6 +20,11 @@ import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.states.State
 import com.mygdx.tdt4240.states.StateManager
+import com.mygdx.tdt4240.sprites.Speed
+import com.mygdx.tdt4240.sprites.Range
+import com.mygdx.tdt4240.sprites.Points
+
+
 
 import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
@@ -40,6 +45,10 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
+
+    private val speed = Speed().createSpeed()
+    private val points = Points().createPoints()
+    private val range = Range().createRange()
 
     private val boardFrameImg = Texture("gameView/boardFrame.png")
     private val tileImg = Texture("gameView/tile.png")
@@ -113,15 +122,15 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                     sprites.draw(bombImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 } else if (uiBoard[i][j].equals("fire")) {
                     sprites.draw(fireImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
-                }/*
+                }
                 else if (uiBoard[i][j].equals("speed")) {
-                speed.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
-                 speed.draw(sprites)
+                    speed.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
+                    speed.draw(sprites)
 
                 }
                 else if (uiBoard[i][j].equals("range")) {
-                range.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
-                range.draw(sprites)
+                    range.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
+                    range.draw(sprites)
 
                 }
                 else if (uiBoard[i][j].equals("points")) {

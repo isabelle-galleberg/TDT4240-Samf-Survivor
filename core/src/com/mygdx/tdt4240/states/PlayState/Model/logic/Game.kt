@@ -200,7 +200,7 @@ class Game (val world: World){
         val randomTypes = PowerupType.values().toList().shuffled()
         board[x][y] = EntityFactory.createPowerup(world, x, y, randomTypes.first())
         }
-    }
+
 
 fun booster(powerUp: PowerupType?) {
 
@@ -224,6 +224,9 @@ fun booster(powerUp: PowerupType?) {
                 PlayerSystem.setSpeed(5)
             }
         }, 5000)
+
+    }}
+
     fun moveNPC() {
         if (NPCmove < NPCSystem.getSpeed()) {
             NPCmove += 1

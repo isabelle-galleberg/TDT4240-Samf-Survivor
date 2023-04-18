@@ -2,6 +2,7 @@ package com.mygdx.tdt4240.states.PlayState.Controller
 
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.EntityFactory
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.get
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.BombSystem.has
@@ -9,6 +10,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
 import java.util.*
+import kotlin.random.Random
 
 class PlayController {
     private val world = world {
@@ -28,9 +30,11 @@ class PlayController {
     private var timerOver = false
     private var worldTimer: Int? = 300
     private var timeCount = 0f
+    val timerTasks = mutableListOf<TimerTask>()
 
     init {
         game.init()
+
     }
 
     fun updateTime(dt: Float) {
@@ -85,6 +89,7 @@ class PlayController {
         return uiBoard
     }
 
+
     fun getPlayerPosition() : Pair<Int,Int> {
         return PlayerSystem.getPosition()
     }
@@ -113,7 +118,15 @@ class PlayController {
     fun bomb() {
         game.placeBomb()
     }
+    fun spawnPowerUp() {
+        var randInt = Random.nextInt(0,15)
+        if(randInt < 3) {
+            game.powerUp()
+        }
+    }
 
+
+/*
     fun booster(powerUp: PowerupType) {
         val x = PlayerSystem.getPosition().first
         val y = PlayerSystem.getPosition().second
@@ -129,7 +142,7 @@ class PlayController {
             return
         }
         if (x == boosterX && y == boosterY && powerUp == PowerupType.SPEED) {
-            PlayerSystem.setSpeed(PowerupType.SPEED.value + 5)
+            PlayerSystem.setSpeed(PowerupType.SPEED + 5)
             Timer().schedule(object : TimerTask() {
                 override fun run() {
                     PlayerSystem.setSpeed(5)
@@ -138,7 +151,7 @@ class PlayController {
             }, 3000)
         }
     }
-
+*/
     fun isGameOver(): Boolean {
         if (NPCSystem.getLives() == 0) {
             gameWon = true

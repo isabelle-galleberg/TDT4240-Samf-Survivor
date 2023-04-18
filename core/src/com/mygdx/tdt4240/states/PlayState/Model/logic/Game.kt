@@ -3,6 +3,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.logic
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
@@ -162,23 +163,22 @@ class Game (val world: World){
                 }
             } }, (1000))
     }
-
     fun powerUp() {
-        while(game) {
-            val x = Random.nextInt(0,9)
-            val y = Random.nextInt(0,9)
+        val x = Random.nextInt(0, 8)
+        val y = Random.nextInt(0, 8)
 
-            val randomTypes = PowerupType.values().toList().shuffled()
+        val randomTypes = PowerupType.values().toList().shuffled()
 
-            if(board[x][y]?.has(ObstacleComponent) == false) {
-                Timer().schedule(object : TimerTask() {
-                    override fun run() {
-                        EntityFactory.createPowerup(world, x, y, randomTypes.first())
-                    }
-                }, Random.nextLong(2000,10000))
-            }
+        if (board[x][y]?.has(ObstacleComponent) == false) {
+            board[x][y] = EntityFactory.createPowerup(world, x, y, randomTypes.first())
+            println("hey")
+            println(x)
+            println(y)
+
         }
     }
+
+
 }
 
 fun main() {

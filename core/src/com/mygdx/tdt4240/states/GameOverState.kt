@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -20,7 +19,7 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 
-class GameOverState(stateManager: StateManager, api: API, isVictory: Boolean) : State(stateManager) {
+class GameOverState(stateManager: StateManager, isVictory: Boolean) : State(stateManager) {
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     private val score: Int = 0
@@ -66,8 +65,8 @@ class GameOverState(stateManager: StateManager, api: API, isVictory: Boolean) : 
         stage.addActor(gameOverLabel)
         stage.addActor(scoreLabel)
 
-        handleClick(playAgainBtn, PlayView(stateManager, api))
-        handleClick(menuBtn, MainMenuState(stateManager, api))
+        handleClick(playAgainBtn, PlayView(stateManager))
+        handleClick(menuBtn, MainMenuState(stateManager))
     }
 
     private fun handleClick(button: TextButton, state: State){

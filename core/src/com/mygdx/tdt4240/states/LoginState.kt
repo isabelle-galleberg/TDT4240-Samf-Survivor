@@ -23,9 +23,10 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.mygdx.tdt4240.utils.Globals.currentUser
+import com.mygdx.tdt4240.utils.Globals.api
 
 class LoginState(
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private val stage = Stage()
@@ -74,7 +75,7 @@ class LoginState(
 
 
     init {
-        handleLogIn(api)
+        handleLogIn(api!!)
         handleRegister()
         handleKeyboard(username)
         handleKeyboard(password)
@@ -98,7 +99,7 @@ class LoginState(
                 }
                 else {
                     currentUser = username.text
-                    stateManager.push(MainMenuState(stateManager, api))
+                    stateManager.push(MainMenuState(stateManager))
                     errorLabel.remove()
                 }
             }
@@ -108,7 +109,7 @@ class LoginState(
     private fun handleRegister() {
         registerBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                stateManager.push(RegisterState(stateManager, api))
+                stateManager.push(RegisterState(stateManager))
         }
         })
     }
@@ -128,7 +129,7 @@ class LoginState(
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
-            stateManager.push(LoginState(stateManager, api))
+            stateManager.push(LoginState(stateManager))
         }
     }
 

@@ -16,13 +16,9 @@ import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
-/**
- * State for the tutorial.
- * @param stateManager Manager of all game states.
- */
 
 class TutorialState(
-stateManager: StateManager, private val api: API
+stateManager: StateManager
 ) : State(stateManager) {
     private val logo = Logo().createLogo()
     private val background = Texture("samfundet.png")
@@ -91,7 +87,7 @@ stateManager: StateManager, private val api: API
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
-            stateManager.push(MainMenuState(stateManager,api))
+            stateManager.push(MainMenuState(stateManager))
         }
     }
 

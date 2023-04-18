@@ -7,7 +7,6 @@ import com.mygdx.tdt4240.states.StateManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.Texture
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
@@ -25,7 +24,7 @@ import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.states.PauseState
 
 class PlayView (
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private var font = BitmapFont()
@@ -53,7 +52,7 @@ class PlayView (
     override fun update(deltaTime: Float) {
         if (PauseBtn().pauseBtnPressed()) {
             // need to change to PauseState view
-            stateManager.push(PauseState(stateManager, api))
+            stateManager.push(PauseState(stateManager))
             //stateManager.push(MainMenuState(stateManager))
         }
         else if (UpBtn().upBtnPressed()) {

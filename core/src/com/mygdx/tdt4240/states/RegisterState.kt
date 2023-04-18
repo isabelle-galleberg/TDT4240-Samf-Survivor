@@ -22,15 +22,11 @@ import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Globals.currentUser
+import com.mygdx.tdt4240.utils.Globals.api
 
-/**
- * State for the register form.
- * @param stateManager Manager of all game states.
- * @param api API for communicating with the database.
- */
 
 class RegisterState(
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private val stage = Stage()
@@ -73,7 +69,7 @@ class RegisterState(
     }
 
     init {
-        handleRegister(api)
+        handleRegister(api!!)
         handleKeyboard(username)
         handleKeyboard(password)
 
@@ -96,7 +92,7 @@ class RegisterState(
                 else {
                     api.submitUser(User(username.text, password.text, 0))
                     currentUser = username.text
-                    stateManager.push(MainMenuState(stateManager,api))
+                    stateManager.push(MainMenuState(stateManager))
                     errorLabel.remove()
                 }
             }
@@ -118,7 +114,7 @@ class RegisterState(
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
-            stateManager.push(LoginState(stateManager, api))
+            stateManager.push(LoginState(stateManager))
         }
     }
 

@@ -2,7 +2,6 @@ package com.mygdx.tdt4240.states
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.firebase.User
 import com.badlogic.gdx.graphics.Texture
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -12,9 +11,10 @@ import java.util.*
 import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.utils.Globals.currentUser
+import com.mygdx.tdt4240.utils.Globals.api
 
 class HighScoreListState(
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private var highscores = ArrayList<User>()
@@ -31,7 +31,7 @@ class HighScoreListState(
 
     private fun getHighscores() {
         highscores.clear()
-        api.getHighscores(highscores)
+        api!!.getHighscores(highscores)
     }
 
     private fun getHighscoreRanking(): Int {
@@ -45,7 +45,7 @@ class HighScoreListState(
 
     override fun update(deltaTime: Float) {
      if (BackBtn().backBtnPressed()) {
-         stateManager.push(MainMenuState(stateManager,api))
+         stateManager.push(MainMenuState(stateManager))
      }
     }
 
@@ -70,7 +70,7 @@ class HighScoreListState(
 
         font.draw(sprites, getHighscoreRanking().toString(), GAME_WIDTH * 0.175f, GAME_HEIGHT * 0.13f)
         font.draw(sprites, currentUser, GAME_WIDTH * 0.25f, GAME_HEIGHT * 0.13f)
-        font.draw(sprites, api.getHighscore(currentUser).toString(), GAME_WIDTH * 0.75f, GAME_HEIGHT * 0.13f)
+        font.draw(sprites, api!!.getHighscore(currentUser).toString(), GAME_WIDTH * 0.75f, GAME_HEIGHT * 0.13f)
 
         sprites.flush()
         sprites.end()

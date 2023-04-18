@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
@@ -22,7 +21,7 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 
 class PauseState(
-    stateManager: StateManager, api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private val stage = Stage()
@@ -58,8 +57,8 @@ class PauseState(
         stage.addActor(playBtn)
         stage.addActor(mainMenuBtn)
 
-        handleClick(playBtn, PlayView(stateManager, api))
-        handleClick(mainMenuBtn, MainMenuState(stateManager, api))
+        handleClick(playBtn, PlayView(stateManager))
+        handleClick(mainMenuBtn, MainMenuState(stateManager))
     }
 
     override fun update(deltaTime: Float) {

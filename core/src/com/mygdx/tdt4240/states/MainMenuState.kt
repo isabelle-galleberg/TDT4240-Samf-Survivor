@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
@@ -23,7 +22,7 @@ import com.mygdx.tdt4240.utils.Globals.currentUser
 
 
 class MainMenuState(
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private val stage = Stage()
@@ -68,9 +67,9 @@ class MainMenuState(
         stage.addActor(logOutBtn)
         stage.addActor(usernameLabel)
 
-        handleClick(playBtn, PlayView(stateManager,api))
-        handleClick(tutorialBtn, TutorialState(stateManager, api))
-        handleClick(highscoreBtn, HighScoreListState(stateManager, api))
+        handleClick(playBtn, PlayView(stateManager))
+        handleClick(tutorialBtn, TutorialState(stateManager))
+        handleClick(highscoreBtn, HighScoreListState(stateManager))
         handleLogout()
     }
 
@@ -91,7 +90,7 @@ class MainMenuState(
         logOutBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 currentUser = ""
-                stateManager.push(LoginState(stateManager, api))
+                stateManager.push(LoginState(stateManager))
                 Gdx.input.inputProcessor = null
             }
         })

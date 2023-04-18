@@ -7,8 +7,10 @@ import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
 class BombBtn {
-    private val bombBtnSize = GAME_HEIGHT * 0.45f
-    private val bombBtnX = GAME_WIDTH/2 + (GAME_HEIGHT/2 + bombBtnSize/4)
+
+    private val screenSideWidth = GAME_WIDTH * 0.25f
+    private val bombBtnSize = screenSideWidth * 0.75f
+    private val bombBtnX = GAME_WIDTH - (screenSideWidth + bombBtnSize) * 0.5f
     private val bombBtnY = 0f
 
     fun createBombBtn(): Sprite {

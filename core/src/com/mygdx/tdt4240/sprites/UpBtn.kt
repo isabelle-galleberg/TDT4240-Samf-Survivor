@@ -3,12 +3,14 @@ package com.mygdx.tdt4240.sprites
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.mygdx.tdt4240.utils.Constants
+import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
 class UpBtn {
-    private val upBtnSize = Constants.GAME_HEIGHT * 0.16f
-    private val upBtnX = Constants.GAME_HEIGHT * 0.25f
-    private val upBtnY = Constants.GAME_HEIGHT * 0.05f + upBtnSize
+    private val screenSideWidth = GAME_WIDTH * 0.25f
+    private val upBtnSize = screenSideWidth * 0.3f
+    private val upBtnX = (screenSideWidth - upBtnSize) * 0.5f
+    private val upBtnY = GAME_HEIGHT * 0.05f + upBtnSize
 
     fun createUpBtn(): Sprite {
         val sprite = Sprite(Texture("gameView/arrowVerticalBtn.png"))
@@ -18,6 +20,6 @@ class UpBtn {
     }
 
     fun upBtnPressed(): Boolean {
-        return Gdx.input.isTouched && Gdx.input.x > upBtnX && Gdx.input.x < upBtnX + upBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - upBtnY && Gdx.input.y > Constants.GAME_HEIGHT - upBtnY - upBtnSize
+        return Gdx.input.isTouched && Gdx.input.x > upBtnX && Gdx.input.x < upBtnX + upBtnSize && Gdx.input.y < GAME_HEIGHT - upBtnY && Gdx.input.y > GAME_HEIGHT - upBtnY - upBtnSize
     }
 }

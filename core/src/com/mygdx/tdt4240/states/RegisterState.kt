@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.firebase.API
-import com.mygdx.tdt4240.firebase.User
+import com.mygdx.tdt4240.api.API
+import com.mygdx.tdt4240.api.User
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -22,15 +22,11 @@ import com.mygdx.tdt4240.sprites.BackBtn
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Globals.currentUser
+import com.mygdx.tdt4240.utils.Globals.api
 
-/**
- * State for the register form.
- * @param stateManager Manager of all game states.
- * @param api API for communicating with the database.
- */
 
 class RegisterState(
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private val stage = Stage()
@@ -60,7 +56,7 @@ class RegisterState(
         setPasswordCharacter('*')
     }
 
-    private val button = TextButton("Register", skin).apply{
+    private val button = TextButton("REGISTER", skin).apply{
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.2f)
@@ -73,7 +69,7 @@ class RegisterState(
     }
 
     init {
-        handleRegister(api)
+        handleRegister(api!!)
         handleKeyboard(username)
         handleKeyboard(password)
 
@@ -96,7 +92,7 @@ class RegisterState(
                 else {
                     api.submitUser(User(username.text, password.text, 0))
                     currentUser = username.text
-                    stateManager.push(MainMenuState(stateManager,api))
+                    stateManager.push(MainMenuState(stateManager))
                     errorLabel.remove()
                 }
             }
@@ -118,7 +114,7 @@ class RegisterState(
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
-            stateManager.push(LoginState(stateManager, api))
+            stateManager.push(LoginState(stateManager))
         }
     }
 

@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
@@ -23,12 +22,11 @@ import com.mygdx.tdt4240.utils.Globals.currentUser
 
 
 class MainMenuState(
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager
 ) : State(stateManager) {
 
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
-    private val logo = Logo().createLogo()
     private val background = Texture("samfundet.png")
 
     private val playBtn = TextButton("PLAY", skin).apply {
@@ -51,8 +49,8 @@ class MainMenuState(
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.05f)
     }
-    private val usernameLabel = Label(currentUser, skin).apply {
-        color = Color.FIREBRICK
+    private val usernameLabel = Label("User: $currentUser", skin).apply {
+        color = Color.BLACK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition(0f, GAME_HEIGHT * 0.85f)
     }
@@ -69,8 +67,8 @@ class MainMenuState(
         stage.addActor(usernameLabel)
 
         handleClick(playBtn, PlayView(stateManager))
-        handleClick(tutorialBtn, TutorialState(stateManager, api))
-        handleClick(highscoreBtn, HighScoreListState(stateManager, api))
+        handleClick(tutorialBtn, TutorialState(stateManager))
+        handleClick(highscoreBtn, HighScoreListState(stateManager))
         handleLogout()
     }
 
@@ -91,7 +89,7 @@ class MainMenuState(
         logOutBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 currentUser = ""
-                stateManager.push(LoginState(stateManager, api))
+                stateManager.push(LoginState(stateManager))
                 Gdx.input.inputProcessor = null
             }
         })
@@ -100,7 +98,6 @@ class MainMenuState(
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
-        logo.draw(sprites)
         sprites.end()
 
         stage.act(Gdx.graphics.deltaTime)

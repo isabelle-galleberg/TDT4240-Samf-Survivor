@@ -60,7 +60,7 @@ class RegisterState(
         setPasswordCharacter('*')
     }
 
-    private val button = TextButton("Register", skin).apply{
+    private val button = TextButton("REGISTER", skin).apply{
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.2f)

@@ -54,13 +54,13 @@ class LoginState(
         setPasswordCharacter('*')
     }
 
-    private val loginBtn = TextButton("Log in", skin).apply{
+    private val loginBtn = TextButton("LOG IN", skin).apply{
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, BUTTON_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.3f)
     }
 
-    private val registerBtn = TextButton("Create a new user", skin).apply{
+    private val registerBtn = TextButton("CREATE A NEW USER", skin).apply{
         color = Color.GRAY
         setSize(INPUT_WIDTH, BUTTON_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.15f)

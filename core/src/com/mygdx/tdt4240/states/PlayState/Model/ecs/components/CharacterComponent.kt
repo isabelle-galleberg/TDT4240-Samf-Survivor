@@ -9,7 +9,7 @@ data class CharacterComponent(
     var x: Int = 0,
     var y: Int = 0,
     var direction:DirectionType = DirectionType.DOWN,
-    var speed:Int = 10,
+    var speed:Int = 30,
     var lives:Int = 3,
     var firelength:Int = 3
 ) : Component<CharacterComponent> {

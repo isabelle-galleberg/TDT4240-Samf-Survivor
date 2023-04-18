@@ -153,7 +153,7 @@ class PlayController(npcNum: Int = 1) {
         if(!gameWon) {
             return 0
         }
-        return PlayerSystem.getScore() + PlayerSystem.getLives() * 250 + (getTime() ?: 1)
+        return PlayerSystem.getScore() + PlayerSystem.getLives() * 100 + (getTime() ?: 1)
 
 
 

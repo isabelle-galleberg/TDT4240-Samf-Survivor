@@ -99,8 +99,8 @@ class Game (npcNum: Int = 1){ //set number of NPCs default to 1
                 board[x-1][y] = null
             }
             CharacterSystem.setPosition(player,x-1,y)
-            playerMove = 0
         }
+        playerMove = 0
     }
 
     /*function for when player places bomb*/
@@ -227,10 +227,10 @@ private fun booster(entity: Entity?) {
     }
 
     else if ( powerUp == PowerupType.SPEED) {
-        PlayerSystem.setSpeed(PowerupType.SPEED.value)
+        PlayerSystem.setSpeed(50-PowerupType.SPEED.value)
         Timer().schedule(object : TimerTask() {
             override fun run() {
-                CharacterSystem.setSpeed(player,5)
+                CharacterSystem.setSpeed(player,50)
             }
         }, LifeSystem.getLifeTime(entity))
 
@@ -261,11 +261,10 @@ private fun booster(entity: Entity?) {
     }
 
     fun gameWon(): Boolean {
-        return CharacterSystem.getLives(player) == 0
+        return CharacterSystem.getLives(player) != 0
     }
 
     fun gameOver(): Boolean {
-        println(CharacterSystem.getLives(npcList.first()))
         return CharacterSystem.getLives(player) == 0 || CharacterSystem.getLives(npcList.first()) == 0
     }
 

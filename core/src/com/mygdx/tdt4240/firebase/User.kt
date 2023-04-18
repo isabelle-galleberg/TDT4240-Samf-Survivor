@@ -5,10 +5,6 @@ class User(val username: String, val password: String, val highscore: Int ) : Co
     // Firebase requires an empty constructor
     constructor() : this("", "", 0)
 
-    override fun toString(): String {
-        return "$username: $highscore"
-    }
-
     override fun compareTo(other: User): Int {
         if (this.highscore > other.highscore) {
             return -1

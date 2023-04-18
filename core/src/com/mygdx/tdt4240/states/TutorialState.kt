@@ -20,7 +20,6 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 class TutorialState(
 stateManager: StateManager
 ) : State(stateManager) {
-    private val logo = Logo().createLogo()
     private val background = Texture("samfundet.png")
     private val tutorialWindow=Window().createWindow()
 
@@ -96,7 +95,6 @@ stateManager: StateManager
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
         tutorialWindow.draw(sprites)
         //sprites.draw(imgArray[pointer], GAME_WIDTH-imgArray[pointer].width/2,GAME_HEIGHT-imgArray[pointer].height/2)
-        logo.draw(sprites)
         backBtn.draw(sprites)
         sprites.end()
         stage.act(Gdx.graphics.deltaTime)

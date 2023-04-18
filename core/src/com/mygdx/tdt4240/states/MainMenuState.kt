@@ -27,7 +27,6 @@ class MainMenuState(
 
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
-    private val logo = Logo().createLogo()
     private val background = Texture("samfundet.png")
 
     private val playBtn = TextButton("PLAY", skin).apply {
@@ -99,7 +98,6 @@ class MainMenuState(
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
-        logo.draw(sprites)
         sprites.end()
 
         stage.act(Gdx.graphics.deltaTime)

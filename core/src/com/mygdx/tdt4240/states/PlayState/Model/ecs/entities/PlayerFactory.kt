@@ -8,8 +8,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
 object PlayerFactory {
     fun createPlayer(world: World, x: Int, y: Int): Entity {
         val entity: Entity = world.entity {
-            it += SpriteComponent(x, y)
-            it += CharacterComponent()
+            it += CharacterComponent(x,y)
             it += PlayerComponent()
         }
         return entity

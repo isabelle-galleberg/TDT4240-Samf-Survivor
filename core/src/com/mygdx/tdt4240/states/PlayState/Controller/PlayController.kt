@@ -119,39 +119,15 @@ class PlayController {
         game.placeBomb()
     }
     fun spawnPowerUp() {
-        var randInt = Random.nextInt(0,100)
-        if(randInt < 3) {
+        var randInt = Random.nextInt(0,500)
+        if(randInt < 2) {
             game.powerUp()
         }
     }
 
 
-/*
-    fun booster(powerUp: PowerupType) {
-        val x = PlayerSystem.getPosition().first
-        val y = PlayerSystem.getPosition().second
 
-        val boosterX = PowerUpSystem.getPosition().first
-        val boosterY = PowerUpSystem.getPosition().second
 
-        if (x == boosterX && y == boosterY && powerUp == PowerupType.POINTS) {
-            score++
-        }
-
-        if (x == boosterX && y == boosterY && powerUp == PowerupType.RANGE) { //fix
-            return
-        }
-        if (x == boosterX && y == boosterY && powerUp == PowerupType.SPEED) {
-            PlayerSystem.setSpeed(PowerupType.SPEED + 5)
-            Timer().schedule(object : TimerTask() {
-                override fun run() {
-                    PlayerSystem.setSpeed(5)
-
-                }
-            }, 3000)
-        }
-    }
-*/
     fun isGameOver(): Boolean {
         if (NPCSystem.getLives() == 0) {
             gameWon = true

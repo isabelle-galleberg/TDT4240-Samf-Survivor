@@ -3,6 +3,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.logic
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
@@ -26,6 +27,8 @@ class Game (val world: World){
 
     private var game = false
 
+    private var movePlayer = 0;
+
     fun init() {
         initBoard()
         game = true
@@ -48,32 +51,54 @@ class Game (val world: World){
     }
 
     fun movePlayer() {
+        if(movePlayer < PlayerSystem.getSpeed()) {
+            movePlayer++
+            return
+        }
         val x = PlayerSystem.getPosition().first
         val y = PlayerSystem.getPosition().second
         val direction = PlayerSystem.getDirection()
+
         if (PlayerSystem.getDirection() == DirectionType.DOWN) {
             if (y-1 < 0 || board[x][y-1]?.has(ObstacleComponent) == true) {
                 return
+            } else if(board[x][y-1]?.has(BoostComponent) == true)
+            {
+                booster(board[x][y-1]?.get(BoostComponent)?.powerupType);
+                board[x][y-1] = null
             }
             PlayerSystem.setPosition(Pair(x,y-1))
 
         } else if (direction == DirectionType.UP) {
             if (y+1 > 8 || board[x][y+1]?.has(ObstacleComponent) == true) {
                 return
+            }else if(board[x][y+1]?.has(BoostComponent) == true)
+            {
+                booster(board[x][y+1]?.get(BoostComponent)?.powerupType);
+                board[x][y+1] = null
             }
             PlayerSystem.setPosition(Pair(x, y+1))
 
         } else if (direction == DirectionType.RIGHT) {
             if (x+1 > 8 || board[x+1][y]?.has(ObstacleComponent) == true) {
                 return
+            }else if(board[x+1][y]?.has(BoostComponent) == true)
+            {
+                booster(board[x+1][y]?.get(BoostComponent)?.powerupType);
+                board[x+1][y] = null
             }
             PlayerSystem.setPosition(Pair(x+1,y))
 
         } else if (direction == DirectionType.LEFT) {
             if (x-1 < 0 || board[x-1][y]?.has(ObstacleComponent) == true) {
                 return
+            }else if(board[x-1][y]?.has(BoostComponent) == true)
+            {
+                booster(board[x-1][y]?.get(BoostComponent)?.powerupType);
+                board[x-1][y] = null
             }
             PlayerSystem.setPosition(Pair(x-1,y))
+            movePlayer = 0;
         }
     }
 
@@ -95,70 +120,70 @@ class Game (val world: World){
 
         //Fire right
         for (i in 1 until fireLength) {
-            if (x+1 == 9) {
+            if (x+i > 8) {
                 break
             }
-            if (board[x+1][y]?.has(ObstacleComponent) == true) {
+            if (board[x+i][y]?.has(ObstacleComponent) == true) {
                 if (board[x+i][y]?.get(ObstacleComponent)?.wall == false) {
-                    fireCoordinates.add(Pair(x+1,y))
+                    fireCoordinates.add(Pair(x+i,y))
                 }
                 break
             }
-            fireCoordinates.add(Pair(x+1,y))
+            fireCoordinates.add(Pair(x+i,y))
         }
         //Fire left
         for (i in 1 until fireLength) {
-            if (x-1 < 0) {
+            if (x-i < 0) {
                 break
             }
-            if (board[x-1][y]?.has(ObstacleComponent) == true) {
+            if (board[x-i][y]?.has(ObstacleComponent) == true) {
                 if (board[x-i][y]?.get(ObstacleComponent)?.wall == false) {
-                    fireCoordinates.add(Pair(x-1,y))
+                    fireCoordinates.add(Pair(x-i,y))
 
                 }
                 break
             }
-            fireCoordinates.add(Pair(x-1,y))
+            fireCoordinates.add(Pair(x-i,y))
         }
         //Fire down
         for (i in 1 until fireLength) {
-            if (y+1 == 9) {
+            if (y-i < 0) {
                 break
             }
-            if (board[x][y+1]?.has(ObstacleComponent) == true) {
-                if (board[x][y+i]?.get(ObstacleComponent)?.wall == false) {
-                    fireCoordinates.add(Pair(x,y+i))
-                }
-                break
-            }
-            fireCoordinates.add(Pair(x,y+1))
-        }
-        //Fire up
-        for (i in 1 until fireLength) {
-            if (y-1 < 0) {
-                break
-            }
-            if (board[x][y-1]?.has(ObstacleComponent) == true) {
+            if (board[x][y-i]?.has(ObstacleComponent) == true) {
                 if (board[x][y-i]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x,y-i))
                 }
                 break
             }
-            fireCoordinates.add(Pair(x,y-1))
+            fireCoordinates.add(Pair(x,y-i))
+        }
+        //Fire up
+        for (i in 1 until fireLength) {
+            if (y+i > 8) {
+                break
+            }
+            if (board[x][y+i]?.has(ObstacleComponent) == true) {
+                if (board[x][y+i]?.get(ObstacleComponent)?.wall == false) {
+                    fireCoordinates.add(Pair(x,y+i))
+                }
+                break
+            }
+            fireCoordinates.add(Pair(x,y+i))
         }
 
         for (cor in fireCoordinates) {
             board[cor.first][cor.second] = EntityFactory.createFire(world,cor.first,cor.second, 2)
+            if (cor.first == PlayerSystem.getPosition().first && cor.second == PlayerSystem.getPosition().second) {
+                PlayerSystem.reduceLives()
+            } else if(cor.first == NPCSystem.getPosition().first && cor.second == NPCSystem.getPosition().second) {
+                NPCSystem.reduceLives()
+            }
         }
 
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 for (cor in fireCoordinates) {
-                    if (cor.first == PlayerSystem.getPosition().first && cor.second == PlayerSystem.getPosition().second) {
-                        PlayerSystem.reduceLives()
-                    } else if(cor.first == NPCSystem.getPosition().first && cor.second == NPCSystem.getPosition().second) {
-                        NPCSystem.reduceLives()
-                    }
                     board[cor.first][cor.second] = null
                 }
             } }, (1000))
@@ -175,6 +200,32 @@ class Game (val world: World){
         board[x][y] = EntityFactory.createPowerup(world, x, y, randomTypes.first())
         }
     }
+
+fun booster(powerUp: PowerupType?) {
+
+    if (powerUp == PowerupType.POINTS) {
+        PlayerSystem.addScore(PowerupType.POINTS.value);
+    }
+
+    else if (powerUp == PowerupType.RANGE) {
+        PlayerSystem.setFireLength(PowerupType.RANGE.value)
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                PlayerSystem.setFireLength(3)
+            }
+        }, 7000)
+    }
+
+    else if ( powerUp == PowerupType.SPEED) {
+        PlayerSystem.setSpeed(PowerupType.SPEED.value)
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                PlayerSystem.setSpeed(5)
+            }
+        }, 5000)
+    }
+}
+
 
 
 

@@ -32,9 +32,14 @@ object PlayerSystem : IteratingSystem(
         family.first()[CharacterComponent].changeSpeed(speed)
     }
 
+    fun getSpeed(): Int {
+        return family.first()[CharacterComponent].speed
+    }
+
     fun setPosition(position: Pair<Int,Int>) {
         family.first()[SpriteComponent].changePosition(position)
     }
+
 
     fun reduceLives() {
         family.first()[CharacterComponent].reduceLives()
@@ -54,8 +59,12 @@ object PlayerSystem : IteratingSystem(
 
     }
 
-    fun setScore(score: Int) {
-        family.first()[PlayerComponent].changeScore(score)
+    fun setFireLength(range: Int) {
+        family.first()[PlayerComponent].changeFirelength(range)
+    }
+
+    fun addScore(score: Int) {
+        family.first()[PlayerComponent].addScore(score)
     }
 
     override fun onTickEntity(entity: Entity) {

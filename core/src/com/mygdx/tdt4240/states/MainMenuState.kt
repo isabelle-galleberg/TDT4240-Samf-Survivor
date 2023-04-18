@@ -51,7 +51,7 @@ class MainMenuState(
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.05f)
     }
-    private val usernameLabel = Label(currentUser, skin).apply {
+    private val usernameLabel = Label("User: $currentUser", skin).apply {
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition(0f, GAME_HEIGHT * 0.85f)

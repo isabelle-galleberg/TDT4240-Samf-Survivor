@@ -13,49 +13,48 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.mygdx.tdt4240.firebase.API
-import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
-import com.mygdx.tdt4240.utils.Constants
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
+import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
+import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 
 class PauseState(
-    stateManager: StateManager, private val api: API
+    stateManager: StateManager, api: API
 ) : State(stateManager) {
 
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     private val background = Texture("samfundet.png")
     private val pauseWindow= Window().createPauseWindow()
-    private val logo = Logo().createLogo()
-
 
     private var label = Label("You have paused the game.", skin).apply {
         color = Color.BLACK
-        setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
-        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.55f)
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.55f)
+        setAlignment(Align.center)
     }
 
     private val playBtn = TextButton("CONTINUE GAME", skin).apply {
         color = Color.RED
-        setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
-        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.35f)
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.35f)
     }
 
     private val mainMenuBtn = TextButton("QUIT GAME", skin).apply {
         color = Color.FIREBRICK
-        setSize(Constants.INPUT_WIDTH, Constants.INPUT_HEIGHT)
-        setPosition((Constants.GAME_WIDTH - Constants.INPUT_WIDTH) * 0.5f, Constants.GAME_HEIGHT * 0.15f)
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.15f)
     }
 
-    private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
+    private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java).apply {
+        font.data.setScale(FONT_SIZE)
+    }
 
     init {
-        textFieldStyle.font.data.setScale(Constants.FONT_SIZE)
-
-        label.setAlignment(Align.center)
-
         stage.addActor(label)
-
         stage.addActor(playBtn)
         stage.addActor(mainMenuBtn)
 
@@ -78,9 +77,8 @@ class PauseState(
 
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
-        sprites.draw(background,0f,0f, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
+        sprites.draw(background,0f,0f, GAME_WIDTH, GAME_HEIGHT)
         pauseWindow.draw(sprites)
-        logo.draw(sprites)
         sprites.end()
 
         stage.act(Gdx.graphics.deltaTime)
@@ -90,6 +88,7 @@ class PauseState(
     override fun dispose() {
         stage.dispose()
         skin.dispose()
+        background.dispose()
     }
 
 

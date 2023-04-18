@@ -1,9 +1,6 @@
 package com.mygdx.tdt4240.states.PlayState.View
 
 import com.badlogic.gdx.graphics.Color
-import com.mygdx.tdt4240.states.State
-import com.mygdx.tdt4240.states.StateManager
-
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.Texture
@@ -17,12 +14,12 @@ import com.mygdx.tdt4240.sprites.UpBtn
 import com.mygdx.tdt4240.sprites.DownBtn
 import com.mygdx.tdt4240.sprites.LeftBtn
 import com.mygdx.tdt4240.sprites.RightBtn
-
 import com.mygdx.tdt4240.sprites.LivesDisplay
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
-import com.mygdx.tdt4240.sprites.Bomb
-import com.mygdx.tdt4240.sprites.Fire
+
+import com.mygdx.tdt4240.states.State
+import com.mygdx.tdt4240.states.StateManager
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PlayerSystem
@@ -41,13 +38,13 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
-    private val bomb = Bomb().createBomb()
-    private val fire = Fire().createFire()
 
-    private val boardImg = Texture("gameView/board.png")
+    private val boardFrameImg = Texture("gameView/boardFrame.png")
     private val tileImg = Texture("gameView/tile.png")
     private val wallImg = Texture("gameView/wall.png")
-    private val crateImg = Texture("gameView/crate1.png")
+    private val crateImg = Texture("gameView/crate.png")
+    private val fireImg = Texture("gameView/fire.png")
+    private val bombImg = Texture("gameView/bomb.png")
 
     private val playController = PlayController()
     private var uiBoard = playController.drawBoard()
@@ -60,9 +57,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     override fun update(deltaTime: Float) {
         playController.updateTime(deltaTime)
         if (PauseBtn().pauseBtnPressed()) {
-         // need to change to PauseState view
-         // stateManager.push(PauseState(stateManager))
-         // stateManager.push(MainMenuState(stateManager))
+         //stateManager.push(PauseState(stateManager))
         } else if (UpBtn().upBtnPressed()) {
             playController.updatePos("UP")
         } else if (DownBtn().downBtnPressed()) {
@@ -76,6 +71,16 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         }
     }
     override fun render(sprites: SpriteBatch) {
+
+        // Calculate values to ensure the view to be scalable on different devices
+        var screenMiddleWidth = GAME_WIDTH * 0.5f
+        if (screenMiddleWidth > GAME_HEIGHT) { screenMiddleWidth = GAME_HEIGHT }
+
+        val boardSize = if (screenMiddleWidth < GAME_HEIGHT){ screenMiddleWidth * 0.9f } else { GAME_HEIGHT * 0.9f }
+        val tileSize = boardSize/9
+        val boardX = GAME_WIDTH * 0.25f + (screenMiddleWidth-boardSize) * 0.5f
+        val boardY = (GAME_HEIGHT-boardSize) * 0.5f
+
         sprites.begin()
         gameOver = playController.isGameOver()
 
@@ -87,21 +92,19 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         pauseBtn.draw(sprites) // Pause button
         uiBoard = playController.drawBoard() // Game board
 
-        sprites.draw(boardImg, GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f,  0f, GAME_HEIGHT, GAME_HEIGHT)
+        sprites.draw(boardFrameImg, GAME_WIDTH * 0.25f,  (GAME_HEIGHT - screenMiddleWidth) * 0.5f, screenMiddleWidth, screenMiddleWidth) // Draw game board frame
 
         for (i in uiBoard.indices) {
             for (j in 0 until uiBoard[0].size) {
-                sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                sprites.draw(tileImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 if (uiBoard[i][j].equals("wall")) {
-                    sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                    sprites.draw(wallImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 } else if (uiBoard[i][j].equals("crate")) {
-                    sprites.draw(crateImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                    sprites.draw(crateImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 } else if (uiBoard[i][j].equals("bomb")) {
-                   bomb.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
-                    bomb.draw(sprites)
+                    sprites.draw(bombImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 } else if (uiBoard[i][j].equals("fire")) {
-                    fire.setPosition(GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f,GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f)
-                    fire.draw(sprites)
+                    sprites.draw(fireImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 }/*
                 else if (uiBoard[i][j].equals("speed")) {
 
@@ -127,13 +130,13 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         downBtn.draw(sprites) // DOWN button
         leftBtn.draw(sprites) // LEFT button
         rightBtn.draw(sprites) // RIGHT button
-        bombBtn.draw(sprites) // Bomb
+        bombBtn.draw(sprites) // Bomb button
 
         LivesDisplay(sprites, PlayerSystem.getLives(), NPCSystem.getLives()) // Lives
 
         val time = playController.getTime().toString() //Timer
         font.color = Color.BLACK
-        font.draw(sprites, time, GAME_HEIGHT * 0.4f,  GAME_HEIGHT * 0.92f)
+        font.draw(sprites, time, GAME_WIDTH * 0.05f,  GAME_HEIGHT * 0.92f)
 
         sprites.flush()
         sprites.end()

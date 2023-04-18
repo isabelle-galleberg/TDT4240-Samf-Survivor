@@ -3,12 +3,14 @@ package com.mygdx.tdt4240.sprites
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.mygdx.tdt4240.utils.Constants
+import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
 class DownBtn {
-    private val downBtnSize = Constants.GAME_HEIGHT * 0.16f
-    private val downBtnX = Constants.GAME_HEIGHT * 0.25f
-    private val downBtnY = Constants.GAME_HEIGHT * 0.05f
+    private val screenSideWidth = GAME_WIDTH * 0.25f
+    private val downBtnSize = screenSideWidth * 0.3f
+    private val downBtnX = (screenSideWidth - downBtnSize) * 0.5f
+    private val downBtnY = GAME_HEIGHT * 0.05f
 
     fun createDownBtn(): Sprite {
         val sprite = Sprite(Texture("gameView/arrowVerticalBtn.png"))
@@ -19,6 +21,6 @@ class DownBtn {
     }
 
     fun downBtnPressed(): Boolean {
-        return Gdx.input.isTouched && Gdx.input.x > downBtnX && Gdx.input.x < downBtnX + downBtnSize && Gdx.input.y < Constants.GAME_HEIGHT - downBtnY && Gdx.input.y > Constants.GAME_HEIGHT - downBtnY - downBtnSize
+        return Gdx.input.isTouched && Gdx.input.x > downBtnX && Gdx.input.x < downBtnX + downBtnSize && Gdx.input.y < GAME_HEIGHT - downBtnY && Gdx.input.y > GAME_HEIGHT - downBtnY - downBtnSize
     }
 }

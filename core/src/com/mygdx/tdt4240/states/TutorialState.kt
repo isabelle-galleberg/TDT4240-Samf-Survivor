@@ -35,6 +35,8 @@ class TutorialState(
     private val imgArray= arrayOf(Sprite(tutorial1), Sprite(tutorial2), Sprite(tutorial3), Sprite(tutorial4), Sprite(tutorial5), Sprite(tutorial6))
     private var pointer = 0
 
+    private val menuBtn = BackBtn().createBackBtn()
+
     private val backBtn = TextButton("BACK", skin).apply{
         color = Color.GRAY
         isDisabled = true
@@ -90,6 +92,7 @@ class TutorialState(
 
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
+        menuBtn.draw(sprites)
         sprites.draw(imgArray[pointer], (GAME_WIDTH - GAME_WIDTH * 0.75f) * 0.5f,
             GAME_HEIGHT * 0.1f, GAME_WIDTH * 0.75f, GAME_HEIGHT * 0.9f)
         sprites.end()

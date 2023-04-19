@@ -1,5 +1,6 @@
 package com.mygdx.tdt4240.states.PlayState.Controller
 
+import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
@@ -126,13 +127,14 @@ class PlayController(npcNum: Int = 1) {
 
     fun updatePosNPC() {
         game.moveNPC()
+
     }
 
     fun bomb() {
         game.bomb()
     }
     fun spawnPowerUp() {
-        val randInt = Random.nextInt(0,500)
+        val randInt = Random.nextInt(0,700)
         if(randInt < 2) {
             game.powerUp()
         }
@@ -149,13 +151,15 @@ class PlayController(npcNum: Int = 1) {
         return false
     }
 
-    fun score(): Int {
+    fun currentScore(): Int {
+        return PlayerSystem.getScore()
+    }
+
+    fun finalScore(): Int {
         if(!gameWon) {
             return 0
         }
-        return PlayerSystem.getScore() + PlayerSystem.getLives() * 100 + (getTime() ?: 1)
-
-
-
+        return currentScore() + PlayerSystem.getLives() * 100 + (getTime() ?: 1)
     }
+
 }

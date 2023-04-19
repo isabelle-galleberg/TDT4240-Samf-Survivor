@@ -14,28 +14,33 @@ object CharacterSystem : IteratingSystem(
         entity[CharacterComponent].changeDirection(direction)
     }
 
-    fun getPosition(entity: Entity):Pair<Int,Int> {
-        return Pair(entity[CharacterComponent].x, entity[CharacterComponent].y)
+    fun getPosition(entity: Entity?):Pair<Int,Int> {
+        val x = entity?.get(CharacterComponent)?.x
+        val y = entity?.get(CharacterComponent)?.y
+        if (x != null && y != null) {
+            return Pair(x,y)
+        }
+        return Pair(0,0)
     }
 
-    fun setPosition(entity: Entity, x:Int, y:Int) {
-        entity[CharacterComponent].setPosition(x,y)
+    fun setPosition(entity: Entity?, x:Int, y:Int) {
+        entity?.get(CharacterComponent)?.setPosition(x,y)
     }
 
     fun getDirection(entity: Entity): DirectionType {
         return entity[CharacterComponent].direction
     }
 
-    fun getFirelength(entity: Entity): Int {
-        return entity[CharacterComponent].firelength
+    fun getFirelength(entity: Entity?): Int {
+        return entity?.get(CharacterComponent)?.firelength ?: getStartFirelength()
     }
 
     fun getLives(entity: Entity?): Int {
         return entity?.get(CharacterComponent)?.lives ?: 0
     }
 
-    fun reduceLives(entity: Entity) {
-        entity[CharacterComponent].reduceLives()
+    fun reduceLives(entity: Entity?) {
+        entity?.get(CharacterComponent)?.reduceLives()
     }
 
 
@@ -43,15 +48,23 @@ object CharacterSystem : IteratingSystem(
 
     }
 
-    fun getSpeed(entity: Entity): Int {
-        return entity[CharacterComponent].speed
+    fun getStartSpeed(): Int {
+        return family.entities.first().get(CharacterComponent).startSpeed
     }
 
-    fun setSpeed(entity: Entity, speed: Int) {
-        entity[CharacterComponent].changeSpeed(speed)
+    fun getStartFirelength(): Int {
+        return family.entities.first().get(CharacterComponent).startFirelength
     }
 
-    fun setFirelength(entity: Entity, range: Int) {
-        entity[CharacterComponent].changeFirelength(range)
+    fun getSpeed(entity: Entity?): Int {
+        return entity?.get(CharacterComponent)?.speed ?: getStartSpeed()
+    }
+
+    fun setSpeed(entity: Entity?, speed: Int) {
+        entity?.get(CharacterComponent)?.changeSpeed(speed)
+    }
+
+    fun setFirelength(entity: Entity?, range: Int) {
+        entity?.get(CharacterComponent)?.changeFirelength(range)
     }
 }

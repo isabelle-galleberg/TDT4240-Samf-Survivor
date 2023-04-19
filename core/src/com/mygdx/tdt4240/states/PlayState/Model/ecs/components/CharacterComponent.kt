@@ -14,6 +14,9 @@ data class CharacterComponent(
     var firelength:Int = 3
 ) : Component<CharacterComponent> {
 
+    val startSpeed = 15
+    val startFirelength = 20
+
     override fun type() = CharacterComponent
 
     fun changeDirection(direction: DirectionType) {

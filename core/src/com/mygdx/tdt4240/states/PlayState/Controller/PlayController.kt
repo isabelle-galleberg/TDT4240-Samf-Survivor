@@ -1,6 +1,5 @@
 package com.mygdx.tdt4240.states.PlayState.Controller
 
-import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
@@ -8,32 +7,28 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
+import com.mygdx.tdt4240.utils.Globals
 import kotlin.random.Random
 
-class PlayController(npcNum: Int = 1) {
+object PlayController {
 
     private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
-    private var game = Game(npcNum)
-    private var gameWon = false
+    private var game = Game
     private var timerOver = false
     private var worldTimer: Int? = 300
     private var timeCount = 0f
 
-    init {
-        game.init()
-
-    }
-
-    fun resetGame() {
-        game.resetGame()
-        uiBoard = drawBoard()
+    fun newGame() {
         worldTimer = 300
         timeCount = 0f
         timerOver = false
-        gameWon = false
+        game.newGame()
     }
 
     fun update(dt: Float) {
+        if (Globals.newGame) {
+            newGame()
+        }
         timeCount += dt
         if (timeCount >= 1) {
             if (worldTimer!! > 0) {
@@ -92,7 +87,7 @@ class PlayController(npcNum: Int = 1) {
     }
 
     fun isGameWon(): Boolean {
-        return this.gameWon
+        return game.gameWon()
     }
 
     fun getPlayerLives(): Int {
@@ -142,8 +137,6 @@ class PlayController(npcNum: Int = 1) {
 
     fun isGameOver(): Boolean {
         if (game.gameOver()) {
-            println("game is over")
-            gameWon = game.gameWon()
             return true
         } else if (timerOver) {
             return true
@@ -156,7 +149,7 @@ class PlayController(npcNum: Int = 1) {
     }
 
     fun finalScore(): Int {
-        if(!gameWon) {
+        if(!game.gameWon()) {
             return 0
         }
         return currentScore() + PlayerSystem.getLives() * 100 + (getTime() ?: 1)

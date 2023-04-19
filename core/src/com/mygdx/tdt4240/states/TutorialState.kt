@@ -1,15 +1,17 @@
 package com.mygdx.tdt4240.states
 import com.badlogic.gdx.Gdx
-import com.mygdx.tdt4240.sprites.Buttons
-
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.tdt4240.sprites.BackBtn
-import com.mygdx.tdt4240.sprites.Window
+import com.mygdx.tdt4240.utils.Constants
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
@@ -17,8 +19,12 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 class TutorialState(
     stateManager: StateManager
 ) : State(stateManager) {
-    private val background = Texture("samfundet.png")
-    //private val tutorialWindow=Window().createWindow()
+
+    private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
+    private val stage = Stage()
+    private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java).apply {
+        font.data.setScale(Constants.FONT_SIZE)
+    }
 
     private val tutorial1 = Texture("tutorial/Tutorial1.png")
     private val tutorial2 = Texture("tutorial/Tutorial2.png")
@@ -26,69 +32,55 @@ class TutorialState(
     private val tutorial4 = Texture("tutorial/Tutorial4.png")
     private val tutorial5 = Texture("tutorial/Tutorial5.png")
     private val tutorial6 = Texture("tutorial/Tutorial6.png")
-    private val tutorial1Sprite= Sprite(tutorial1, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
-    private val tutorial2Sprite= Sprite(tutorial2, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
-    private val tutorial3Sprite= Sprite(tutorial3, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
-    private val tutorial4Sprite= Sprite(tutorial4, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
-    private val tutorial5Sprite= Sprite(tutorial5, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
-    private val tutorial6Sprite= Sprite(tutorial6, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
+    private val imgArray= arrayOf(Sprite(tutorial1), Sprite(tutorial2), Sprite(tutorial3), Sprite(tutorial4), Sprite(tutorial5), Sprite(tutorial6))
+    private var pointer = 0
 
-    private val imgArray= arrayOf(tutorial1Sprite, tutorial2Sprite, tutorial3Sprite, tutorial4Sprite, tutorial5Sprite, tutorial6Sprite)
-    private var pointer=0
-
-    private val stage = Stage()
-    private val backBtn = BackBtn().createBackBtn()
-    private val nextButton = Buttons().createSmallButton("Next")
-    private val backButton = Buttons().createSmallButton("Back")
-
-
-    init {
-        nextButton.setPosition((GAME_WIDTH / 5)*4 - nextButton.width / 2, 20f)
-        backButton.setPosition((GAME_WIDTH / 5) - nextButton.width / 2, 20f)
-        stage.addActor(nextButton)
-        stage.addActor(backButton)
-        backButton.isDisabled=true
-
-        handleBackButtonClick()
-        handleNextButtonClick()
+    private val backBtn = TextButton("BACK", skin).apply{
+        color = Color.GRAY
+        isDisabled = true
+        setSize(Constants.INPUT_WIDTH / 2, Constants.BUTTON_HEIGHT)
+        setPosition(GAME_WIDTH * 0.1f, GAME_HEIGHT * 0f)
     }
 
-    private fun handleNextButtonClick(){
-        nextButton.addListener(object : ClickListener() {
+    private val nextBtn = TextButton("NEXT", skin).apply{
+        setSize(Constants.INPUT_WIDTH / 2, Constants.BUTTON_HEIGHT)
+        setPosition(GAME_WIDTH * 0.6f, GAME_HEIGHT * 0f)
+        color = Color.GREEN
+    }
+
+    init {
+        stage.addActor(backBtn)
+        stage.addActor(nextBtn)
+        handleNextButton()
+        handleBackButton()
+    }
+
+    private fun handleNextButton() {
+        nextBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if (pointer==0)
-                    backButton.isDisabled = false
-                if (pointer<imgArray.size-2) {
-                    pointer += 1
-                    nextButton.isDisabled = false
+                backBtn.color = Color.RED
+                if (pointer < imgArray.lastIndex) {
+                    pointer++
                 }
-                else if (pointer==imgArray.size-2){
-                    pointer+=1
-                    nextButton.isDisabled = true
-                }
-                else if (pointer>imgArray.size-2)
-                    nextButton.isDisabled = true
+                nextBtn.isDisabled = pointer == imgArray.lastIndex
+                nextBtn.color = if (pointer == imgArray.lastIndex) Color.GRAY else Color.GREEN
             }
         })
     }
-    private fun handleBackButtonClick(){
-        backButton.addListener(object : ClickListener() {
+
+    private fun handleBackButton() {
+        backBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if(pointer==imgArray.size-1)
-                    nextButton.isDisabled = false
-                if (pointer>1){
-                    pointer-=1
-                    backButton.isDisabled = false
+                nextBtn.color = Color.GREEN
+                if (pointer > 0) {
+                    pointer--
                 }
-                else if (pointer==1){
-                    pointer-=1
-                    backButton.isDisabled = true
-                }
-                else if (pointer<1){
-                    backButton.isDisabled = true
-                }
-            } })
+                backBtn.isDisabled = pointer == 0
+                backBtn.color = if (pointer == 0) Color.GRAY else Color.RED
+            }
+        })
     }
+
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
@@ -98,9 +90,8 @@ class TutorialState(
 
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
-        sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
-        sprites.draw(imgArray[pointer], imgArray[pointer].width-GAME_WIDTH/2-160,imgArray[pointer].height-GAME_HEIGHT/2-350)
-        backBtn.draw(sprites)
+        sprites.draw(imgArray[pointer], (GAME_WIDTH - GAME_WIDTH * 0.75f) * 0.5f,
+            GAME_HEIGHT * 0.1f, GAME_WIDTH * 0.75f, GAME_HEIGHT * 0.9f)
         sprites.end()
         stage.act(Gdx.graphics.deltaTime)
         stage.draw()
@@ -108,6 +99,10 @@ class TutorialState(
 
     override fun dispose() {
         stage.dispose()
-        background.dispose()
-        //tutorialWindow.dispose()
+        tutorial1.dispose()
+        tutorial2.dispose()
+        tutorial3.dispose()
+        tutorial4.dispose()
+        tutorial5.dispose()
+        tutorial6.dispose()
     }}

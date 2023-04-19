@@ -1,6 +1,7 @@
 package com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior
 
 import com.github.quillraven.fleks.Entity
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.CharacterSystem
@@ -16,25 +17,25 @@ open class Layer2 : Layer1() {
         var collision = true
         while (collision) {
             if (NPCDirection == DirectionType.DOWN) {
-                if (y -1 < 0 || board[x][y-1]?.has(ObstacleComponent) == true || board[x][y-1]?.has(LifetimeComponent) == true) {
+                if (y -1 < 0 || checkIfCanWalk(board[x][y-1])) {
                     NPCDirection = randomDirection(DirectionType.DOWN)
                 } else {
                     collision = false
                 }
             } else if (NPCDirection == DirectionType.UP) {
-                if (y +1 > 8 || board[x][y+1]?.has(ObstacleComponent) == true || board[x][y+1]?.has(LifetimeComponent) == true ) {
+                if (y +1 > 8 || checkIfCanWalk(board[x][y+1]) ) {
                     NPCDirection = randomDirection(DirectionType.UP)
                 } else {
                     collision = false
                 }
             } else if (NPCDirection == DirectionType.LEFT) {
-                if (x -1 < 0 || board[x-1][y]?.has(ObstacleComponent) == true || board[x-1][y]?.has(LifetimeComponent) == true) {
+                if (x -1 < 0 || checkIfCanWalk(board[x-1][y])) {
                     NPCDirection = randomDirection(DirectionType.LEFT)
                 } else {
                     collision = false
                 }
             } else {
-                if (x + 1 > 8 || board[x+1][y]?.has(ObstacleComponent) == true || board[x+1][y]?.has(LifetimeComponent) == true) {
+                if (x + 1 > 8 || checkIfCanWalk(board[x+1][y])) {
                     NPCDirection = randomDirection(DirectionType.RIGHT)
                 } else {
                     collision = false
@@ -49,5 +50,9 @@ open class Layer2 : Layer1() {
     fun randomDirection(NotDirection: DirectionType): DirectionType {
         return DirectionType.values().filterNot { d -> (d==DirectionType.NONE || d==NotDirection) }.random()
 
+    }
+
+    fun checkIfCanWalk(entity: Entity?):Boolean {
+        return entity?.has(ObstacleComponent) == true || (entity?.has(LifetimeComponent) == true && entity?.has(BoostComponent) == false)
     }
 }

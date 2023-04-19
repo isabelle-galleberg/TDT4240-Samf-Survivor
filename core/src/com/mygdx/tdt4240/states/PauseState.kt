@@ -19,6 +19,7 @@ import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
+import com.mygdx.tdt4240.utils.Globals
 
 class PauseState(
     stateManager: StateManager
@@ -68,6 +69,9 @@ class PauseState(
     private fun handleClick(button: TextButton, state: State){
         button.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                if (button.equals(mainMenuBtn)) {
+                    Globals.newGame = true
+                }
                 stateManager.push(state)
                 Gdx.input.inputProcessor = null
             }

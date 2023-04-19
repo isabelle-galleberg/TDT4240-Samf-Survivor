@@ -1,4 +1,4 @@
-package com.mygdx.tdt4240.firebase
+package com.mygdx.tdt4240.api
 
 class User(val username: String, val password: String, val highscore: Int, ) : Comparable<User> {
 

@@ -1,6 +1,5 @@
 package com.mygdx.tdt4240.states
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Pixmap
 import com.mygdx.tdt4240.sprites.Buttons
 
 import com.badlogic.gdx.graphics.Texture
@@ -9,22 +8,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.firebase.API
 import com.mygdx.tdt4240.sprites.BackBtn
-import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
-/**
- * State for the tutorial.
- * @param stateManager Manager of all game states.
- */
 
 class TutorialState(
-stateManager: StateManager, private val api: API
+stateManager: StateManager
 ) : State(stateManager) {
-    private val logo = Logo().createLogo()
     private val background = Texture("samfundet.png")
     private val tutorialWindow=Window().createWindow()
 
@@ -91,7 +83,7 @@ stateManager: StateManager, private val api: API
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
-            stateManager.push(MainMenuState(stateManager,api))
+            stateManager.push(MainMenuState(stateManager))
         }
     }
 
@@ -100,7 +92,6 @@ stateManager: StateManager, private val api: API
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
         tutorialWindow.draw(sprites)
         //sprites.draw(imgArray[pointer], GAME_WIDTH-imgArray[pointer].width/2,GAME_HEIGHT-imgArray[pointer].height/2)
-        logo.draw(sprites)
         backBtn.draw(sprites)
         sprites.end()
         stage.act(Gdx.graphics.deltaTime)

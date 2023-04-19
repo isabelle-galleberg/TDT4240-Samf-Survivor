@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.mygdx.tdt4240.sprites.Window
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -20,29 +19,30 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 
-class PauseState(
-    stateManager: StateManager
-) : State(stateManager) {
-
+class GameOverState(stateManager: StateManager, isVictory: Boolean, score: Int) : State(stateManager) {
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
-    private val background = Texture("samfundet.png")
-    private val pauseWindow= Window().createPauseWindow()
+    private val background = Texture("gameOver/background.png")
 
-    private var label = Label("You have paused the game.", skin).apply {
-        color = Color.BLACK
+    private var gameOverLabel = Label("", skin).apply {
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.7f)
+        setAlignment(Align.center)
+    }
+
+    private var scoreLabel = Label("Score: $score", skin).apply {
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.55f)
         setAlignment(Align.center)
     }
 
-    private val playBtn = TextButton("CONTINUE GAME", skin).apply {
+    private val playAgainBtn = TextButton("PLAY AGAIN", skin).apply {
         color = Color.RED
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.35f)
     }
 
-    private val mainMenuBtn = TextButton("QUIT GAME", skin).apply {
+    private val menuBtn = TextButton("MAIN MENU", skin).apply {
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.15f)
@@ -53,16 +53,19 @@ class PauseState(
     }
 
     init {
-        stage.addActor(label)
-        stage.addActor(playBtn)
-        stage.addActor(mainMenuBtn)
+        if (isVictory) {
+            gameOverLabel.setText("Congratulations, you have won the game!")
+        } else {
+            gameOverLabel.setText("GAME OVER!")
+        }
 
-        handleClick(playBtn, PlayView(stateManager))
-        handleClick(mainMenuBtn, MainMenuState(stateManager))
-    }
+        stage.addActor(playAgainBtn)
+        stage.addActor(menuBtn)
+        stage.addActor(gameOverLabel)
+        stage.addActor(scoreLabel)
 
-    override fun update(deltaTime: Float) {
-        Gdx.input.inputProcessor = stage
+        handleClick(playAgainBtn, PlayView(stateManager))
+        handleClick(menuBtn, MainMenuState(stateManager))
     }
 
     private fun handleClick(button: TextButton, state: State){
@@ -74,14 +77,17 @@ class PauseState(
         })
     }
 
+    override fun update(deltaTime: Float) {
+        Gdx.input.inputProcessor = stage
+    }
+
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
         sprites.draw(background,0f,0f, GAME_WIDTH, GAME_HEIGHT)
-        pauseWindow.draw(sprites)
         sprites.end()
-
         stage.act(Gdx.graphics.deltaTime)
         stage.draw()
+
     }
 
     override fun dispose() {
@@ -89,6 +95,4 @@ class PauseState(
         skin.dispose()
         background.dispose()
     }
-
-
 }

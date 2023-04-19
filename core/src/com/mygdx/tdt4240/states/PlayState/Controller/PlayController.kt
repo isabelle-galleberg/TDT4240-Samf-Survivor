@@ -134,7 +134,7 @@ class PlayController(npcNum: Int = 1) {
         game.bomb()
     }
     fun spawnPowerUp() {
-        val randInt = Random.nextInt(0,500)
+        val randInt = Random.nextInt(0,700)
         if(randInt < 2) {
             game.powerUp()
         }

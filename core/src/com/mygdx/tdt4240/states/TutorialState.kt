@@ -24,12 +24,16 @@ class TutorialState(
     private val tutorial2 = Texture("tutorial/Tutorial2.png")
     private val tutorial3 = Texture("tutorial/Tutorial3.png")
     private val tutorial4 = Texture("tutorial/Tutorial4.png")
+    private val tutorial5 = Texture("tutorial/Tutorial5.png")
+    private val tutorial6 = Texture("tutorial/Tutorial6.png")
     private val tutorial1Sprite= Sprite(tutorial1, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
     private val tutorial2Sprite= Sprite(tutorial2, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
     private val tutorial3Sprite= Sprite(tutorial3, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
     private val tutorial4Sprite= Sprite(tutorial4, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
+    private val tutorial5Sprite= Sprite(tutorial5, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
+    private val tutorial6Sprite= Sprite(tutorial6, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
 
-    private val imgArray= arrayOf(tutorial1Sprite, tutorial2Sprite, tutorial3Sprite, tutorial4Sprite)
+    private val imgArray= arrayOf(tutorial1Sprite, tutorial2Sprite, tutorial3Sprite, tutorial4Sprite, tutorial5Sprite, tutorial6Sprite)
     private var pointer=0
 
     private val stage = Stage()

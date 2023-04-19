@@ -188,6 +188,7 @@ class Game (npcNum: Int = 1){ //set number of NPCs default to 1
         NPCSystem.getNPCs().forEach { npc ->
             if (fireCoordinates.contains(CharacterSystem.getPosition(npc))) {
                 CharacterSystem.reduceLives(npc)
+                PlayerSystem.addScore(50)
             }}
 
 

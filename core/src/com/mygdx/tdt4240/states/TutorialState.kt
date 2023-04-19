@@ -15,16 +15,21 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
 
 class TutorialState(
-stateManager: StateManager
+    stateManager: StateManager
 ) : State(stateManager) {
     private val background = Texture("samfundet.png")
-    private val tutorialWindow=Window().createWindow()
+    //private val tutorialWindow=Window().createWindow()
 
-    //#TODO-endre val+array til oppdaterte bilder av spillet
-    private val logo2=Texture("logo.png")
-    private val testSprite= Sprite(logo2,Window().WIN_WIDTH.toInt(), Window().WIN_HEIGHT.toInt())
-    private val testSprite1= Sprite(background,Window().WIN_WIDTH.toInt(), Window().WIN_HEIGHT.toInt())
-    private val imgArray= arrayOf(testSprite1,testSprite)
+    private val tutorial1 = Texture("tutorial/Tutorial1.png")
+    private val tutorial2 = Texture("tutorial/Tutorial2.png")
+    private val tutorial3 = Texture("tutorial/Tutorial3.png")
+    private val tutorial4 = Texture("tutorial/Tutorial4.png")
+    private val tutorial1Sprite= Sprite(tutorial1, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
+    private val tutorial2Sprite= Sprite(tutorial2, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
+    private val tutorial3Sprite= Sprite(tutorial3, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
+    private val tutorial4Sprite= Sprite(tutorial4, Window().WIN_WIDTH, Window().WIN_HEIGHT+165)
+
+    private val imgArray= arrayOf(tutorial1Sprite, tutorial2Sprite, tutorial3Sprite, tutorial4Sprite)
     private var pointer=0
 
     private val stage = Stage()
@@ -90,8 +95,7 @@ stateManager: StateManager
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
-        tutorialWindow.draw(sprites)
-        //sprites.draw(imgArray[pointer], GAME_WIDTH-imgArray[pointer].width/2,GAME_HEIGHT-imgArray[pointer].height/2)
+        sprites.draw(imgArray[pointer], imgArray[pointer].width-GAME_WIDTH/2-160,imgArray[pointer].height-GAME_HEIGHT/2-350)
         backBtn.draw(sprites)
         sprites.end()
         stage.act(Gdx.graphics.deltaTime)
@@ -102,6 +106,4 @@ stateManager: StateManager
         stage.dispose()
         background.dispose()
         //tutorialWindow.dispose()
-    }
-
-}
+    }}

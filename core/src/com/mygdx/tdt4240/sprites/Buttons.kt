@@ -10,8 +10,9 @@ class Buttons {
     fun createSmallButton(name: String): TextButton {
         val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
         val button = TextButton(name, skin)
-        button.style.disabledFontColor= Color.PINK
-        button.setSize(150f, 50f)
+        button.style.disabledFontColor= Color.RED
+        button.label.setFontScale(2.toFloat(), 2.toFloat())
+        button.setSize(250f, 75f)
         return button
     }
 }

@@ -30,6 +30,7 @@ import com.mygdx.tdt4240.utils.Globals
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
     private var font = BitmapFont()
+    private var scoreFont = BitmapFont()
 
     private val pauseBtn = PauseBtn().createPauseBtn()
     private val bombBtn = BombBtn().createBombBtn()
@@ -60,6 +61,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     init {
         font.data.setScale(FONT_SIZE)
+        scoreFont.data.setScale(FONT_SIZE)
     }
 
     override fun update(deltaTime: Float) {
@@ -93,11 +95,13 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         val boardX = GAME_WIDTH * 0.25f + (screenMiddleWidth-boardSize) * 0.5f
         val boardY = (GAME_HEIGHT-boardSize) * 0.5f
 
+
+
         sprites.begin()
         gameOver = playController.isGameOver()
         if (gameOver) {
             //playController.resetGame()
-            stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.score()))
+            stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }
 
         pauseBtn.draw(sprites) // Pause button
@@ -145,9 +149,14 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
         LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives().first()) // Lives
 
+
         val time = playController.getTime().toString() //Timer
         font.color = Color.BLACK
         font.draw(sprites, time, GAME_WIDTH * 0.05f,  GAME_HEIGHT * 0.92f)
+
+        scoreFont.color = Color.BLACK
+        scoreFont.draw(sprites, "Score: ${playController.currentScore()}", GAME_WIDTH * 0.05f, GAME_HEIGHT * 0.55f)
+
 
         sprites.flush()
         sprites.end()

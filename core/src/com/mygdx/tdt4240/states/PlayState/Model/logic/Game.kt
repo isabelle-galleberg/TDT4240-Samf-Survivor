@@ -104,7 +104,6 @@ object Game { //set number of NPCs default to 1
             }else if(board[x-1][y]?.has(BoostComponent) == true)
             {
                 booster(board[x-1][y])
-                board[x-1][y]?.remove()
                 board[x-1][y] = null
             }
             CharacterSystem.setPosition(player,x-1,y)
@@ -142,6 +141,7 @@ object Game { //set number of NPCs default to 1
             if (board[x+i][y]?.has(ObstacleComponent) == true) {
                 if (board[x+i][y]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x+i,y))
+                    board[x+i][y]?.remove()
                 }
                 break
             }
@@ -155,6 +155,7 @@ object Game { //set number of NPCs default to 1
             if (board[x-i][y]?.has(ObstacleComponent) == true) {
                 if (board[x-i][y]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x-i,y))
+                    board[x-i][y]?.remove()
 
                 }
                 break
@@ -169,6 +170,7 @@ object Game { //set number of NPCs default to 1
             if (board[x][y-i]?.has(ObstacleComponent) == true) {
                 if (board[x][y-i]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x,y-i))
+                    board[x][y-i]?.remove()
                 }
                 break
             }
@@ -182,6 +184,7 @@ object Game { //set number of NPCs default to 1
             if (board[x][y+i]?.has(ObstacleComponent) == true) {
                 if (board[x][y+i]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x,y+i))
+                    board[x][y+i]?.remove()
                 }
                 break
             }
@@ -189,7 +192,6 @@ object Game { //set number of NPCs default to 1
         }
 
         for (cor in fireCoordinates) {
-            board[cor.first][cor.second]?.remove()
             board[cor.first][cor.second] = EntityFactory.createFire(world)
         }
         if (fireCoordinates.contains(CharacterSystem.getPosition(player))) {

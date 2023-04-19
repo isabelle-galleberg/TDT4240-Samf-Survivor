@@ -44,7 +44,7 @@ class PauseState(
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.45f)
     }
 
-    private val soundBtn = TextButton("TURN SOUND OFF", skin).apply {
+    private val soundBtn = TextButton("SOUND: ON", skin).apply {
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
         setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.25f)
@@ -64,7 +64,7 @@ class PauseState(
     init {
 
         if(!Globals.soundOn){
-            soundBtn.setText("TURN SOUND ON")
+            soundBtn.setText("SOUND: OFF")
         }
         stage.addActor(label)
         stage.addActor(playBtn)
@@ -94,9 +94,9 @@ class PauseState(
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 Globals.soundOn = !Globals.soundOn
                 if(Globals.soundOn){
-                    soundBtn.setText("TURN SOUND OFF")
+                    soundBtn.setText("SOUND: ON")
                 } else {
-                    soundBtn.setText("TURN SOUND ON")
+                    soundBtn.setText("SOUND: OFF")
                 }
             }
         })

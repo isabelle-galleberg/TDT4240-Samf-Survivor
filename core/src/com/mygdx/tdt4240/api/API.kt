@@ -11,6 +11,4 @@ interface API {
     fun getHighscores(dataHolder: ArrayList<User>)
 
     fun getHighscore(username: String): Int
-
-    fun updateHighscore(username: String, highscore: Int)
 }

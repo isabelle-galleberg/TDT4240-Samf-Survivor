@@ -82,25 +82,6 @@ class AndroidAPI : API {
         return highscore
     }
 
-    override fun updateHighscore(username: String, highscore: Int) {
-        var completed = false
-        users.get().addOnCompleteListener { task ->
-            val response = task.result.children
-            for (child in response) {
-                if (child.getValue(User::class.java)?.username.toString() == username) {
-                    if ((child.getValue(User::class.java)?.highscore ?: 0) < highscore){
-                        child.ref.child("highscore").setValue(highscore)
-                    }
-                }
-            }
-            completed = true
-        }
-        // wait for the database to respond
-        while (!completed) {
-            Thread.sleep(100)
-        }
-    }
-
 }
 
 

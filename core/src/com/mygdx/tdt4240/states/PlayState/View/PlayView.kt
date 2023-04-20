@@ -24,12 +24,12 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private var font = BitmapFont()
     private var scoreFont = BitmapFont()
 
-    private val pauseBtn = GameButtons().createPauseBtn()
-    private val bombBtn = GameButtons().createBombBtn()
-    private val upBtn = GameButtons().createUpBtn()
-    private val downBtn = GameButtons().createDownBtn()
-    private val leftBtn = GameButtons().createLeftBtn()
-    private val rightBtn = GameButtons().createRightBtn()
+    private val pauseBtn = PauseBtn().createPauseBtn()
+    private val bombBtn = BombBtn().createBombBtn()
+    private val upBtn = UpBtn().createUpBtn()
+    private val downBtn = DownBtn().createDownBtn()
+    private val leftBtn = LeftBtn().createLeftBtn()
+    private val rightBtn = RightBtn().createRightBtn()
 
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
@@ -57,17 +57,17 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     override fun update(deltaTime: Float) {
         playController.update(deltaTime)
-        if (GameButtons().pauseBtnPressed()) {
+        if (PauseBtn().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))
-        } else if (GameButtons().upBtnPressed()) {
+        } else if (UpBtn().upBtnPressed()) {
             playController.updatePos("UP")
-        } else if (GameButtons().downBtnPressed()) {
+        } else if (DownBtn().downBtnPressed()) {
             playController.updatePos("DOWN")
-        } else if (GameButtons().leftBtnPressed()) {
+        } else if (LeftBtn().leftBtnPressed()) {
             playController.updatePos("LEFT")
-        } else if (GameButtons().rightBtnPressed()) {
+        } else if (RightBtn().rightBtnPressed()) {
             playController.updatePos("RIGHT")
-        } else if(GameButtons().bombBtnPressed()) {
+        } else if(BombBtn().bombBtnPressed()) {
             playController.bomb()
             if(soundOn){
                 sound.play(1.0f);
@@ -89,7 +89,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         gameOver = playController.isGameOver()
         if (gameOver) {
             newGame = true
-            api!!.updateHighscore(currentUser, playController.finalScore())
+            //api!!.updateHighscore(currentUser, playController.finalScore())
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }
 

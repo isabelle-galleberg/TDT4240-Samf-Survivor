@@ -9,7 +9,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 
 /* System for the player and NPC*/
 object PlayerSystem : IteratingSystem(
-    family { all(PlayerComponent) }
+    family { all(ScoreComponent) }
 ) {
 
     fun getDirection(): DirectionType {
@@ -35,11 +35,11 @@ object PlayerSystem : IteratingSystem(
         family.first()[CharacterComponent].setPosition(x,y)
     }
     fun getScore():Int {
-        return family.first()[PlayerComponent].score
+        return family.first()[ScoreComponent].score
     }
 
     fun addScore(score: Int) {
-        family.first()[PlayerComponent].addScore(score)
+        family.first()[ScoreComponent].addScore(score)
     }
 
     override fun onTickEntity(entity: Entity) {

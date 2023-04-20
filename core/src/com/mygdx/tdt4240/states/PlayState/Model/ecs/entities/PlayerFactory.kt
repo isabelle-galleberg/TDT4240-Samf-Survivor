@@ -9,7 +9,7 @@ object PlayerFactory {
     fun createPlayer(world: World, x: Int, y: Int): Entity {
         val entity: Entity = world.entity {
             it += CharacterComponent(x,y)
-            it += PlayerComponent()
+            it += ScoreComponent()
         }
         return entity
     }

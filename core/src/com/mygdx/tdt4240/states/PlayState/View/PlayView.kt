@@ -20,7 +20,9 @@ import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.states.*
 
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
-import com.mygdx.tdt4240.utils.Globals
+import com.mygdx.tdt4240.utils.Globals.newGame
+import com.mygdx.tdt4240.utils.Globals.api
+import com.mygdx.tdt4240.utils.Globals.currentUser
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
@@ -87,7 +89,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         sprites.begin()
         gameOver = playController.isGameOver()
         if (gameOver) {
-            Globals.newGame = true
+            newGame = true
+            api!!.updateHighscore(currentUser, playController.finalScore())
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }
 

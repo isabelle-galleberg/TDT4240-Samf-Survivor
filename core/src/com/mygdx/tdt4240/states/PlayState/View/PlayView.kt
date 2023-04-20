@@ -70,7 +70,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         } else if(BombBtn().bombBtnPressed()) {
             playController.bomb()
             if(soundOn){
-                sound.play(1.0f);
+                sound.play(1.0f)
             }
         }
 
@@ -89,7 +89,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         gameOver = playController.isGameOver()
         if (gameOver) {
             newGame = true
-            //api!!.updateHighscore(currentUser, playController.finalScore())
+            api!!.updateHighscore(currentUser, playController.finalScore())
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }
 

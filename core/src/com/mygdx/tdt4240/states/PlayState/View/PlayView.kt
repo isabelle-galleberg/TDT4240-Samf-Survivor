@@ -6,36 +6,29 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.Texture
+import com.mygdx.tdt4240.sprites.*
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 
-import com.mygdx.tdt4240.sprites.PauseBtn
-import com.mygdx.tdt4240.sprites.BombBtn
-import com.mygdx.tdt4240.sprites.UpBtn
-import com.mygdx.tdt4240.sprites.DownBtn
-import com.mygdx.tdt4240.sprites.LeftBtn
-import com.mygdx.tdt4240.sprites.RightBtn
-import com.mygdx.tdt4240.sprites.LivesDisplay
-import com.mygdx.tdt4240.sprites.Player
-import com.mygdx.tdt4240.sprites.NPC
 import com.mygdx.tdt4240.states.*
 
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
-import com.mygdx.tdt4240.utils.Globals
+import com.mygdx.tdt4240.utils.Globals.newGame
+import com.mygdx.tdt4240.utils.Globals.api
+import com.mygdx.tdt4240.utils.Globals.currentUser
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
     private var font = BitmapFont()
     private var scoreFont = BitmapFont()
 
-    private val pauseBtn = PauseBtn().createPauseBtn()
-    private val bombBtn = BombBtn().createBombBtn()
-
-    private val upBtn = UpBtn().createUpBtn()
-    private val downBtn = DownBtn().createDownBtn()
-    private val leftBtn = LeftBtn().createLeftBtn()
-    private val rightBtn = RightBtn().createRightBtn()
+    private val pauseBtn = GameButtons().createPauseBtn()
+    private val bombBtn = GameButtons().createBombBtn()
+    private val upBtn = GameButtons().createUpBtn()
+    private val downBtn = GameButtons().createDownBtn()
+    private val leftBtn = GameButtons().createLeftBtn()
+    private val rightBtn = GameButtons().createRightBtn()
 
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
@@ -63,17 +56,17 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     override fun update(deltaTime: Float) {
         playController.update(deltaTime)
-        if (PauseBtn().pauseBtnPressed()) {
+        if (GameButtons().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))
-        } else if (UpBtn().upBtnPressed()) {
+        } else if (GameButtons().upBtnPressed()) {
             playController.updatePos("UP")
-        } else if (DownBtn().downBtnPressed()) {
+        } else if (GameButtons().downBtnPressed()) {
             playController.updatePos("DOWN")
-        } else if (LeftBtn().leftBtnPressed()) {
+        } else if (GameButtons().leftBtnPressed()) {
             playController.updatePos("LEFT")
-        } else if (RightBtn().rightBtnPressed()) {
+        } else if (GameButtons().rightBtnPressed()) {
             playController.updatePos("RIGHT")
-        } else if(BombBtn().bombBtnPressed()) {
+        } else if(GameButtons().bombBtnPressed()) {
             playController.bomb()
             if(Globals.soundOn){
                 sound.play(1.0f);
@@ -94,7 +87,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         sprites.begin()
         gameOver = playController.isGameOver()
         if (gameOver) {
-            Globals.newGame = true
+            newGame = true
+            api!!.updateHighscore(currentUser, playController.finalScore())
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }
 

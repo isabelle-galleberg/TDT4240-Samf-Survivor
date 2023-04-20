@@ -15,11 +15,11 @@ object PlayController {
     private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
     private var game = Game
     private var timerOver = false
-    private var worldTimer: Int? = 300
+    private var worldTimer: Int? = 180
     private var timeCount = 0f
 
-    fun newGame() {
-        worldTimer = 300
+    private fun newGame() {
+        worldTimer = 180
         timeCount = 0f
         timerOver = false
         game.newGame()
@@ -64,18 +64,15 @@ object PlayController {
                     } else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.POINTS) {
                         uiBoard[i][j] = "points"
                     }
-
                 } else if (game.board[i][j]?.has(LifetimeComponent) == true) {
                     if (game.board[i][j]?.get(LifetimeComponent)?.fire == true) {
                         uiBoard[i][j] = "fire"
                     } else {
                         uiBoard[i][j] = "bomb"
                     }
-
                 }
             }}
             return uiBoard
-
     }
 
     fun getPlayerPosition() : Pair<Int,Int> {
@@ -87,6 +84,9 @@ object PlayController {
     }
 
     fun isGameWon(): Boolean {
+        if (timerOver) {
+            return false
+        }
         return game.gameWon()
     }
 
@@ -96,7 +96,6 @@ object PlayController {
 
     fun getNPCLives() : Array<Int> {
         return NPCSystem.getLives()
-
     }
 
     fun updatePos(direction: String) {
@@ -120,15 +119,14 @@ object PlayController {
         }
     }
 
-    fun updatePosNPC() {
+    private fun updatePosNPC() {
         game.moveNPC()
-
     }
 
     fun bomb() {
         game.bomb()
     }
-    fun spawnPowerUp() {
+    private fun spawnPowerUp() {
         val randInt = Random.nextInt(0,700)
         if(randInt < 2) {
             game.powerUp()
@@ -149,10 +147,9 @@ object PlayController {
     }
 
     fun finalScore(): Int {
-        if(!game.gameWon()) {
+        if(!isGameWon()) {
             return 0
         }
         return currentScore() + PlayerSystem.getLives() * 100 + (getTime() ?: 1)
     }
-
 }

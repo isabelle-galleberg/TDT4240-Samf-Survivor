@@ -12,52 +12,51 @@ import kotlin.random.Random
 /* Avoid collision with fire, bombs, walls, crates*/
 open class Layer2 : Layer1() {
     fun avoidCollision(entity: Entity, board : Array<Array<Entity?>>) : DirectionType {
-        var NPCDirection = CharacterSystem.getDirection(entity)
-        val randInt = Random.nextInt(0,10)
+        var npcDirection = CharacterSystem.getDirection(entity)
+        val randInt = Random.nextInt(0,8)
         if (randInt == 0) {
-            NPCDirection = randomDirection(DirectionType.NONE)
+            npcDirection = randomDirection(DirectionType.NONE)
         }
         val x = CharacterSystem.getPosition(entity).first
         val y = CharacterSystem.getPosition(entity).second
         var collision = true
         while (collision) {
-            if (NPCDirection == DirectionType.DOWN) {
+            if (npcDirection == DirectionType.DOWN) {
                 if (y -1 < 0 || checkIfCanWalk(board[x][y-1])) {
-                    NPCDirection = randomDirection(DirectionType.DOWN)
+                    npcDirection = randomDirection(DirectionType.DOWN)
                 } else {
                     collision = false
                 }
-            } else if (NPCDirection == DirectionType.UP) {
+            } else if (npcDirection == DirectionType.UP) {
                 if (y +1 > 8 || checkIfCanWalk(board[x][y+1]) ) {
-                    NPCDirection = randomDirection(DirectionType.UP)
+                    npcDirection = randomDirection(DirectionType.UP)
                 } else {
                     collision = false
                 }
-            } else if (NPCDirection == DirectionType.LEFT) {
+            } else if (npcDirection == DirectionType.LEFT) {
                 if (x -1 < 0 || checkIfCanWalk(board[x-1][y])) {
-                    NPCDirection = randomDirection(DirectionType.LEFT)
+                    npcDirection = randomDirection(DirectionType.LEFT)
                 } else {
                     collision = false
                 }
             } else {
                 if (x + 1 > 8 || checkIfCanWalk(board[x+1][y])) {
-                    NPCDirection = randomDirection(DirectionType.RIGHT)
+                    npcDirection = randomDirection(DirectionType.RIGHT)
                 } else {
                     collision = false
                 }
             }
         }
-        changeDirection(entity, NPCDirection)
-        return NPCDirection
-
+        changeDirection(entity, npcDirection)
+        return npcDirection
     }
+
     /* Finds new random direction that is not the NotDirection*/
-    fun randomDirection(NotDirection: DirectionType): DirectionType {
+    private fun randomDirection(NotDirection: DirectionType): DirectionType {
         return DirectionType.values().filterNot { d -> (d==DirectionType.NONE || d==NotDirection) }.random()
-
     }
 
-    fun checkIfCanWalk(entity: Entity?):Boolean {
-        return entity?.has(ObstacleComponent) == true || (entity?.has(LifetimeComponent) == true && entity?.has(BoostComponent) == false)
+    private fun checkIfCanWalk(entity: Entity?):Boolean {
+        return entity?.has(ObstacleComponent) == true || (entity?.has(LifetimeComponent) == true && !entity.has(BoostComponent))
     }
 }

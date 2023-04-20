@@ -1,4 +1,4 @@
-package com.mygdx.tdt4240.firebase
+package com.mygdx.tdt4240.api
 import java.util.ArrayList
 
 interface API {
@@ -11,4 +11,6 @@ interface API {
     fun getHighscores(dataHolder: ArrayList<User>)
 
     fun getHighscore(username: String): Int
+
+    fun updateHighscore(username: String, highscore: Int)
 }

@@ -1,5 +1,10 @@
 package com.mygdx.tdt4240.utils
 
+import com.mygdx.tdt4240.api.API
+
 object Globals {
+    var api: API? = null
     var currentUser = ""
+    var soundOn = true
+    var newGame = true
 }

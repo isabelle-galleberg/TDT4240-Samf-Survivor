@@ -1,124 +1,157 @@
 package com.mygdx.tdt4240.states.PlayState.View
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
-import com.mygdx.tdt4240.states.State
-import com.mygdx.tdt4240.states.StateManager
-
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.Texture
-import com.mygdx.tdt4240.firebase.API
+import com.mygdx.tdt4240.sprites.*
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 
-import com.mygdx.tdt4240.sprites.PauseBtn
-import com.mygdx.tdt4240.sprites.BombBtn
-import com.mygdx.tdt4240.sprites.UpBtn
-import com.mygdx.tdt4240.sprites.DownBtn
-import com.mygdx.tdt4240.sprites.LeftBtn
-import com.mygdx.tdt4240.sprites.RightBtn
+import com.mygdx.tdt4240.states.*
 
-import com.mygdx.tdt4240.sprites.LivesDisplay
-import com.mygdx.tdt4240.sprites.Player
-import com.mygdx.tdt4240.sprites.NPC
-import com.mygdx.tdt4240.states.PauseState
+import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
+import com.mygdx.tdt4240.utils.Globals.newGame
+import com.mygdx.tdt4240.utils.Globals.api
+import com.mygdx.tdt4240.utils.Globals.currentUser
+import com.mygdx.tdt4240.utils.Globals.soundOn
 
-class PlayView (
-    stateManager: StateManager, private val api: API
-) : State(stateManager) {
+class PlayView (stateManager: StateManager) : State(stateManager) {
 
     private var font = BitmapFont()
+    private var scoreFont = BitmapFont()
 
-    private val pauseBtn = PauseBtn().createPauseBtn()
-    private val bombBtn = BombBtn().createBombBtn()
-
-    private val upBtn = UpBtn().createUpBtn()
-    private val downBtn = DownBtn().createDownBtn()
-    private val leftBtn = LeftBtn().createLeftBtn()
-    private val rightBtn = RightBtn().createRightBtn()
+    private val pauseBtn = GameButtons().createPauseBtn()
+    private val bombBtn = GameButtons().createBombBtn()
+    private val upBtn = GameButtons().createUpBtn()
+    private val downBtn = GameButtons().createDownBtn()
+    private val leftBtn = GameButtons().createLeftBtn()
+    private val rightBtn = GameButtons().createRightBtn()
 
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
 
-
-    private val boardImg = Texture("gameView/board.png")
+    private val boardFrameImg = Texture("gameView/boardFrame.png")
     private val tileImg = Texture("gameView/tile.png")
     private val wallImg = Texture("gameView/wall.png")
+    private val crateImg = Texture("gameView/crate.png")
+    private val fireImg = Texture("gameView/fire.png")
+    private val bombImg = Texture("gameView/bomb.png")
+    private val powerUpSpeedImg = Texture("gameView/powerUpSpeed.png")
+    private val powerUpRangeImg = Texture("gameView/powerUpRange.png")
+    private val powerUpPointsImg = Texture("gameView/powerUpPoints.png")
+
+    private var playController = PlayController
+    private var uiBoard = playController.drawBoard()
+    private var gameOver = false
+
+    var sound: Sound = Gdx.audio.newSound(Gdx.files.internal("data/bombe.mp3"))
 
     init {
         font.data.setScale(FONT_SIZE)
+        scoreFont.data.setScale(FONT_SIZE)
     }
 
     override fun update(deltaTime: Float) {
-        if (PauseBtn().pauseBtnPressed()) {
-            // need to change to PauseState view
-            stateManager.push(PauseState(stateManager, api))
-            //stateManager.push(MainMenuState(stateManager))
-        }
-        else if (UpBtn().upBtnPressed()) {
-            println("MOVE UP")
-        }
-        else if (DownBtn().downBtnPressed()) {
-            println("MOVE DOWN")
-        }
-        else if (LeftBtn().leftBtnPressed()) {
-            println("MOVE LEFT")
-        }
-        else if (RightBtn().rightBtnPressed()) {
-            println("MOVE RIGHT")
-        }
-        else if (BombBtn().bombBtnPressed()) {
-            println("BOOMB!!")
+        playController.update(deltaTime)
+        if (GameButtons().pauseBtnPressed()) {
+            stateManager.push(PauseState(stateManager))
+        } else if (GameButtons().upBtnPressed()) {
+            playController.updatePos("UP")
+        } else if (GameButtons().downBtnPressed()) {
+            playController.updatePos("DOWN")
+        } else if (GameButtons().leftBtnPressed()) {
+            playController.updatePos("LEFT")
+        } else if (GameButtons().rightBtnPressed()) {
+            playController.updatePos("RIGHT")
+        } else if(GameButtons().bombBtnPressed()) {
+            playController.bomb()
+            if(soundOn){
+                sound.play(1.0f);
+            }
         }
 
     }
     override fun render(sprites: SpriteBatch) {
+        // Calculate values to ensure the view to be scalable on different devices
+        var screenMiddleWidth = GAME_WIDTH * 0.5f
+        if (screenMiddleWidth > GAME_HEIGHT) { screenMiddleWidth = GAME_HEIGHT }
+
+        val boardSize = if (screenMiddleWidth < GAME_HEIGHT){ screenMiddleWidth * 0.9f } else { GAME_HEIGHT * 0.9f }
+        val tileSize = boardSize/9
+        val boardX = GAME_WIDTH * 0.25f + (screenMiddleWidth-boardSize) * 0.5f
+        val boardY = (GAME_HEIGHT-boardSize) * 0.5f
+
         sprites.begin()
+        gameOver = playController.isGameOver()
+        if (gameOver) {
+            newGame = true
+            api!!.updateHighscore(currentUser, playController.finalScore())
+            stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
+        }
 
-        // Pause button
-        pauseBtn.draw(sprites)
+        pauseBtn.draw(sprites) // Pause button
+        uiBoard = playController.drawBoard() // Game board
 
-        // Draw game board
-        sprites.draw(boardImg, GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f,  0f, GAME_HEIGHT, GAME_HEIGHT)
-        for (i in 0 until 9) {
-            for (j in 0 until 9) {
-                if (i % 2 != 0 && j % 2 != 0){
-                    sprites.draw(wallImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+        sprites.draw(boardFrameImg, GAME_WIDTH * 0.25f,  (GAME_HEIGHT - screenMiddleWidth) * 0.5f, screenMiddleWidth, screenMiddleWidth) // Draw game board frame
+
+        for (i in uiBoard.indices) {
+            for (j in 0 until uiBoard[0].size) {
+                sprites.draw(tileImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
+                if (uiBoard[i][j].equals("wall")) {
+                    sprites.draw(wallImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
+                } else if (uiBoard[i][j].equals("crate")) {
+                    sprites.draw(crateImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
+                } else if (uiBoard[i][j].equals("bomb")) {
+                    sprites.draw(bombImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
+                } else if (uiBoard[i][j].equals("fire")) {
+                    sprites.draw(fireImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 }
-                else {
-                    sprites.draw(tileImg, GAME_HEIGHT * 0.05f + GAME_WIDTH * 0.5f - GAME_HEIGHT * 0.5f + i * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.05f + j * GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f, GAME_HEIGHT * 0.1f)
+                else if (uiBoard[i][j].equals("speed")) {
+                    sprites.draw(powerUpSpeedImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
+                }
+                else if (uiBoard[i][j].equals("range")) {
+                    sprites.draw(powerUpRangeImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
+                }
+                else if (uiBoard[i][j].equals("points")) {
+                    sprites.draw(powerUpPointsImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 }
             }
         }
 
-        // Draw player
-        player.draw(sprites)
+        val playerPos = playController.getPlayerPosition()
+        Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
+        player.draw(sprites) //Player
 
-        // Draw NPC
-        nPC.draw(sprites)
+        val npcPos = playController.getNPCPositions().first()
+        NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
+        nPC.draw(sprites) //NPC
 
-        // Button to add bombs on the bord
-        bombBtn.draw(sprites)
+        upBtn.draw(sprites) // UP button
+        downBtn.draw(sprites) // DOWN button
+        leftBtn.draw(sprites) // LEFT button
+        rightBtn.draw(sprites) // RIGHT button
+        bombBtn.draw(sprites) // Bomb button
 
-        // Game controller
-        upBtn.draw(sprites)
-        downBtn.draw(sprites)
-        leftBtn.draw(sprites)
-        rightBtn.draw(sprites)
+        LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives().first()) // Lives
 
-        // Lives display for player and NPC
-        LivesDisplay(sprites, 3,2)
 
-        // Timer - must make it dynamic
-        val time = "2:06"
-        font.setColor(Color.BLACK)
-        font.draw(sprites, time, GAME_HEIGHT * 0.4f,  GAME_HEIGHT * 0.92f)
+        val time = playController.getTime().toString() //Timer
+        font.color = Color.BLACK
+        font.draw(sprites, time, GAME_WIDTH * 0.05f,  GAME_HEIGHT * 0.92f)
+
+        scoreFont.color = Color.BLACK
+        scoreFont.draw(sprites, "Score: ${playController.currentScore()}", GAME_WIDTH * 0.05f, GAME_HEIGHT * 0.55f)
+
 
         sprites.flush()
         sprites.end()
     }
     override fun dispose() {
         font.dispose()
+        scoreFont.dispose()
     }
 }

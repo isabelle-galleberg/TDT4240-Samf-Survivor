@@ -33,20 +33,28 @@ class PauseState(
     private var label = Label("You have paused the game.", skin).apply {
         color = Color.BLACK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.55f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.60f)
         setAlignment(Align.center)
     }
+
 
     private val playBtn = TextButton("CONTINUE GAME", skin).apply {
         color = Color.RED
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.35f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.45f)
     }
+
+    private val soundBtn = TextButton("SOUND: ON", skin).apply {
+        color = Color.FIREBRICK
+        setSize(INPUT_WIDTH, INPUT_HEIGHT)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.25f)
+    }
+
 
     private val mainMenuBtn = TextButton("QUIT GAME", skin).apply {
         color = Color.FIREBRICK
         setSize(INPUT_WIDTH, INPUT_HEIGHT)
-        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.15f)
+        setPosition((GAME_WIDTH - INPUT_WIDTH) * 0.5f, GAME_HEIGHT * 0.05f)
     }
 
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java).apply {
@@ -54,12 +62,18 @@ class PauseState(
     }
 
     init {
+
+        if(!Globals.soundOn){
+            soundBtn.setText("SOUND: OFF")
+        }
         stage.addActor(label)
         stage.addActor(playBtn)
+        stage.addActor(soundBtn)
         stage.addActor(mainMenuBtn)
 
         handleClick(playBtn, PlayView(stateManager))
         handleClick(mainMenuBtn, MainMenuState(stateManager))
+        handleSoundClick(soundBtn)
     }
 
     override fun update(deltaTime: Float) {
@@ -74,6 +88,19 @@ class PauseState(
                 }
                 stateManager.push(state)
                 Gdx.input.inputProcessor = null
+            }
+        })
+    }
+
+    private fun handleSoundClick(button: TextButton){
+        button.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Globals.soundOn = !Globals.soundOn
+                if(Globals.soundOn){
+                    soundBtn.setText("SOUND: ON")
+                } else {
+                    soundBtn.setText("SOUND: OFF")
+                }
             }
         })
     }

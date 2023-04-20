@@ -1,5 +1,7 @@
 package com.mygdx.tdt4240.states.PlayState.View
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -52,6 +54,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private var uiBoard = playController.drawBoard()
     private var gameOver = false
 
+    var sound: Sound = Gdx.audio.newSound(Gdx.files.internal("data/bombe.mp3"))
+
     init {
         font.data.setScale(FONT_SIZE)
         scoreFont.data.setScale(FONT_SIZE)
@@ -71,6 +75,9 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
             playController.updatePos("RIGHT")
         } else if(BombBtn().bombBtnPressed()) {
             playController.bomb()
+            if(Globals.soundOn){
+                sound.play(1.0f);
+            }
         }
 
     }

@@ -48,4 +48,25 @@ In `core/src/com/mygdx/tdt4240`:
 
 
 ## 🌄 Screenshots
-TODO
+When opening the game, the user can either log in with their existing user or create a new user. 
+
+<img src="docs/Login.png" alt="alt text" width="700" >
+
+After this, the user is redirected to the main menu. 
+
+<img src="docs/MainMenu.png" alt="alt text" width="700" >
+
+After clicking on the PLAY button, the user can begin playing the game. 
+
+<img src="docs/Game.png" alt="alt text" width="700" >
+
+From the main menu, a step-by-step tutorial is also available. 
+
+<img src="docs/Tutorial.png" alt="alt text" width="700" >
+
+The user can view their highscore and compare it to other users of the game. 
+
+<img src="docs/Highscore.png" alt="alt text" width="700" >
+
+
+

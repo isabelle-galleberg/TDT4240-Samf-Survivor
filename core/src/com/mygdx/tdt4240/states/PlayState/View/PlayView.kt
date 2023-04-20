@@ -24,12 +24,12 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private var font = BitmapFont()
     private var scoreFont = BitmapFont()
 
-    private val pauseBtn = PauseBtn().createPauseBtn()
-    private val bombBtn = BombBtn().createBombBtn()
-    private val upBtn = UpBtn().createUpBtn()
-    private val downBtn = DownBtn().createDownBtn()
-    private val leftBtn = LeftBtn().createLeftBtn()
-    private val rightBtn = RightBtn().createRightBtn()
+    private val pauseBtn = GameButtons().createPauseBtn()
+    private val upBtn = GameButtons().createUpBtn()
+    private val downBtn = GameButtons().createDownBtn()
+    private val leftBtn = GameButtons().createLeftBtn()
+    private val rightBtn = GameButtons().createRightBtn()
+    private val bombBtn = GameButtons().createBombBtn()
 
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()
@@ -57,17 +57,17 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     override fun update(deltaTime: Float) {
         playController.update(deltaTime)
-        if (PauseBtn().pauseBtnPressed()) {
+        if (GameButtons().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))
-        } else if (UpBtn().upBtnPressed()) {
+        } else if (GameButtons().upBtnPressed()) {
             playController.updatePos("UP")
-        } else if (DownBtn().downBtnPressed()) {
+        } else if (GameButtons().downBtnPressed()) {
             playController.updatePos("DOWN")
-        } else if (LeftBtn().leftBtnPressed()) {
+        } else if (GameButtons().leftBtnPressed()) {
             playController.updatePos("LEFT")
-        } else if (RightBtn().rightBtnPressed()) {
+        } else if (GameButtons().rightBtnPressed()) {
             playController.updatePos("RIGHT")
-        } else if(BombBtn().bombBtnPressed()) {
+        } else if(GameButtons().bombBtnPressed()) {
             playController.bomb()
             if(soundOn){
                 sound.play(1.0f)

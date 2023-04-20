@@ -150,5 +150,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
     override fun dispose() {
         font.dispose()
+        scoreFont.dispose()
     }
 }

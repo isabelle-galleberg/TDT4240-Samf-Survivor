@@ -2,9 +2,9 @@ package com.mygdx.tdt4240.states.PlayState.Model.logic
 
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.world
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
@@ -34,9 +34,12 @@ object Game { //set number of NPCs default to 1
     private var npcList = arrayOfNulls<Entity>(npcNum)
     private var npcMove = 0
     private var playerMove = 0
+    private var timer = Timer()
+    private var timerTasks = mutableListOf<TimerTask>()
 
 
     fun newGame() {
+        timerTasks.forEach{ t -> t.cancel() }
         world.forEach { e -> e.remove() }
         player = EntityFactory.createPlayer(world,0,8)
         for (i in 0 until npcNum) {
@@ -120,12 +123,16 @@ object Game { //set number of NPCs default to 1
         val x = CharacterSystem.getPosition(entity).first
         val y = CharacterSystem.getPosition(entity).second
         board[x][y] = EntityFactory.createBomb(world)
-        Timer().schedule(object : TimerTask() {
+        val t: TimerTask = object : TimerTask() {
             override fun run() {
                 board[x][y]?.remove()
                 board[x][y] = null
                 fire(entity,x,y)
-            } }, LifeSystem.getLifeTime(board[x][y]))
+                timerTasks.remove(this)
+            }
+        }
+        timerTasks.add(t)
+        timer.schedule(t, LifeSystem.getLifeTime(board[x][y]))
     }
 
     fun fire(entity: Entity?,x: Int, y:Int) {
@@ -141,7 +148,6 @@ object Game { //set number of NPCs default to 1
             if (board[x+i][y]?.has(ObstacleComponent) == true) {
                 if (board[x+i][y]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x+i,y))
-                    board[x+i][y]?.remove()
                 }
                 break
             }
@@ -155,7 +161,6 @@ object Game { //set number of NPCs default to 1
             if (board[x-i][y]?.has(ObstacleComponent) == true) {
                 if (board[x-i][y]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x-i,y))
-                    board[x-i][y]?.remove()
 
                 }
                 break
@@ -170,7 +175,6 @@ object Game { //set number of NPCs default to 1
             if (board[x][y-i]?.has(ObstacleComponent) == true) {
                 if (board[x][y-i]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x,y-i))
-                    board[x][y-i]?.remove()
                 }
                 break
             }
@@ -184,7 +188,6 @@ object Game { //set number of NPCs default to 1
             if (board[x][y+i]?.has(ObstacleComponent) == true) {
                 if (board[x][y+i]?.get(ObstacleComponent)?.wall == false) {
                     fireCoordinates.add(Pair(x,y+i))
-                    board[x][y+i]?.remove()
                 }
                 break
             }
@@ -192,6 +195,7 @@ object Game { //set number of NPCs default to 1
         }
 
         for (cor in fireCoordinates) {
+            board[cor.first][cor.second]?.remove()
             board[cor.first][cor.second] = EntityFactory.createFire(world)
         }
         if (fireCoordinates.contains(CharacterSystem.getPosition(player))) {
@@ -204,14 +208,18 @@ object Game { //set number of NPCs default to 1
                 PlayerSystem.addScore(50)
             }}
 
-        Timer().schedule(object : TimerTask() {
+        val t: TimerTask = object : TimerTask() {
             override fun run() {
                 for (cor in fireCoordinates) {
                     board[cor.first][cor.second]?.remove()
                     board[cor.first][cor.second] = null
+                    timerTasks.remove(this)
 
                 }
-            } }, LifeSystem.getLifeTime(board[x][y]) )
+            }
+        }
+        timerTasks.add(t)
+        timer.schedule(t, LifeSystem.getLifeTime(board[x][y]))
     }
     fun powerUp() {
         var x = Random.nextInt(0, 8)
@@ -234,20 +242,26 @@ private fun booster(entity: Entity?) {
     }
     else if (powerUp == PowerupType.RANGE) {
         CharacterSystem.setFirelength(player,PowerupType.RANGE.value)
-        Timer().schedule(object : TimerTask() {
+        val t: TimerTask = object : TimerTask() {
             override fun run() {
                 CharacterSystem.setFirelength(player,CharacterSystem.getStartFirelength())
+                timerTasks.remove(this)
             }
-        }, LifeSystem.getLifeTime(entity))
+        }
+        timerTasks.add(t)
+        timer.schedule(t, LifeSystem.getLifeTime(entity))
     }
 
     else if ( powerUp == PowerupType.SPEED) {
         PlayerSystem.setSpeed(20-PowerupType.SPEED.value)
-        Timer().schedule(object : TimerTask() {
+        val t: TimerTask = object : TimerTask() {
             override fun run() {
                 CharacterSystem.setSpeed(player,CharacterSystem.getStartSpeed())
+                timerTasks.remove(this)
             }
-        }, LifeSystem.getLifeTime(entity))
+        }
+        timerTasks.add(t)
+        timer.schedule(t, LifeSystem.getLifeTime(entity))
 
     }
     if (entity != null) {

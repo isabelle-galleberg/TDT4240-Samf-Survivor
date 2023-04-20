@@ -7,11 +7,16 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.CharacterSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.has
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
+import kotlin.random.Random
 
 /* Avoid collision with fire, bombs, walls, crates*/
 open class Layer2 : Layer1() {
     fun avoidCollision(entity: Entity, board : Array<Array<Entity?>>) : DirectionType {
         var NPCDirection = CharacterSystem.getDirection(entity)
+        val randInt = Random.nextInt(0,10)
+        if (randInt == 0) {
+            NPCDirection = randomDirection(DirectionType.NONE)
+        }
         val x = CharacterSystem.getPosition(entity).first
         val y = CharacterSystem.getPosition(entity).second
         var collision = true

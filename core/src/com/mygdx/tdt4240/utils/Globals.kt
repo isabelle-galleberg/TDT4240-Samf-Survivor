@@ -6,4 +6,5 @@ object Globals {
     var api: API? = null
     var currentUser = ""
     var soundOn = true
+    var newGame = true
 }

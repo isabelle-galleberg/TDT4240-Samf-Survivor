@@ -34,9 +34,7 @@ data class CharacterComponent(
     }
 
     fun reduceLives() {
-        if (this@CharacterComponent.lives > 0) {
-            this@CharacterComponent.lives -= 1
-        }
+        this@CharacterComponent.lives -= 1
     }
 
     fun changeFirelength(range: Int) {

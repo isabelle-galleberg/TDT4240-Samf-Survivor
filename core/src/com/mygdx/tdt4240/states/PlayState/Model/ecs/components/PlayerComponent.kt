@@ -4,15 +4,15 @@ import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 
 /* Component containing score of player */
-data class ScoreComponent(
+data class PlayerComponent(
     var score:Int = 0
-) : Component<ScoreComponent> {
+) : Component<PlayerComponent> {
 
     fun addScore(score: Int) {
-        this@ScoreComponent.score += score
+        this@PlayerComponent.score += score
     }
 
-    override fun type() = ScoreComponent
+    override fun type() = PlayerComponent
 
-    companion object : ComponentType<ScoreComponent>()
+    companion object : ComponentType<PlayerComponent>()
 }

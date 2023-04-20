@@ -15,11 +15,11 @@ object PlayController {
     private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
     private var game = Game
     private var timerOver = false
-    private var worldTimer: Int? = 180
+    private var worldTimer: Int? = 300
     private var timeCount = 0f
 
     fun newGame() {
-        worldTimer = 180
+        worldTimer = 300
         timeCount = 0f
         timerOver = false
         game.newGame()
@@ -87,9 +87,6 @@ object PlayController {
     }
 
     fun isGameWon(): Boolean {
-        if (timerOver) {
-            return false
-        }
         return game.gameWon()
     }
 
@@ -152,7 +149,7 @@ object PlayController {
     }
 
     fun finalScore(): Int {
-        if (!isGameWon()) {
+        if(!game.gameWon()) {
             return 0
         }
         return currentScore() + PlayerSystem.getLives() * 100 + (getTime() ?: 1)

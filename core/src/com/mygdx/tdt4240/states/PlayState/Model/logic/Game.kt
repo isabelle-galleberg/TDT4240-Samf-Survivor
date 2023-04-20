@@ -55,11 +55,8 @@ object Game { //set number of NPCs default to 1
             for (j in board[i].indices) {
                 if (i % 2 != 0 && j % 2 != 0) {
                     board[i][j] = EntityFactory.createWall(world) //Wall
-                } else if (i > 0 && i < 8) {
-                    val randInt = Random.nextInt(0,2)
-                    if (randInt == 0) {
-                        board[i][j] = EntityFactory.createCrate(world) //Crate
-                    }
+                } else if (i == 1 || i == 3 || i == 5 || i == 7) {
+                    board[i][j] = EntityFactory.createCrate(world) //Crate
                 }
             }
         }

@@ -5,11 +5,11 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.collection.EntityBag
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ScoreComponent
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.PlayerComponent
 
 /* System for the NPC*/
 object NPCSystem : IteratingSystem(
-    World.family { all(CharacterComponent).none(ScoreComponent)}
+    World.family { all(CharacterComponent).none(PlayerComponent)}
 ) {
     fun getNPCs() : EntityBag {
         return family.entities

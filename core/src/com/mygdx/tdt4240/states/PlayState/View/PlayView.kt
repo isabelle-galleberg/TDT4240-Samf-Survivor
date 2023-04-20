@@ -17,7 +17,6 @@ import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.utils.Globals.newGame
 import com.mygdx.tdt4240.utils.Globals.api
 import com.mygdx.tdt4240.utils.Globals.currentUser
-import com.mygdx.tdt4240.utils.Globals.soundOn
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
 
@@ -69,7 +68,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
             playController.updatePos("RIGHT")
         } else if(GameButtons().bombBtnPressed()) {
             playController.bomb()
-            if(soundOn){
+            if(Globals.soundOn){
                 sound.play(1.0f);
             }
         }

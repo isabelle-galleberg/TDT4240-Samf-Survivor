@@ -42,6 +42,9 @@ object CharacterSystem : IteratingSystem(
     fun reduceLives(entity: Entity?) {
         entity?.get(CharacterComponent)?.reduceLives()
     }
+    fun addLives(entity: Entity?) {
+        entity?.get(CharacterComponent)?.addLives()
+    }
 
 
     override fun onTickEntity(entity: Entity) {

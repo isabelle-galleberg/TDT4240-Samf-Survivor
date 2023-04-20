@@ -240,6 +240,9 @@ private fun booster(entity: Entity?) {
     if (powerUp == PowerupType.POINTS) {
         PlayerSystem.addScore(PowerupType.POINTS.value)
     }
+    else if (powerUp == PowerupType.HEART) {
+        CharacterSystem.addLives(player)
+    }
     else if (powerUp == PowerupType.RANGE) {
         CharacterSystem.setFirelength(player,PowerupType.RANGE.value)
         val t: TimerTask = object : TimerTask() {

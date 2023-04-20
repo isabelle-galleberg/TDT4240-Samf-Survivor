@@ -37,6 +37,10 @@ data class CharacterComponent(
         this@CharacterComponent.lives -= 1
     }
 
+    fun addLives() {
+        this@CharacterComponent.lives += 1
+    }
+
     fun changeFirelength(range: Int) {
         this@CharacterComponent.firelength = range
     }

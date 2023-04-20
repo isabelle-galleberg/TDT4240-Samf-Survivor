@@ -64,6 +64,9 @@ object PlayController {
                     } else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.POINTS) {
                         uiBoard[i][j] = "points"
                     }
+                    else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.HEART) {
+                        uiBoard[i][j] = "heart"
+                    }
 
                 } else if (game.board[i][j]?.has(LifetimeComponent) == true) {
                     if (game.board[i][j]?.get(LifetimeComponent)?.fire == true) {

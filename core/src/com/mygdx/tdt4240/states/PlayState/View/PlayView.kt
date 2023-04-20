@@ -46,6 +46,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val crateImg = Texture("gameView/crate.png")
     private val fireImg = Texture("gameView/fire.png")
     private val bombImg = Texture("gameView/bomb.png")
+    private val powerUpHeart = Texture("gameView/heartFull.png")
     private val powerUpSpeedImg = Texture("gameView/powerUpSpeed.png")
     private val powerUpRangeImg = Texture("gameView/powerUpRange.png")
     private val powerUpPointsImg = Texture("gameView/powerUpPoints.png")
@@ -123,6 +124,9 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                 }
                 else if (uiBoard[i][j].equals("points")) {
                     sprites.draw(powerUpPointsImg, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
+                }
+                else if (uiBoard[i][j].equals("heart")) {
+                    sprites.draw(powerUpHeart, boardX + i * tileSize, boardY + j * tileSize, tileSize, tileSize)
                 }
             }
         }

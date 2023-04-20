@@ -14,6 +14,7 @@ import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.states.*
 
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
+import com.mygdx.tdt4240.utils.Globals
 import com.mygdx.tdt4240.utils.Globals.newGame
 import com.mygdx.tdt4240.utils.Globals.api
 import com.mygdx.tdt4240.utils.Globals.currentUser
@@ -69,7 +70,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         } else if(GameButtons().bombBtnPressed()) {
             playController.bomb()
             if(Globals.soundOn){
-                sound.play(1.0f);
+                sound.play(1.0f)
             }
         }
 

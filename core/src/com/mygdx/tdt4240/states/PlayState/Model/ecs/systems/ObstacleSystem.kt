@@ -3,16 +3,11 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 
-/* System for the powerups and bombs*/
-object LifeSystem : IteratingSystem(
-    World.family { all(LifetimeComponent) }
+object ObstacleSystem : IteratingSystem(
+    World.family { all(ObstacleComponent) }
 ) {
-
-    fun getLifeTime(entity: Entity?): Long {
-        return entity?.get(LifetimeComponent)?.lifetime ?: 2000
-    }
 
     fun contains(entity: Entity?) : Boolean {
         if (entity != null) {
@@ -20,13 +15,13 @@ object LifeSystem : IteratingSystem(
         }
         return false
     }
-    fun isFire(entity: Entity?) : Boolean {
-        return entity?.get(LifetimeComponent)?.fire ?: false
+
+    fun isWall(entity: Entity?) : Boolean {
+        return entity?.get(ObstacleComponent)?.wall ?: false
     }
+
 
     override fun onTickEntity(entity: Entity) {
 
     }
-
-
 }

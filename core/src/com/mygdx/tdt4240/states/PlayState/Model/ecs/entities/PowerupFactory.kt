@@ -4,7 +4,7 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
 
 /* The concrete factory following the abstract factory pattern for creating powerups on gameboard */
 object PowerupFactory {

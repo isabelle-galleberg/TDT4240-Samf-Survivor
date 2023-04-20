@@ -1,11 +1,8 @@
 package com.mygdx.tdt4240.states.PlayState.Controller
 
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.get
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.has
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
 import com.mygdx.tdt4240.utils.Globals
 import kotlin.random.Random
@@ -50,23 +47,23 @@ object PlayController {
         uiBoard = Array(9) { arrayOfNulls(9) }
         for (i in 0 until 9) {
             for (j in 0 until 9) {
-                if (game.board[i][j]?.has(ObstacleComponent) == true) {
-                    if (game.board[i][j]?.get(ObstacleComponent)?.wall == true) {
+                if (ObstacleSystem.contains(game.board[i][j])) {
+                    if (ObstacleSystem.isWall(game.board[i][j])) {
                         uiBoard[i][j] = "wall"
                     } else {
                         uiBoard[i][j] = "crate"
                     }
-                } else if (game.board[i][j]?.has(BoostComponent) == true) {
-                    if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.SPEED) {
+                } else if (PowerupSystem.contains(game.board[i][j])) {
+                    if (PowerupSystem.getPowerupType(game.board[i][j]) == PowerupType.SPEED) {
                         uiBoard[i][j] = "speed"
-                    } else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.RANGE) {
+                    } else if (PowerupSystem.getPowerupType(game.board[i][j])== PowerupType.RANGE) {
                         uiBoard[i][j] = "range"
-                    } else if (game.board[i][j]?.get(BoostComponent)?.powerupType == PowerupType.POINTS) {
+                    } else if (PowerupSystem.getPowerupType(game.board[i][j]) == PowerupType.POINTS) {
                         uiBoard[i][j] = "points"
                     }
 
-                } else if (game.board[i][j]?.has(LifetimeComponent) == true) {
-                    if (game.board[i][j]?.get(LifetimeComponent)?.fire == true) {
+                } else if (LifeSystem.contains(game.board[i][j])) {
+                    if (LifeSystem.isFire(game.board[i][j])) {
                         uiBoard[i][j] = "fire"
                     } else {
                         uiBoard[i][j] = "bomb"
@@ -79,11 +76,11 @@ object PlayController {
     }
 
     fun getPlayerPosition() : Pair<Int,Int> {
-        return PlayerSystem.getPosition()
+        return game.getPlayerPosition()
     }
 
     fun getNPCPositions() : Array<Pair<Int,Int>> {
-        return NPCSystem.getPositions()
+        return game.getNpcPositions()
     }
 
     fun isGameWon(): Boolean {
@@ -94,33 +91,30 @@ object PlayController {
     }
 
     fun getPlayerLives(): Int {
-        return PlayerSystem.getLives()
+        return game.getPlayerLives()
     }
 
     fun getNPCLives() : Array<Int> {
-        return NPCSystem.getLives()
+        return game.getNpcLives()
 
     }
 
     fun updatePos(direction: String) {
+        var directionType = DirectionType.NONE
         if (direction == "RIGHT") {
-            PlayerSystem.setDirection(DirectionType.RIGHT)
-            game.movePlayer()
+            directionType = DirectionType.RIGHT
         }
         if (direction == "LEFT") {
-            PlayerSystem.setDirection(DirectionType.LEFT)
-            game.movePlayer()
+            directionType = DirectionType.LEFT
         }
         if (direction == "UP") {
-            PlayerSystem.setDirection(DirectionType.UP)
-            game.movePlayer()
+            directionType = DirectionType.UP
         }
         if (direction == "DOWN") {
-            PlayerSystem.setDirection(DirectionType.DOWN)
-            game.movePlayer()
-        } else {
-            PlayerSystem.setDirection(DirectionType.NONE)
+            directionType = DirectionType.DOWN
         }
+        game.setPlayerDirection(directionType)
+        game.movePlayer()
     }
 
     fun updatePosNPC() {
@@ -148,14 +142,14 @@ object PlayController {
     }
 
     fun currentScore(): Int {
-        return PlayerSystem.getScore()
+        return ScoreSystem.getScore()
     }
 
     fun finalScore(): Int {
         if (!isGameWon()) {
             return 0
         }
-        return currentScore() + PlayerSystem.getLives() * 100 + (getTime() ?: 1)
+        return currentScore() + game.getPlayerLives() * 100 + (getTime() ?: 1)
     }
 
 }

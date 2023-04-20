@@ -17,7 +17,6 @@ import com.mygdx.tdt4240.utils.Globals
 import java.util.*
 import kotlin.random.Random
 
-
 /* Game logic */
 object Game { //set number of NPCs default to 1
     private val world = world {
@@ -37,7 +36,6 @@ object Game { //set number of NPCs default to 1
     private var timer = Timer()
     private var timerTasks = mutableListOf<TimerTask>()
 
-
     fun newGame() {
         timerTasks.forEach{ t -> t.cancel() }
         world.forEach { e -> e.remove() }
@@ -55,8 +53,11 @@ object Game { //set number of NPCs default to 1
             for (j in board[i].indices) {
                 if (i % 2 != 0 && j % 2 != 0) {
                     board[i][j] = EntityFactory.createWall(world) //Wall
-                } else if (i == 1 || i == 3 || i == 5 || i == 7) {
-                    board[i][j] = EntityFactory.createCrate(world) //Crate
+                } else if (i in 1..7) {
+                    val randInt = Random.nextInt(0, 2)
+                    if (randInt == 0) {
+                        board[i][j] = EntityFactory.createCrate(world) //Crate
+                    }
                 }
             }
         }
@@ -80,7 +81,6 @@ object Game { //set number of NPCs default to 1
                 board[x][y-1] = null
             }
             CharacterSystem.setPosition(player,x,y-1)
-
         } else if (direction == DirectionType.UP) {
             if (y+1 > 8 || board[x][y+1]?.has(ObstacleComponent) == true) {
                 return
@@ -90,7 +90,6 @@ object Game { //set number of NPCs default to 1
                 board[x][y+1] = null
             }
             CharacterSystem.setPosition(player,x, y+1)
-
         } else if (direction == DirectionType.RIGHT) {
             if (x+1 > 8 || board[x+1][y]?.has(ObstacleComponent) == true) {
                 return
@@ -100,7 +99,6 @@ object Game { //set number of NPCs default to 1
                 board[x+1][y] = null
             }
             CharacterSystem.setPosition(player,x+1,y)
-
         } else if (direction == DirectionType.LEFT) {
             if (x-1 < 0 || board[x-1][y]?.has(ObstacleComponent) == true) {
                 return
@@ -137,7 +135,7 @@ object Game { //set number of NPCs default to 1
 
     fun fire(entity: Entity?,x: Int, y:Int) {
         val fireLength = CharacterSystem.getFirelength(entity)
-        var fireCoordinates = mutableListOf<Pair<Int,Int>>()
+        val fireCoordinates = mutableListOf<Pair<Int,Int>>()
         fireCoordinates.add(Pair(x,y))
 
         //Fire right
@@ -221,6 +219,7 @@ object Game { //set number of NPCs default to 1
         timerTasks.add(t)
         timer.schedule(t, LifeSystem.getLifeTime(board[x][y]))
     }
+
     fun powerUp() {
         var x = Random.nextInt(0, 8)
         var y = Random.nextInt(0, 8)
@@ -231,43 +230,39 @@ object Game { //set number of NPCs default to 1
 
         val randomTypes = PowerupType.values().toList().shuffled()
         board[x][y] = EntityFactory.createPowerup(world, randomTypes.first())
-        }
-
-
-private fun booster(entity: Entity?) {
-    val powerUp = LifeSystem.getPowerupType(entity)
-
-    if (powerUp == PowerupType.POINTS) {
-        PlayerSystem.addScore(PowerupType.POINTS.value)
     }
-    else if (powerUp == PowerupType.RANGE) {
-        CharacterSystem.setFirelength(player,PowerupType.RANGE.value)
-        val t: TimerTask = object : TimerTask() {
-            override fun run() {
-                CharacterSystem.setFirelength(player,CharacterSystem.getStartFirelength())
-                timerTasks.remove(this)
+
+    private fun booster(entity: Entity?) {
+        val powerUp = LifeSystem.getPowerupType(entity)
+
+        if (powerUp == PowerupType.POINTS) {
+            PlayerSystem.addScore(PowerupType.POINTS.value)
+        }
+        else if (powerUp == PowerupType.RANGE) {
+            CharacterSystem.setFirelength(player,PowerupType.RANGE.value)
+            val t: TimerTask = object : TimerTask() {
+                override fun run() {
+                    CharacterSystem.setFirelength(player,CharacterSystem.getStartFirelength())
+                    timerTasks.remove(this)
+                }
             }
+            timerTasks.add(t)
+            timer.schedule(t, LifeSystem.getLifeTime(entity))
         }
-        timerTasks.add(t)
-        timer.schedule(t, LifeSystem.getLifeTime(entity))
-    }
 
-    else if ( powerUp == PowerupType.SPEED) {
-        PlayerSystem.setSpeed(20-PowerupType.SPEED.value)
-        val t: TimerTask = object : TimerTask() {
-            override fun run() {
-                CharacterSystem.setSpeed(player,CharacterSystem.getStartSpeed())
-                timerTasks.remove(this)
+        else if ( powerUp == PowerupType.SPEED) {
+            PlayerSystem.setSpeed(20-PowerupType.SPEED.value)
+            val t: TimerTask = object : TimerTask() {
+                override fun run() {
+                    CharacterSystem.setSpeed(player,CharacterSystem.getStartSpeed())
+                    timerTasks.remove(this)
+                }
             }
+            timerTasks.add(t)
+            timer.schedule(t, LifeSystem.getLifeTime(entity))
         }
-        timerTasks.add(t)
-        timer.schedule(t, LifeSystem.getLifeTime(entity))
-
+        entity?.remove()
     }
-    if (entity != null) {
-        entity.remove()
-    }
-}
 
     fun moveNPC() {
         if (npcMove < NPCSystem.getSpeed()) {
@@ -290,7 +285,6 @@ private fun booster(entity: Entity?) {
             }
             npcMove = 0
         }
-
     }
 
     fun gameWon(): Boolean {

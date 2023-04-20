@@ -83,6 +83,9 @@ class PauseState(
     private fun handleClick(button: TextButton, state: State){
         button.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                if (button.equals(mainMenuBtn)) {
+                    Globals.newGame = true
+                }
                 stateManager.push(state)
                 Gdx.input.inputProcessor = null
             }

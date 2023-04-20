@@ -19,11 +19,8 @@ import com.mygdx.tdt4240.sprites.RightBtn
 import com.mygdx.tdt4240.sprites.LivesDisplay
 import com.mygdx.tdt4240.sprites.Player
 import com.mygdx.tdt4240.sprites.NPC
+import com.mygdx.tdt4240.states.*
 
-import com.mygdx.tdt4240.states.State
-import com.mygdx.tdt4240.states.StateManager
-import com.mygdx.tdt4240.states.GameOverState
-import com.mygdx.tdt4240.states.PauseState
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.utils.Globals
 
@@ -53,7 +50,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val powerUpRangeImg = Texture("gameView/powerUpRange.png")
     private val powerUpPointsImg = Texture("gameView/powerUpPoints.png")
 
-    private val playController = PlayController()
+    private var playController = PlayController
     private var uiBoard = playController.drawBoard()
     private var gameOver = false
 
@@ -85,7 +82,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     }
     override fun render(sprites: SpriteBatch) {
-
         // Calculate values to ensure the view to be scalable on different devices
         var screenMiddleWidth = GAME_WIDTH * 0.5f
         if (screenMiddleWidth > GAME_HEIGHT) { screenMiddleWidth = GAME_HEIGHT }
@@ -95,12 +91,10 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         val boardX = GAME_WIDTH * 0.25f + (screenMiddleWidth-boardSize) * 0.5f
         val boardY = (GAME_HEIGHT-boardSize) * 0.5f
 
-
-
         sprites.begin()
         gameOver = playController.isGameOver()
         if (gameOver) {
-            //playController.resetGame()
+            Globals.newGame = true
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }
 
@@ -163,5 +157,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
     override fun dispose() {
         font.dispose()
+        scoreFont.dispose()
     }
 }

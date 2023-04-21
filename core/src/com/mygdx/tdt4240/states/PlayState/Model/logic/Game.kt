@@ -12,7 +12,6 @@ import com.mygdx.tdt4240.utils.Globals
 import java.util.*
 import kotlin.random.Random
 
-
 /* Game logic */
 class Game (world: World) { //set number of NPCs default to 1
     private var board = Array(9) { arrayOfNulls<Entity>(9) }
@@ -49,8 +48,8 @@ class Game (world: World) { //set number of NPCs default to 1
             for (j in board[i].indices) {
                 if (i % 2 != 0 && j % 2 != 0) {
                     board[i][j] = EntityFactory.createWall(world) //Wall
-                } else if (i > 0 && i < 8) {
-                    val randInt = Random.nextInt(0,2)
+                } else if (i in 1..7) {
+                    val randInt = Random.nextInt(0, 2)
                     if (randInt == 0) {
                         board[i][j] = EntityFactory.createCrate(world) //Crate
                     }
@@ -77,7 +76,6 @@ class Game (world: World) { //set number of NPCs default to 1
                 board[x][y-1] = null
             }
             CharacterSystem.setPosition(player,x,y-1)
-
         } else if (direction == DirectionType.UP) {
             if (y+1 > 8 || ObstacleSystem.contains(board[x][y+1])) {
                 return
@@ -87,7 +85,6 @@ class Game (world: World) { //set number of NPCs default to 1
                 board[x][y+1] = null
             }
             CharacterSystem.setPosition(player,x, y+1)
-
         } else if (direction == DirectionType.RIGHT) {
             if (x+1 > 8 || ObstacleSystem.contains(board[x+1][y])) {
                 return
@@ -97,7 +94,6 @@ class Game (world: World) { //set number of NPCs default to 1
                 board[x+1][y] = null
             }
             CharacterSystem.setPosition(player,x+1,y)
-
         } else if (direction == DirectionType.LEFT) {
             if (x-1 < 0 || ObstacleSystem.contains(board[x-1][y])) {
                 return
@@ -134,7 +130,7 @@ class Game (world: World) { //set number of NPCs default to 1
 
     fun fire(entity: Entity?,x: Int, y:Int) {
         val fireLength = CharacterSystem.getFirelength(entity)
-        var fireCoordinates = mutableListOf<Pair<Int,Int>>()
+        val fireCoordinates = mutableListOf<Pair<Int,Int>>()
         fireCoordinates.add(Pair(x,y))
 
         //Fire right
@@ -218,6 +214,7 @@ class Game (world: World) { //set number of NPCs default to 1
         timerTasks.add(t)
         timer.schedule(t, LifeSystem.getLifeTime(board[x][y]))
     }
+
     fun powerUp() {
         var x = Random.nextInt(0, 8)
         var y = Random.nextInt(0, 8)
@@ -244,10 +241,9 @@ private fun booster(entity: Entity?) {
                 CharacterSystem.setFirelength(player,CharacterSystem.getStartFirelength())
                 timerTasks.remove(this)
             }
+            timerTasks.add(t)
+            timer.schedule(t, LifeSystem.getLifeTime(entity))
         }
-        timerTasks.add(t)
-        timer.schedule(t, LifeSystem.getLifeTime(entity))
-    }
 
     else if ( powerUp == PowerupType.SPEED) {
         CharacterSystem.setSpeed(player,20- PowerupType.SPEED.value)
@@ -256,15 +252,11 @@ private fun booster(entity: Entity?) {
                 CharacterSystem.setSpeed(player,CharacterSystem.getStartSpeed())
                 timerTasks.remove(this)
             }
+            timerTasks.add(t)
+            timer.schedule(t, LifeSystem.getLifeTime(entity))
         }
-        timerTasks.add(t)
-        timer.schedule(t, LifeSystem.getLifeTime(entity))
-
+        entity?.remove()
     }
-    if (entity != null) {
-        entity.remove()
-    }
-}
 
     fun moveNPC() {
         if (npcMove < CharacterSystem.getSpeed(npcList[0])) {
@@ -287,7 +279,6 @@ private fun booster(entity: Entity?) {
             }
             npcMove = 0
         }
-
     }
 
 

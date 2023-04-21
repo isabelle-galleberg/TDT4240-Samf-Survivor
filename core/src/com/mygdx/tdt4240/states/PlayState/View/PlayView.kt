@@ -25,11 +25,11 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private var scoreFont = BitmapFont()
 
     private val pauseBtn = GameButtons().createPauseBtn()
-    private val bombBtn = GameButtons().createBombBtn()
     private val upBtn = GameButtons().createUpBtn()
     private val downBtn = GameButtons().createDownBtn()
     private val leftBtn = GameButtons().createLeftBtn()
     private val rightBtn = GameButtons().createRightBtn()
+    private val bombBtn = GameButtons().createBombBtn()
 
     private val player = Player().createPlayer()
     private val nPC = NPC().createNPC()

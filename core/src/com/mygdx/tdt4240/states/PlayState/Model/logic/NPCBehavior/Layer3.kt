@@ -24,7 +24,5 @@ open class Layer3 : Layer2() {
             return false
         }
         return true
-
-
     }
 }

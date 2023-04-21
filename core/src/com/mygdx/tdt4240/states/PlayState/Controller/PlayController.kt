@@ -24,11 +24,8 @@ object PlayController {
     private var game : Game? = null
 
     fun newGame() {
-        println("start new game")
         game?.dispose()
-        println(game)
         game = Game(world)
-        println(game)
         worldTimer = 180
         timeCount = 0f
         timerOver = false
@@ -82,11 +79,9 @@ object PlayController {
                     } else {
                         uiBoard[i][j] = "bomb"
                     }
-
                 }
             }}
             return uiBoard
-
     }
 
     fun getPlayerPosition() : Pair<Int,Int> {
@@ -139,7 +134,7 @@ object PlayController {
     fun bomb() {
         game?.bomb()
     }
-    fun spawnPowerUp() {
+    private fun spawnPowerUp() {
         val randInt = Random.nextInt(0,700)
         if(randInt < 2) {
             game?.powerUp()
@@ -160,10 +155,9 @@ object PlayController {
     }
 
     fun finalScore(): Int {
-        if (!isGameWon()) {
+        if(!isGameWon()) {
             return 0
         }
         return currentScore() + game!!.getPlayerLives() * 100 + (getTime() ?: 1)
     }
-
 }

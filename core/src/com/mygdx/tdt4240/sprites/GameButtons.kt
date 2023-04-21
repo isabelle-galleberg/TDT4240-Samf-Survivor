@@ -3,8 +3,8 @@ package com.mygdx.tdt4240.sprites
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
 class GameButtons {
     private val screenSideWidth = GAME_WIDTH * 0.25f
@@ -21,7 +21,6 @@ class GameButtons {
 
     private val bombBtnSize = GAME_WIDTH * 0.2f
     private val bombBtnX = GAME_WIDTH * 0.9f - bombBtnSize * 0.5f
-
 
     fun createBombBtn(): Sprite {
         val sprite = Sprite(Texture("gameView/bombBtn.png"))

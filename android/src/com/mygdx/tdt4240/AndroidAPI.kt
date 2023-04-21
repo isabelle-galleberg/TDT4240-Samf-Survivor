@@ -100,7 +100,6 @@ class AndroidAPI : API {
             Thread.sleep(100)
         }
     }
-
 }
 
 

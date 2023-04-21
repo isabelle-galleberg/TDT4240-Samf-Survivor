@@ -1,7 +1,7 @@
 package com.mygdx.tdt4240.states.PlayState.Model.logic
 
 import com.github.quillraven.fleks.Entity
-import com.github.quillraven.fleks.world
+import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.logic.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
@@ -14,16 +14,8 @@ import kotlin.random.Random
 
 
 /* Game logic */
-object Game { //set number of NPCs default to 1
-    private val world = world {
-        systems {
-            add(ObstacleSystem)
-            add(ScoreSystem)
-            add(LifeSystem)
-            add(CharacterSystem)
-        }}
-
-    var board = Array(9) { arrayOfNulls<Entity>(9) }
+class Game (world: World) { //set number of NPCs default to 1
+    private var board = Array(9) { arrayOfNulls<Entity>(9) }
     private var npcNum = 1
     private var player:Entity? = null
     private var npcList = arrayOfNulls<Entity>(npcNum)
@@ -31,17 +23,24 @@ object Game { //set number of NPCs default to 1
     private var playerMove = 0
     private var timer = Timer()
     private var timerTasks = mutableListOf<TimerTask>()
+    private val world = world
 
-
-    fun newGame() {
-        timerTasks.forEach{ t -> t.cancel() }
-        world.forEach { e -> e.remove() }
+    init {
         player = EntityFactory.createPlayer(world,0,8)
         for (i in 0 until npcNum) {
             npcList[i] = EntityFactory.createNPC(world,8,0)
         }
         initBoard()
         Globals.newGame = false
+    }
+
+    fun dispose() {
+        timerTasks.forEach{ t -> t.cancel() }
+        world.forEach { e -> e.remove() }
+    }
+
+    fun getBoard(i : Int, j : Int) : Entity? {
+        return board[i][j]
     }
 
     private fun initBoard(): Array<Array<Entity?>> {

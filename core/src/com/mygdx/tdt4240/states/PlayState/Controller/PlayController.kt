@@ -1,5 +1,6 @@
 package com.mygdx.tdt4240.states.PlayState.Controller
 
+import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
@@ -8,18 +9,30 @@ import com.mygdx.tdt4240.utils.Globals
 import kotlin.random.Random
 
 object PlayController {
-
     private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
-    private var game = Game
     private var timerOver = false
     private var worldTimer: Int? = 180
     private var timeCount = 0f
+    private val world = world {
+        systems {
+            add(ObstacleSystem)
+            add(ScoreSystem)
+            add(LifeSystem)
+            add(CharacterSystem)
+            add(PowerupSystem)
+        }}
+    private var game : Game? = null
 
     fun newGame() {
+        println("start new game")
+        game?.dispose()
+        println(game)
+        game = Game(world)
+        println(game)
         worldTimer = 180
         timeCount = 0f
         timerOver = false
-        game.newGame()
+        Globals.newGame = false
     }
 
     fun update(dt: Float) {
@@ -47,23 +60,24 @@ object PlayController {
         uiBoard = Array(9) { arrayOfNulls(9) }
         for (i in 0 until 9) {
             for (j in 0 until 9) {
-                if (ObstacleSystem.contains(game.board[i][j])) {
-                    if (ObstacleSystem.isWall(game.board[i][j])) {
+                val tile = game?.getBoard(i,j)
+                if (ObstacleSystem.contains(tile)) {
+                    if (ObstacleSystem.isWall(tile)) {
                         uiBoard[i][j] = "wall"
                     } else {
                         uiBoard[i][j] = "crate"
                     }
-                } else if (PowerupSystem.contains(game.board[i][j])) {
-                    if (PowerupSystem.getPowerupType(game.board[i][j]) == PowerupType.SPEED) {
+                } else if (PowerupSystem.contains(tile)) {
+                    if (PowerupSystem.getPowerupType(tile) == PowerupType.SPEED) {
                         uiBoard[i][j] = "speed"
-                    } else if (PowerupSystem.getPowerupType(game.board[i][j])== PowerupType.RANGE) {
+                    } else if (PowerupSystem.getPowerupType(tile)== PowerupType.RANGE) {
                         uiBoard[i][j] = "range"
-                    } else if (PowerupSystem.getPowerupType(game.board[i][j]) == PowerupType.POINTS) {
+                    } else if (PowerupSystem.getPowerupType(tile) == PowerupType.POINTS) {
                         uiBoard[i][j] = "points"
                     }
 
-                } else if (LifeSystem.contains(game.board[i][j])) {
-                    if (LifeSystem.isFire(game.board[i][j])) {
+                } else if (LifeSystem.contains(tile)) {
+                    if (LifeSystem.isFire(tile)) {
                         uiBoard[i][j] = "fire"
                     } else {
                         uiBoard[i][j] = "bomb"
@@ -76,26 +90,26 @@ object PlayController {
     }
 
     fun getPlayerPosition() : Pair<Int,Int> {
-        return game.getPlayerPosition()
+        return game?.getPlayerPosition() ?: Pair(0,0)
     }
 
     fun getNPCPositions() : Array<Pair<Int,Int>> {
-        return game.getNpcPositions()
+        return game?.getNpcPositions() ?: Array(1) {Pair(0,0)}
     }
 
     fun isGameWon(): Boolean {
         if (timerOver) {
             return false
         }
-        return game.gameWon()
+        return game?.gameWon() ?: false
     }
 
     fun getPlayerLives(): Int {
-        return game.getPlayerLives()
+        return game?.getPlayerLives() ?: 0
     }
 
     fun getNPCLives() : Array<Int> {
-        return game.getNpcLives()
+        return game?.getNpcLives() ?: Array(1) {0}
 
     }
 
@@ -113,27 +127,27 @@ object PlayController {
         if (direction == "DOWN") {
             directionType = DirectionType.DOWN
         }
-        game.setPlayerDirection(directionType)
-        game.movePlayer()
+        game?.setPlayerDirection(directionType)
+        game?.movePlayer()
     }
 
     fun updatePosNPC() {
-        game.moveNPC()
+        game?.moveNPC()
 
     }
 
     fun bomb() {
-        game.bomb()
+        game?.bomb()
     }
     fun spawnPowerUp() {
         val randInt = Random.nextInt(0,700)
         if(randInt < 2) {
-            game.powerUp()
+            game?.powerUp()
         }
     }
 
     fun isGameOver(): Boolean {
-        if (game.gameOver()) {
+        if (game!!.gameOver()) {
             return true
         } else if (timerOver) {
             return true
@@ -149,7 +163,7 @@ object PlayController {
         if (!isGameWon()) {
             return 0
         }
-        return currentScore() + game.getPlayerLives() * 100 + (getTime() ?: 1)
+        return currentScore() + game!!.getPlayerLives() * 100 + (getTime() ?: 1)
     }
 
 }

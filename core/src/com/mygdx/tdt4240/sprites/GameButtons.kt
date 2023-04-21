@@ -87,6 +87,6 @@ class GameButtons {
     }
 
     fun bombBtnPressed(): Boolean {
-        return isBtnPressed(bombBtnX, 0f, bombBtnSize)
+        return Gdx.input.justTouched() && Gdx.input.x > bombBtnX && Gdx.input.x < bombBtnX + bombBtnSize && Gdx.input.y < GAME_HEIGHT && Gdx.input.y > GAME_HEIGHT - bombBtnSize
     }
 }

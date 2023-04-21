@@ -46,15 +46,15 @@ class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Array<Int>
 
         // Lives display for NPC
         for (i in livesNPC.indices) {
-            sprites.draw(backgroundImg, x,  backgroundY - backgroundHeight*(i+1), backgroundWidth, backgroundHeight)
+            sprites.draw(backgroundImg, x,  backgroundY - backgroundHeight * (i+1), backgroundWidth, backgroundHeight)
 
             sprites.draw(npcImg, x,  iconNPCY - GAME_HEIGHT * 0.10f*i, iconSize, iconSize)
             for (j in 0 until 3) {
                 if(j < 3-livesNPC[i]){
-                    sprites.draw(heartEmptyImg, heartX - j* heartSize,  heartEmptyY- backgroundHeight*(i+1), heartSize, heartSize)
+                    sprites.draw(heartEmptyImg, heartX - j * heartSize,  heartEmptyY- backgroundHeight * i, heartSize, heartSize)
                 }
                 else {
-                    sprites.draw(heartFullImg, heartX - j * heartSize,  heartEmptyY- backgroundHeight*(i+1), heartSize, heartSize)
+                    sprites.draw(heartFullImg, heartX - j * heartSize,  heartEmptyY- backgroundHeight* i, heartSize, heartSize)
                 }
             }
         }

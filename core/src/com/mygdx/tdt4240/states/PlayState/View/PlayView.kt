@@ -145,7 +145,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         font.draw(sprites, time, GAME_WIDTH * 0.05f,  GAME_HEIGHT * 0.92f)
 
         scoreFont.color = Color.BLACK
-        scoreFont.draw(sprites, "Score: ${playController.currentScore()}", GAME_WIDTH * 0.05f, GAME_HEIGHT * 0.55f)
+        scoreFont.draw(sprites, "Score: ${playController.currentScore()}", GAME_WIDTH * 0.80f, GAME_HEIGHT * 0.80f)
 
 
         sprites.flush()

@@ -4,7 +4,7 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 object PowerupSystem : IteratingSystem(
     World.family { all(BoostComponent) }

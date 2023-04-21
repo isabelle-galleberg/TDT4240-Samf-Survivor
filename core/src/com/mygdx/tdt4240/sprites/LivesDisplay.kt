@@ -11,7 +11,8 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
  * @param livesPlayer Number of lives for the main player.
  * @param livesNPC Number of lives for the NPC.
  */
-class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Int){
+class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Array<Int>){
+
     private val screenSideWidth = GAME_WIDTH * 0.25f
     private val x = screenSideWidth * 0.20f
 
@@ -49,15 +50,17 @@ class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Int){
         }
 
         // Lives display for NPC
-        sprites.draw(backgroundImg, x,  backgroundY - backgroundHeight, backgroundWidth, backgroundHeight)
-        sprites.draw(npcImg, x,  iconNPCY, iconSize, iconSize)
+        for (i in livesNPC.indices) {
+            sprites.draw(backgroundImg, x,  backgroundY - backgroundHeight * (i+1), backgroundWidth, backgroundHeight)
 
-        for (i in 0 until 3) {
-            if (i < 3 - livesNPC) {
-                sprites.draw(heartEmptyImg, heartX - i * heartSize,  heartEmptyY, heartSize, heartSize)
-            }
-            else {
-                sprites.draw(heartFullImg, heartX - i * heartSize,  heartEmptyY, heartSize, heartSize)
+            sprites.draw(npcImg, x,  iconNPCY - GAME_HEIGHT * 0.10f*i, iconSize, iconSize)
+            for (j in 0 until 3) {
+                if(j < 3-livesNPC[i]){
+                    sprites.draw(heartEmptyImg, heartX - j * heartSize,  heartEmptyY- backgroundHeight * i, heartSize, heartSize)
+                }
+                else {
+                    sprites.draw(heartFullImg, heartX - j * heartSize,  heartEmptyY- backgroundHeight* i, heartSize, heartSize)
+                }
             }
         }
     }

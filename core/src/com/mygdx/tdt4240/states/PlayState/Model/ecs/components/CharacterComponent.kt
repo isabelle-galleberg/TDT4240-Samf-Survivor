@@ -2,7 +2,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.components
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 
 /* Component containing direction, speed, amount of lives and length of fire from bombs*/
 data class CharacterComponent(
@@ -14,13 +14,21 @@ data class CharacterComponent(
     var firelength:Int = 3
 ) : Component<CharacterComponent> {
 
-    val startSpeed = 15
-    val startFirelength = 20
+    private val startSpeed = 15
+    private val startFirelength = 20
 
     override fun type() = CharacterComponent
 
     fun changeDirection(direction: DirectionType) {
         this@CharacterComponent.direction = direction
+    }
+
+    fun getStartFirelength() : Int {
+        return startFirelength
+    }
+
+    fun getStartSpeed() : Int {
+        return startSpeed
     }
 
     fun setPosition(x:Int,y:Int) {

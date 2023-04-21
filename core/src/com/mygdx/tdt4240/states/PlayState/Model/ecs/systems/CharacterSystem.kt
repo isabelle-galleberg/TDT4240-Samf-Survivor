@@ -3,7 +3,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.github.quillraven.fleks.World.Companion.family
 
 /* System for NPC and Player*/
@@ -50,11 +50,11 @@ object CharacterSystem : IteratingSystem(
     }
 
     fun getStartSpeed(): Int {
-        return family.entities.first().get(CharacterComponent).startSpeed
+        return family.entities.first().get(CharacterComponent).getStartSpeed()
     }
 
     fun getStartFirelength(): Int {
-        return family.entities.first().get(CharacterComponent).startFirelength
+        return family.entities.first().get(CharacterComponent).getStartFirelength()
     }
 
     fun getSpeed(entity: Entity?): Int {

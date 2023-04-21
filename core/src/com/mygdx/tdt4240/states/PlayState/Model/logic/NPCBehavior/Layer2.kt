@@ -5,7 +5,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.CharacterSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.LifeSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ObstacleSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PowerupSystem
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import kotlin.random.Random
 
 /* Avoid collision with fire, bombs, walls, crates*/

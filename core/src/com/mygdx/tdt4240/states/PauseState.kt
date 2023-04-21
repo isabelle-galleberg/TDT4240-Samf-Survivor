@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
-import com.mygdx.tdt4240.utils.Constants
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
@@ -30,12 +29,12 @@ class PauseState(
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     private val background = Texture("samfundet.png")
-    private val pauseWindow = Pixmap((GAME_WIDTH * 0.7).toInt(),  (GAME_HEIGHT * 0.7).toInt(), Pixmap.Format.RGBA8888).apply {
+    private val pauseWindow = Pixmap((GAME_WIDTH * 0.7).toInt(),  (GAME_HEIGHT * 0.8).toInt(), Pixmap.Format.RGBA8888).apply {
         setColor(Color.WHITE)
-        fillRectangle(0, 0, (GAME_WIDTH * 0.7).toInt(), (GAME_HEIGHT * 0.7).toInt())
+        fillRectangle(0, 0, (GAME_WIDTH * 0.7).toInt(), (GAME_HEIGHT * 0.8).toInt())
     }
     private val pauseWindowSprite = Sprite(Texture(pauseWindow)).apply {
-        setPosition((GAME_WIDTH - width) / 2, (GAME_HEIGHT - height) * 0.3f)
+        setPosition((GAME_WIDTH - width) / 2, (GAME_HEIGHT - height) * 0.1f)
     }
 
     private var label = Label("You have paused the game.", skin).apply {

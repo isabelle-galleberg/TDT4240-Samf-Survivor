@@ -3,7 +3,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.github.quillraven.fleks.World.Companion.family
 
 /* System for NPC and Player*/

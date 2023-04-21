@@ -2,9 +2,9 @@ package com.mygdx.tdt4240.states.PlayState.Controller
 
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
-import com.mygdx.tdt4240.states.PlayState.Model.logic.Game
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.logic.PlayLogic
 import com.mygdx.tdt4240.utils.Globals
 import kotlin.random.Random
 
@@ -21,11 +21,11 @@ object PlayController {
             add(CharacterSystem)
             add(PowerupSystem)
         }}
-    private var game : Game? = null
+    private var game : PlayLogic? = null
 
     fun newGame() {
         game?.dispose()
-        game = Game(world)
+        game = PlayLogic(world)
         worldTimer = 180
         timeCount = 0f
         timerOver = false

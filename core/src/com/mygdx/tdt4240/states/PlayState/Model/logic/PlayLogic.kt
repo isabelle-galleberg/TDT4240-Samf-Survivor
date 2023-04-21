@@ -6,18 +6,18 @@ import com.mygdx.tdt4240.states.PlayState.Model.logic.NPCBehavior.NPCBehavior
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ScoreSystem.remove
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import com.mygdx.tdt4240.utils.Globals
 import java.util.*
 import kotlin.random.Random
 
 /* Game logic */
-class Game (world: World) { //set number of NPCs default to 1
+class PlayLogic (world: World) { //set number of NPCs default to 1
     private var board = Array(9) { arrayOfNulls<Entity>(9) }
-    private var npcNum = 2
+    private var npcNum = 1
     private var player:Entity? = null
-    private var npcList = arrayOfNulls<Entity>(npcNum)
+    private var npcList = mutableListOf<Entity>()
     private var npcMove = 0
     private var playerMove = 0
     private var timer = Timer()
@@ -27,7 +27,7 @@ class Game (world: World) { //set number of NPCs default to 1
     init {
         player = EntityFactory.createPlayer(world,0,8)
         for (i in 0 until npcNum) {
-            npcList[i] = EntityFactory.createNPC(world,8,0+i)
+            npcList.add(EntityFactory.createNPC(world,8,0+i))
         }
         initBoard()
         Globals.newGame = false
@@ -195,11 +195,17 @@ class Game (world: World) { //set number of NPCs default to 1
             CharacterSystem.reduceLives(player)
         }
 
+        var deadNPCs = mutableListOf<Entity>()
         npcList.forEach { npc ->
             if (fireCoordinates.contains(CharacterSystem.getPosition(npc))) {
                 CharacterSystem.reduceLives(npc)
+                if(CharacterSystem.getLives(npc) == 0) {
+                    deadNPCs.add(npc)
+                }
                 ScoreSystem.addScore(50)
             }}
+        npcList.removeAll(deadNPCs)
+        deadNPCs.forEach { npc -> npc.remove() }
 
         val t: TimerTask = object : TimerTask() {
             override fun run() {

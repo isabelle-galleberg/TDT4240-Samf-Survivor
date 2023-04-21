@@ -2,7 +2,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.components
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 
 /* Component containing direction, speed, amount of lives and length of fire from bombs*/
 data class CharacterComponent(

@@ -2,7 +2,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.components
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
-import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
 /* Component containing poweruptype */
 data class BoostComponent(

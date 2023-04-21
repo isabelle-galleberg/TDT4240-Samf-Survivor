@@ -2,7 +2,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.entities
 
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
 
 /* The abstract factory following the abstract factory pattern for creating entities for gameboard */
 object EntityFactory {

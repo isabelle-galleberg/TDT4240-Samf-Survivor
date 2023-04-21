@@ -3,15 +3,15 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
+import com.mygdx.tdt4240.states.PlayState.Model.logic.types.PowerupType
 
-/* System for the powerups and bombs*/
-object LifeSystem : IteratingSystem(
-    World.family { all(LifetimeComponent) }
+object PowerupSystem : IteratingSystem(
+    World.family { all(BoostComponent) }
 ) {
 
-    fun getLifeTime(entity: Entity?): Long {
-        return entity?.get(LifetimeComponent)?.lifetime ?: 2000
+    fun getPowerupType(entity: Entity?) : PowerupType {
+        return entity?.get(BoostComponent)?.powerupType ?: PowerupType.POINTS
     }
 
     fun contains(entity: Entity?) : Boolean {
@@ -20,9 +20,7 @@ object LifeSystem : IteratingSystem(
         }
         return false
     }
-    fun isFire(entity: Entity?) : Boolean {
-        return entity?.get(LifetimeComponent)?.fire ?: false
-    }
+
 
     override fun onTickEntity(entity: Entity) {
 

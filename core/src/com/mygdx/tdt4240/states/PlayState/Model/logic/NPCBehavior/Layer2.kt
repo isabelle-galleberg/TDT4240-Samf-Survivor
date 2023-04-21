@@ -1,17 +1,16 @@
-package com.mygdx.tdt4240.states.PlayState.Model.ecs.NPCBehavior
+package com.mygdx.tdt4240.states.PlayState.Model.logic.NPCBehavior
 
 import com.github.quillraven.fleks.Entity
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.LifetimeComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.CharacterSystem
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.NPCSystem.has
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.LifeSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ObstacleSystem
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PowerupSystem
+import com.mygdx.tdt4240.states.PlayState.Model.logic.types.DirectionType
 import kotlin.random.Random
 
 /* Avoid collision with fire, bombs, walls, crates*/
 open class Layer2 : Layer1() {
-    fun avoidCollision(entity: Entity, board : Array<Array<Entity?>>) : DirectionType {
+    fun avoidCollision(entity: Entity?, board : Array<Array<Entity?>>) : DirectionType {
         var npcDirection = CharacterSystem.getDirection(entity)
         val randInt = Random.nextInt(0,8)
         if (randInt == 0) {
@@ -52,11 +51,12 @@ open class Layer2 : Layer1() {
     }
 
     /* Finds new random direction that is not the NotDirection*/
-    private fun randomDirection(NotDirection: DirectionType): DirectionType {
-        return DirectionType.values().filterNot { d -> (d==DirectionType.NONE || d==NotDirection) }.random()
+    fun randomDirection(NotDirection: DirectionType): DirectionType {
+        return DirectionType.values().filterNot { d -> (d== DirectionType.NONE || d==NotDirection) }.random()
+
     }
 
-    private fun checkIfCanWalk(entity: Entity?):Boolean {
-        return entity?.has(ObstacleComponent) == true || (entity?.has(LifetimeComponent) == true && !entity.has(BoostComponent))
+    fun checkIfCanWalk(entity: Entity?):Boolean {
+        return ObstacleSystem.contains(entity) || (LifeSystem.contains(entity) && !PowerupSystem.contains(entity))
     }
 }

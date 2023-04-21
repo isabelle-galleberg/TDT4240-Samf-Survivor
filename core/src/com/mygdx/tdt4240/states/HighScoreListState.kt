@@ -34,8 +34,8 @@ class HighScoreListState(
     private val myscoreImg = Texture("highscoreList/myscore.png")
 
     init {
-        Alert().checkConnectionLost(stage)
         font.data.setScale(FONT_SIZE)
+        Alert().checkConnectionLost(stage)
         getHighscores()
     }
 
@@ -54,6 +54,7 @@ class HighScoreListState(
     }
 
     override fun update(deltaTime: Float) {
+        Gdx.input.inputProcessor = stage
          if (BackBtn().backBtnPressed()) {
              stateManager.push(MainMenuState(stateManager))
          }

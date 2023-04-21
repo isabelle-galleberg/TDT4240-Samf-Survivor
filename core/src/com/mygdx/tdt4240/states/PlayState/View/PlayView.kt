@@ -55,6 +55,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
 
     override fun update(deltaTime: Float) {
+        Gdx.input.inputProcessor = stage
         playController.update(deltaTime)
         if (GameButtons().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))

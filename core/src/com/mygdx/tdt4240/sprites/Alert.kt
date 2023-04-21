@@ -14,7 +14,7 @@ import com.mygdx.tdt4240.utils.Globals.connectionLost
 /**
  * Alert class for showing an alert dialog when the connection to the server is lost.
  */
-class Alert() {
+class Alert {
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java).apply {
         font.data.setScale(Constants.FONT_SIZE)
@@ -26,7 +26,7 @@ class Alert() {
     }
 
     init {
-        dialog.button("Close").addListener(object : ClickListener() {
+        dialog.button("Close", true).addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 dialog.hide()
             }

@@ -33,7 +33,7 @@ In `core/src/com/mygdx/tdt4240`:
 
 1. In Android Studio, click the Build tab at the top of the window
 2. Then click Build Bundle(s) / APK(s) -> Build APK(s)
-3. Find the compiled .apk file in TDT4240-SAMF-SURVIVOR\android\build\outputs\apk\debug
+3. Find the compiled .apk file in TDT4240-SAMF-SURVIVOR/android/build/outputs/apk/debug
 
 **Run .apk**
 1. Download the .apk file on your Android phone

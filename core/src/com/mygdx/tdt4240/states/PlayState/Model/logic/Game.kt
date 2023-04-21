@@ -15,7 +15,7 @@ import kotlin.random.Random
 /* Game logic */
 class Game (world: World) { //set number of NPCs default to 1
     private var board = Array(9) { arrayOfNulls<Entity>(9) }
-    private var npcNum = 1
+    private var npcNum = 2
     private var player:Entity? = null
     private var npcList = arrayOfNulls<Entity>(npcNum)
     private var npcMove = 0
@@ -27,7 +27,7 @@ class Game (world: World) { //set number of NPCs default to 1
     init {
         player = EntityFactory.createPlayer(world,0,8)
         for (i in 0 until npcNum) {
-            npcList[i] = EntityFactory.createNPC(world,8,0)
+            npcList[i] = EntityFactory.createNPC(world,8,0+i)
         }
         initBoard()
         Globals.newGame = false
@@ -320,6 +320,6 @@ private fun booster(entity: Entity?) {
     }
 
     fun gameOver(): Boolean {
-        return CharacterSystem.getLives(player) == 0 || CharacterSystem.getLives(npcList.first()) == 0
+        return CharacterSystem.getLives(player) == 0 || npcList.all { npc -> CharacterSystem.getLives(npc) == 0}
     }
 }

@@ -50,11 +50,11 @@ object CharacterSystem : IteratingSystem(
     }
 
     fun getStartSpeed(): Int {
-        return family.entities.first().get(CharacterComponent).startSpeed
+        return family.entities.first().get(CharacterComponent).getStartSpeed()
     }
 
     fun getStartFirelength(): Int {
-        return family.entities.first().get(CharacterComponent).startFirelength
+        return family.entities.first().get(CharacterComponent).getStartFirelength()
     }
 
     fun getSpeed(entity: Entity?): Int {

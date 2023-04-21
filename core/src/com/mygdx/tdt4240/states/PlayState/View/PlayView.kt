@@ -126,9 +126,10 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
         player.draw(sprites) //Player
 
-        val npcPos = playController.getNPCPositions().first()
-        NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
-        nPC.draw(sprites) //NPC
+        for (npcPos in playController.getNPCPositions()) {
+            NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
+            nPC.draw(sprites) //NPC
+        }
 
         upBtn.draw(sprites) // UP button
         downBtn.draw(sprites) // DOWN button
@@ -136,7 +137,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         rightBtn.draw(sprites) // RIGHT button
         bombBtn.draw(sprites) // Bomb button
 
-        LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives().first()) // Lives
+        LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives()) // Lives
 
 
         val time = playController.getTime().toString() //Timer

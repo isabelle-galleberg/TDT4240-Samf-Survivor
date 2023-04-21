@@ -14,13 +14,21 @@ data class CharacterComponent(
     var firelength:Int = 3
 ) : Component<CharacterComponent> {
 
-    val startSpeed = 15
-    val startFirelength = 20
+    private val startSpeed = 15
+    private val startFirelength = 20
 
     override fun type() = CharacterComponent
 
     fun changeDirection(direction: DirectionType) {
         this@CharacterComponent.direction = direction
+    }
+
+    fun getStartFirelength() : Int {
+        return startFirelength
+    }
+
+    fun getStartSpeed() : Int {
+        return startSpeed
     }
 
     fun setPosition(x:Int,y:Int) {

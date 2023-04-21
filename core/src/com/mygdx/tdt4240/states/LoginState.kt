@@ -81,20 +81,20 @@ class LoginState(
 
 
     init {
-        handleLogIn(api!!)
-        handleRegister()
-        handleKeyboard(username)
-        handleKeyboard(password)
         stage.addActor(username)
         stage.addActor(password)
         stage.addActor(loginBtn)
         stage.addActor(registerBtn)
+        handleLogIn(api!!)
+        handleRegister()
+        handleKeyboard(username)
+        handleKeyboard(password)
     }
 
     private fun handleLogIn(api: API) {
-        Alert().checkConnectionLost(stage)
         loginBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Alert().checkConnectionLost(stage)
                 if (username.text == "" || password.text == "") {
                     errorLabel.setText("Please fill in all fields")
                     stage.addActor(errorLabel)

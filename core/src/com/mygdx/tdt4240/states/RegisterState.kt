@@ -74,19 +74,18 @@ class RegisterState(
     }
 
     init {
-        handleRegister(api!!)
-        handleKeyboard(username)
-        handleKeyboard(password)
-
         stage.addActor(username)
         stage.addActor(password)
         stage.addActor(button)
+        handleRegister(api!!)
+        handleKeyboard(username)
+        handleKeyboard(password)
     }
 
     private fun handleRegister(api: API) {
-        Alert().checkConnectionLost(stage)
         button.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Alert().checkConnectionLost(stage)
                 if (username.text == "" || password.text == "") {
                     errorLabel.setText("Please fill in all fields")
                     stage.addActor(errorLabel)

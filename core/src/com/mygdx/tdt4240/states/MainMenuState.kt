@@ -63,7 +63,6 @@ class MainMenuState(
 
     init {
         textFieldStyle.font.data.setScale(FONT_SIZE)
-
         stage.addActor(playBtn)
         stage.addActor(tutorialBtn)
         stage.addActor(highscoreBtn)

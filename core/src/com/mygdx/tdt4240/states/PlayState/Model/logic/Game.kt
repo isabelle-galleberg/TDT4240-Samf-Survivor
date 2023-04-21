@@ -241,21 +241,24 @@ private fun booster(entity: Entity?) {
                 CharacterSystem.setFirelength(player,CharacterSystem.getStartFirelength())
                 timerTasks.remove(this)
             }
-            timerTasks.add(t)
-            timer.schedule(t, LifeSystem.getLifeTime(entity))
         }
+        timerTasks.add(t)
+        timer.schedule(t, LifeSystem.getLifeTime(entity))
+
+    }
 
     else if ( powerUp == PowerupType.SPEED) {
-        CharacterSystem.setSpeed(player,20- PowerupType.SPEED.value)
-        val t: TimerTask = object : TimerTask() {
-            override fun run() {
-                CharacterSystem.setSpeed(player,CharacterSystem.getStartSpeed())
-                timerTasks.remove(this)
+            CharacterSystem.setSpeed(player, 20 - PowerupType.SPEED.value)
+            val t: TimerTask = object : TimerTask() {
+                override fun run() {
+                    CharacterSystem.setSpeed(player, CharacterSystem.getStartSpeed())
+                    timerTasks.remove(this)
+                }
             }
             timerTasks.add(t)
             timer.schedule(t, LifeSystem.getLifeTime(entity))
+            entity?.remove()
         }
-        entity?.remove()
     }
 
     fun moveNPC() {

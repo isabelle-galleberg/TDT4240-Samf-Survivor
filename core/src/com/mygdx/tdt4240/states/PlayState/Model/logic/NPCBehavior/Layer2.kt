@@ -11,7 +11,7 @@ import kotlin.random.Random
 /* Avoid collision with fire, bombs, walls, crates*/
 open class Layer2 : Layer1() {
     fun avoidCollision(entity: Entity?, board : Array<Array<Entity?>>) : DirectionType {
-        var NPCDirection = CharacterSystem.getDirection(entity)
+        var npcDirection = CharacterSystem.getDirection(entity)
         val randInt = Random.nextInt(0,8)
         if (randInt == 0) {
             npcDirection = randomDirection(DirectionType.NONE)

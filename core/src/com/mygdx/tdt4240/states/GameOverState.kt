@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -88,7 +87,6 @@ class GameOverState(stateManager: StateManager, isVictory: Boolean, score: Int) 
 
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
-        Alert().checkConnectionLost(stage)
     }
 
     override fun render(sprites: SpriteBatch) {

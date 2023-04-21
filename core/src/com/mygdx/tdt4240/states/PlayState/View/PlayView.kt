@@ -55,7 +55,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
 
     override fun update(deltaTime: Float) {
-        Alert().checkConnectionLost(stage)
         playController.update(deltaTime)
         if (GameButtons().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))
@@ -89,6 +88,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         gameOver = playController.isGameOver()
         if (gameOver) {
             newGame = true
+            Alert().checkConnectionLost(stage)
             api!!.updateHighscore(currentUser, playController.finalScore())
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }

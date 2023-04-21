@@ -91,7 +91,8 @@ class LoginState(
         stage.addActor(registerBtn)
     }
 
-    private fun handleLogIn(api: API){
+    private fun handleLogIn(api: API) {
+        Alert().checkConnectionLost(stage)
         loginBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 if (username.text == "" || password.text == "") {
@@ -132,7 +133,6 @@ class LoginState(
     }
 
     override fun update(deltaTime: Float) {
-        Alert().checkConnectionLost(stage)
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
             stateManager.push(LoginState(stateManager))

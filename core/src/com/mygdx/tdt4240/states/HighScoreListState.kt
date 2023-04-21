@@ -34,6 +34,7 @@ class HighScoreListState(
     private val myscoreImg = Texture("highscoreList/myscore.png")
 
     init {
+        Alert().checkConnectionLost(stage)
         font.data.setScale(FONT_SIZE)
         getHighscores()
     }
@@ -53,7 +54,6 @@ class HighScoreListState(
     }
 
     override fun update(deltaTime: Float) {
-        Alert().checkConnectionLost(stage)
          if (BackBtn().backBtnPressed()) {
              stateManager.push(MainMenuState(stateManager))
          }

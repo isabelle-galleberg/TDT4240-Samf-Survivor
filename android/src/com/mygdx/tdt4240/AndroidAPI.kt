@@ -109,9 +109,7 @@ class AndroidAPI : API {
         connectedRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val connected = dataSnapshot.getValue(Boolean::class.java)
-                if (connected == false) {
-                    connectionLost = true
-                }
+                connectionLost = connected == false
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 println("Listener was cancelled")

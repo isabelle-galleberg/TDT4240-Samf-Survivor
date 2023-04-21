@@ -25,7 +25,11 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Globals.currentUser
 import com.mygdx.tdt4240.utils.Globals.api
 
-
+/**
+ * State for the register screen
+ *
+ * @param stateManager The state manager
+ */
 class RegisterState(
     stateManager: StateManager
 ) : State(stateManager) {

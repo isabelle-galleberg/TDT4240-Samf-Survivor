@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
+/**
+ * Class for creating and handling the NPC.
+ */
 class NPC {
-
     private val screenMiddleWidth = getScreenMiddleWidth()
     private val boardSize = getBoardSize()
     private var boardX = GAME_WIDTH * 0.25f + (screenMiddleWidth-boardSize) * 0.5f
     private var boardY = (GAME_HEIGHT-boardSize) * 0.5f
-
     private val npcSize = boardSize/9
     private var npcX = boardX + 8 * npcSize
     private var npcY = boardY
@@ -37,7 +38,6 @@ class NPC {
     fun updatePosition(npc: Sprite, i: Float, j: Float) {
         npcX = boardX + i * npcSize
         npcY = boardY + j * npcSize
-
         npc.setPosition(npcX, npcY)
     }
 }

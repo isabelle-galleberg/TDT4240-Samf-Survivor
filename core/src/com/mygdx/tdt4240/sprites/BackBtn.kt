@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
+/**
+ * Class for creating and handling the button that navigates back to the main menu.
+ */
 class BackBtn {
     private val backBtnSize = GAME_HEIGHT * 0.1f
     private val backBtnX = GAME_WIDTH * 0.03f

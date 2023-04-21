@@ -23,6 +23,11 @@ import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Globals
 import com.mygdx.tdt4240.utils.Globals.soundOn
 
+/**
+ * State for the screen shown when the game is paused
+ *
+ * @param stateManager The state manager
+ */
 class PauseState(
     stateManager: StateManager
 ) : State(stateManager) {

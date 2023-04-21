@@ -16,6 +16,11 @@ import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.utils.Globals.currentUser
 import com.mygdx.tdt4240.utils.Globals.api
 
+/**
+ * State for the highscore list
+ *
+ * @param stateManager The state manager
+ */
 class HighScoreListState(
     stateManager: StateManager
 ) : State(stateManager) {

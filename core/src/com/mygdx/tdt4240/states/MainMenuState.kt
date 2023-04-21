@@ -20,7 +20,11 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Globals.currentUser
 
-
+/**
+ * State for the main menu
+ *
+ * @param stateManager The state manager
+ */
 class MainMenuState(
     stateManager: StateManager
 ) : State(stateManager) {

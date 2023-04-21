@@ -26,6 +26,11 @@ import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.utils.Globals.currentUser
 import com.mygdx.tdt4240.utils.Globals.api
 
+/**
+ * State for the login page
+ *
+ * @param stateManager The state manager
+ */
 class LoginState(
     stateManager: StateManager
 ) : State(stateManager) {

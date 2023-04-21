@@ -6,6 +6,9 @@ import com.mygdx.tdt4240.api.User
 import com.mygdx.tdt4240.utils.Globals.connectionLost
 import java.util.*
 
+/**
+ * Class for handling the API calls to the Firebase database.
+ */
 class AndroidAPI : API {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val users: DatabaseReference = database.getReference("users")

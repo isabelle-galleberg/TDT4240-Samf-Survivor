@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
+/**
+ * Class for creating and handling the game logo.
+ */
 class Logo {
     private val logoWidth = GAME_HEIGHT * 1.3f
     private val logoHeight = GAME_HEIGHT * 0.175f

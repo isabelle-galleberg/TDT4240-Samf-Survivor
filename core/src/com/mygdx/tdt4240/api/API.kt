@@ -1,6 +1,9 @@
 package com.mygdx.tdt4240.api
 import java.util.ArrayList
 
+/**
+ * Interface for the game API.
+ */
 interface API {
     fun submitUser(user: User)
 

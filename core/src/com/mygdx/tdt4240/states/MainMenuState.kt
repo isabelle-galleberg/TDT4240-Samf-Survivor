@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -76,7 +75,6 @@ class MainMenuState(
     }
 
     override fun update(deltaTime: Float) {
-        Alert().checkConnectionLost(stage)
         Gdx.input.inputProcessor = stage
     }
 

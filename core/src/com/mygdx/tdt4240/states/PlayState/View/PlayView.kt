@@ -6,13 +6,12 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.mygdx.tdt4240.sprites.*
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
-
 import com.mygdx.tdt4240.states.*
-
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
 import com.mygdx.tdt4240.utils.Globals.newGame
 import com.mygdx.tdt4240.utils.Globals.api
@@ -20,7 +19,7 @@ import com.mygdx.tdt4240.utils.Globals.currentUser
 import com.mygdx.tdt4240.utils.Globals.soundOn
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
-
+    private val stage = Stage()
     private var font = BitmapFont()
     private var scoreFont = BitmapFont()
 
@@ -48,7 +47,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private var uiBoard = playController.drawBoard()
     private var gameOver = false
 
-    var sound: Sound = Gdx.audio.newSound(Gdx.files.internal("data/bombe.mp3"))
+    private var sound: Sound = Gdx.audio.newSound(Gdx.files.internal("data/bombe.mp3"))
 
     init {
         font.data.setScale(FONT_SIZE)
@@ -56,6 +55,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
 
     override fun update(deltaTime: Float) {
+        Gdx.input.inputProcessor = stage
         playController.update(deltaTime)
         if (GameButtons().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))
@@ -89,6 +89,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         gameOver = playController.isGameOver()
         if (gameOver) {
             newGame = true
+            Alert().checkConnectionLost(stage)
             api!!.updateHighscore(currentUser, playController.finalScore())
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }
@@ -124,11 +125,11 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
         val playerPos = playController.getPlayerPosition()
         Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
-        player.draw(sprites) //Player
+        player.draw(sprites) // Player
 
         val npcPos = playController.getNPCPositions().first()
         NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
-        nPC.draw(sprites) //NPC
+        nPC.draw(sprites) // NPC
 
         upBtn.draw(sprites) // UP button
         downBtn.draw(sprites) // DOWN button
@@ -142,16 +143,17 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         val time = playController.getTime().toString() //Timer
         font.color = Color.BLACK
         font.draw(sprites, time, GAME_WIDTH * 0.05f,  GAME_HEIGHT * 0.92f)
-
         scoreFont.color = Color.BLACK
         scoreFont.draw(sprites, "Score: ${playController.currentScore()}", GAME_WIDTH * 0.05f, GAME_HEIGHT * 0.55f)
-
-
         sprites.flush()
         sprites.end()
+
+        stage.act(Gdx.graphics.deltaTime)
+        stage.draw()
     }
     override fun dispose() {
         font.dispose()
         scoreFont.dispose()
+        stage.dispose()
     }
 }

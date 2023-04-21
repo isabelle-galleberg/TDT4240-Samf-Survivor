@@ -6,6 +6,7 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
 /**
  * Abstract class for most basic of common functionality between game states.
+ *
  * @param stateManager Manager of all game states.
  */
 abstract class State(

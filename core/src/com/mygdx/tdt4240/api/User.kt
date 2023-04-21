@@ -1,5 +1,12 @@
 package com.mygdx.tdt4240.api
 
+/**
+ * Class for storing and managing user data.
+ *
+ * @param username The username of the user.
+ * @param password The password of the user.
+ * @param highscore The highscore of the user.
+ */
 class User(val username: String, val password: String, val highscore: Int, ) : Comparable<User> {
 
     // Firebase requires an empty constructor

@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
+/**
+ * Class for creating and handling the buttons used in the game.
+ */
 class GameButtons {
     private val screenSideWidth = GAME_WIDTH * 0.25f
 

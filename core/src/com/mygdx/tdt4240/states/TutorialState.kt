@@ -15,7 +15,11 @@ import com.mygdx.tdt4240.utils.Constants
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
-
+/**
+ * State for the game tutorial
+ *
+ * @param stateManager the state manager
+ */
 class TutorialState(
     stateManager: StateManager
 ) : State(stateManager) {

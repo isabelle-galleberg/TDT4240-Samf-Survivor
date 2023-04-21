@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -20,7 +19,11 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Globals.currentUser
 
-
+/**
+ * State for the main menu
+ *
+ * @param stateManager The state manager
+ */
 class MainMenuState(
     stateManager: StateManager
 ) : State(stateManager) {
@@ -59,7 +62,6 @@ class MainMenuState(
 
     init {
         textFieldStyle.font.data.setScale(FONT_SIZE)
-
         stage.addActor(playBtn)
         stage.addActor(tutorialBtn)
         stage.addActor(highscoreBtn)
@@ -99,7 +101,6 @@ class MainMenuState(
         sprites.begin()
         sprites.draw(background,0f,0f,GAME_WIDTH,GAME_HEIGHT)
         sprites.end()
-
         stage.act(Gdx.graphics.deltaTime)
         stage.draw()
     }

@@ -13,4 +13,6 @@ interface API {
     fun getHighscore(username: String): Int
 
     fun updateHighscore(username: String, highscore: Int)
+
+    fun checkDatabaseConnection()
 }

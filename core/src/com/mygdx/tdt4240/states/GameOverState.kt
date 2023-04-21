@@ -12,12 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
+import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.states.PlayState.View.PlayView
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
+
+/**
+ * State for the screen shown after the game has ended
+ *
+ * @param stateManager The state manager
+ * @param isVictory True if the game was won, false if lost
+ * @param score The score of the game
+ */
 
 class GameOverState(stateManager: StateManager, isVictory: Boolean, score: Int) : State(stateManager) {
     private val stage = Stage()
@@ -79,6 +88,7 @@ class GameOverState(stateManager: StateManager, isVictory: Boolean, score: Int) 
 
     override fun update(deltaTime: Float) {
         Gdx.input.inputProcessor = stage
+        Alert().checkConnectionLost(stage)
     }
 
     override fun render(sprites: SpriteBatch) {

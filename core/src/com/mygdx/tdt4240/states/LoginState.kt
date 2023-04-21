@@ -22,6 +22,7 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
+import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.utils.Globals.currentUser
 import com.mygdx.tdt4240.utils.Globals.api
 
@@ -79,7 +80,6 @@ class LoginState(
         handleRegister()
         handleKeyboard(username)
         handleKeyboard(password)
-
         stage.addActor(username)
         stage.addActor(password)
         stage.addActor(loginBtn)
@@ -127,6 +127,7 @@ class LoginState(
     }
 
     override fun update(deltaTime: Float) {
+        Alert().checkConnectionLost(stage)
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
             stateManager.push(LoginState(stateManager))
@@ -134,12 +135,11 @@ class LoginState(
     }
 
     override fun render(sprites: SpriteBatch) {
-        stage.act(Gdx.graphics.deltaTime)
-        stage.draw()
-
         sprites.begin()
         logo.draw(sprites)
         sprites.end()
+        stage.act(Gdx.graphics.deltaTime)
+        stage.draw()
     }
 
     override fun dispose() {

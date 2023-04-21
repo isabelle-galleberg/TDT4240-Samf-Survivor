@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.tdt4240.api.API
 import com.mygdx.tdt4240.api.User
+import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -112,6 +113,7 @@ class RegisterState(
     }
 
     override fun update(deltaTime: Float) {
+        Alert().checkConnectionLost(stage)
         Gdx.input.inputProcessor = stage
         if (BackBtn().backBtnPressed()) {
             stateManager.push(LoginState(stateManager))
@@ -119,13 +121,13 @@ class RegisterState(
     }
 
     override fun render(sprites: SpriteBatch) {
-        stage.act(Gdx.graphics.deltaTime)
-        stage.draw()
-
         sprites.begin()
         logo.draw(sprites)
         backBtn.draw(sprites)
         sprites.end()
+
+        stage.act(Gdx.graphics.deltaTime)
+        stage.draw()
     }
 
     override fun dispose() {

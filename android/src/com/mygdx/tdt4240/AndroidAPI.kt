@@ -3,12 +3,13 @@ package com.mygdx.tdt4240
 import com.google.firebase.database.*
 import com.mygdx.tdt4240.api.API
 import com.mygdx.tdt4240.api.User
+import com.mygdx.tdt4240.utils.Globals.connectionLost
 import java.util.*
-
 
 class AndroidAPI : API {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val users: DatabaseReference = database.getReference("users")
+    private val connectedRef = database.getReference(".info/connected")
 
     override fun submitUser(user: User) {
         users.push().setValue(user)
@@ -100,6 +101,21 @@ class AndroidAPI : API {
             Thread.sleep(100)
         }
     }
+
+    override fun checkDatabaseConnection() {
+        connectedRef.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val connected = dataSnapshot.getValue(Boolean::class.java)
+                if (connected == false) {
+                    connectionLost = true
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("Listener was cancelled")
+            }
+        })
+    }
+
 }
 
 

@@ -1,9 +1,12 @@
 package com.mygdx.tdt4240.states
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.mygdx.tdt4240.api.User
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
@@ -17,6 +20,7 @@ class HighScoreListState(
     stateManager: StateManager
 ) : State(stateManager) {
 
+    private val stage = Stage()
     private var highscores = ArrayList<User>()
     private var font = BitmapFont()
     private val logo = Logo().createLogo()
@@ -44,9 +48,10 @@ class HighScoreListState(
     }
 
     override fun update(deltaTime: Float) {
-     if (BackBtn().backBtnPressed()) {
-         stateManager.push(MainMenuState(stateManager))
-     }
+        Alert().checkConnectionLost(stage)
+         if (BackBtn().backBtnPressed()) {
+             stateManager.push(MainMenuState(stateManager))
+         }
     }
 
     override fun render(sprites: SpriteBatch) {
@@ -74,6 +79,8 @@ class HighScoreListState(
 
         sprites.flush()
         sprites.end()
+        stage.act(Gdx.graphics.deltaTime)
+        stage.draw()
     }
 
 
@@ -82,6 +89,7 @@ class HighScoreListState(
         font.dispose()
         highscoreImg.dispose()
         myscoreImg.dispose()
+        stage.dispose()
     }
 
 }

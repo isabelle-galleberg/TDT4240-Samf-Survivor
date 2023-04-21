@@ -19,6 +19,14 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 
+/**
+ * State for the screen shown after the game has ended
+ *
+ * @param stateManager The state manager
+ * @param isVictory True if the game was won, false if lost
+ * @param score The score of the game
+ */
+
 class GameOverState(stateManager: StateManager, isVictory: Boolean, score: Int) : State(stateManager) {
     private val stage = Stage()
     private val skin = Skin(Gdx.files.internal("skin/uiskin.json"))

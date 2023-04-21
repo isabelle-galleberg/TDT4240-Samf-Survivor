@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
+/**
+ * Class for creating and handling the player.
+ */
 class Player {
-
     private val screenMiddleWidth = getScreenMiddleWidth()
     private val boardSize = getBoardSize()
     private var boardX = GAME_WIDTH * 0.25f + (screenMiddleWidth-boardSize) * 0.5f

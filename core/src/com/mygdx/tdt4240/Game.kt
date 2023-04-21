@@ -9,6 +9,11 @@ import com.mygdx.tdt4240.api.API
 import com.mygdx.tdt4240.states.*
 import com.mygdx.tdt4240.utils.Globals.api
 
+/**
+ * Main class for the game.
+ *
+ * @param gameAPI API for communicating with the server.
+ */
 class Game(private var gameAPI: API) : ApplicationAdapter() {
 
 	companion object {

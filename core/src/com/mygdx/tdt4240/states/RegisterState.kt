@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.tdt4240.api.API
 import com.mygdx.tdt4240.api.User
+import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.sprites.Logo
 import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
@@ -24,7 +25,11 @@ import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.mygdx.tdt4240.utils.Globals.currentUser
 import com.mygdx.tdt4240.utils.Globals.api
 
-
+/**
+ * State for the register screen
+ *
+ * @param stateManager The state manager
+ */
 class RegisterState(
     stateManager: StateManager
 ) : State(stateManager) {
@@ -69,18 +74,18 @@ class RegisterState(
     }
 
     init {
-        handleRegister(api!!)
-        handleKeyboard(username)
-        handleKeyboard(password)
-
         stage.addActor(username)
         stage.addActor(password)
         stage.addActor(button)
+        handleRegister(api!!)
+        handleKeyboard(username)
+        handleKeyboard(password)
     }
 
-    private fun handleRegister(api: API){
+    private fun handleRegister(api: API) {
         button.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Alert().checkConnectionLost(stage)
                 if (username.text == "" || password.text == "") {
                     errorLabel.setText("Please fill in all fields")
                     stage.addActor(errorLabel)
@@ -119,13 +124,13 @@ class RegisterState(
     }
 
     override fun render(sprites: SpriteBatch) {
-        stage.act(Gdx.graphics.deltaTime)
-        stage.draw()
-
         sprites.begin()
         logo.draw(sprites)
         backBtn.draw(sprites)
         sprites.end()
+
+        stage.act(Gdx.graphics.deltaTime)
+        stage.draw()
     }
 
     override fun dispose() {

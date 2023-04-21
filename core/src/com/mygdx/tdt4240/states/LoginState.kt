@@ -22,9 +22,15 @@ import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Constants.INPUT_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.INPUT_WIDTH
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle
+import com.mygdx.tdt4240.sprites.Alert
 import com.mygdx.tdt4240.utils.Globals.currentUser
 import com.mygdx.tdt4240.utils.Globals.api
 
+/**
+ * State for the login page
+ *
+ * @param stateManager The state manager
+ */
 class LoginState(
     stateManager: StateManager
 ) : State(stateManager) {
@@ -75,20 +81,20 @@ class LoginState(
 
 
     init {
-        handleLogIn(api!!)
-        handleRegister()
-        handleKeyboard(username)
-        handleKeyboard(password)
-
         stage.addActor(username)
         stage.addActor(password)
         stage.addActor(loginBtn)
         stage.addActor(registerBtn)
+        handleLogIn(api!!)
+        handleRegister()
+        handleKeyboard(username)
+        handleKeyboard(password)
     }
 
-    private fun handleLogIn(api: API){
+    private fun handleLogIn(api: API) {
         loginBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Alert().checkConnectionLost(stage)
                 if (username.text == "" || password.text == "") {
                     errorLabel.setText("Please fill in all fields")
                     stage.addActor(errorLabel)
@@ -134,12 +140,11 @@ class LoginState(
     }
 
     override fun render(sprites: SpriteBatch) {
-        stage.act(Gdx.graphics.deltaTime)
-        stage.draw()
-
         sprites.begin()
         logo.draw(sprites)
         sprites.end()
+        stage.act(Gdx.graphics.deltaTime)
+        stage.draw()
     }
 
     override fun dispose() {

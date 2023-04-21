@@ -1,6 +1,9 @@
 package com.mygdx.tdt4240.api
 import java.util.ArrayList
 
+/**
+ * Interface for the game API.
+ */
 interface API {
     fun submitUser(user: User)
 
@@ -13,4 +16,6 @@ interface API {
     fun getHighscore(username: String): Int
 
     fun updateHighscore(username: String, highscore: Int)
+
+    fun checkDatabaseConnection()
 }

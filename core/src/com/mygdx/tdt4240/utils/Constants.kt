@@ -2,6 +2,9 @@ package com.mygdx.tdt4240.utils
 
 import com.badlogic.gdx.Gdx
 
+/**
+ * Constants used in the game.
+ */
 object Constants {
     val GAME_WIDTH = Gdx.graphics.width.toFloat()
     val GAME_HEIGHT = Gdx.graphics.height.toFloat()

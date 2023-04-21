@@ -5,6 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
 import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 
+/**
+ * Class for creating and handling the lives display.
+ *
+ * @param livesPlayer Number of lives for the main player.
+ * @param livesNPC Number of lives for the NPC.
+ */
 class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Array<Int>){
 
     private val screenSideWidth = GAME_WIDTH * 0.25f
@@ -32,7 +38,6 @@ class LivesDisplay (sprites: SpriteBatch, livesPlayer: Int, livesNPC: Array<Int>
     init {
         // Lives display for main player
         sprites.draw(backgroundImg, x,  backgroundY, backgroundWidth, backgroundHeight)
-
         sprites.draw(playerImg, x,  iconPlayerY, iconSize, iconSize)
 
         for (i in 0 until 3) {

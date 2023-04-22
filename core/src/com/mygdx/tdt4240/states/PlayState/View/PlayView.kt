@@ -18,11 +18,16 @@ import com.mygdx.tdt4240.utils.Globals.currentUser
 import com.mygdx.tdt4240.utils.Globals.newGame
 import com.mygdx.tdt4240.utils.Globals.soundOn
 
+/**
+ * State for the playing the game
+ *
+ * @param stateManager The state manager
+ */
 class PlayView (stateManager: StateManager) : State(stateManager) {
     private val stage = Stage()
-    private var font = BitmapFont()
-    private var scoreFont = BitmapFont()
-
+    private var font = BitmapFont().apply {
+       color = Color.BLACK
+    }
     private val pauseBtn = GameButtons().createPauseBtn()
     private val upBtn = GameButtons().createUpBtn()
     private val downBtn = GameButtons().createDownBtn()
@@ -58,7 +63,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     init {
         font.data.setScale(FONT_SIZE)
-        scoreFont.data.setScale(FONT_SIZE)
     }
 
     private fun handleButtons() {
@@ -141,14 +145,13 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         rightBtn.draw(sprites)
         bombBtn.draw(sprites)
 
-        LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives()) // Lives
+        LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives())
 
 
         val time = playController.getTime().toString()
-        font.color = Color.BLACK
+
         font.draw(sprites, time, GAME_WIDTH * 0.05f,  GAME_HEIGHT * 0.92f)
-        scoreFont.color = Color.BLACK
-        scoreFont.draw(sprites, "Score: ${playController.currentScore()}", GAME_WIDTH * 0.80f, GAME_HEIGHT * 0.80f)
+        font.draw(sprites, "Score: ${playController.currentScore()}", GAME_WIDTH * 0.80f, GAME_HEIGHT * 0.80f)
 
 
         sprites.flush()
@@ -159,7 +162,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     }
     override fun dispose() {
         font.dispose()
-        scoreFont.dispose()
         stage.dispose()
         boardFrameImg.dispose()
         tileImg.dispose()

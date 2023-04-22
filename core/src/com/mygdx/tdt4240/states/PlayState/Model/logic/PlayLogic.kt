@@ -296,7 +296,7 @@ private fun booster(entity: Entity?) {
     }
 
     fun getNpcPositions() : Array<Pair<Int,Int>> {
-        val pos = Array<Pair<Int,Int>>(npcList.size){Pair(0,0)}
+        val pos = Array(npcList.size){Pair(0,0)}
         for (i in pos.indices) {
             val position = CharacterSystem.getPosition(npcList[i])
             pos[i] = Pair(position.first,position.second)
@@ -305,7 +305,7 @@ private fun booster(entity: Entity?) {
     }
 
     fun getNpcLives() : Array<Int> {
-        val lives = Array<Int>(npcList.size){0}
+        val lives = Array(npcList.size){0}
         for (i in lives.indices) {
             lives[i] = CharacterSystem.getLives(npcList[i])
         }

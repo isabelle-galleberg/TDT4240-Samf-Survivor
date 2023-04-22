@@ -15,6 +15,6 @@ object Constants {
 
     val BUTTON_HEIGHT = GAME_HEIGHT * 0.12f
 
-    val STARTSPEED = 15
+    const val STARTSPEED = 15
     val STARTFIRELENGTH = 3
 }

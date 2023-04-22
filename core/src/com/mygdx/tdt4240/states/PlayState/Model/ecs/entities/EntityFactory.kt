@@ -2,7 +2,7 @@ package com.mygdx.tdt4240.states.PlayState.Model.ecs.entities
 
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerUpType
 
 /**
  * The abstract factory following the abstract factory pattern for creating entities for gameboard
@@ -27,8 +27,8 @@ object EntityFactory {
         return PlayerFactory.createPlayer(world, x,y)
     }
 
-    fun createPowerup(world: World, powerupType: PowerupType): Entity {
-        return PowerupFactory.createPowerup(world,powerupType)
+    fun createPowerUp(world: World, powerUpType: PowerUpType): Entity {
+        return PowerUpFactory.createPowerUp(world,powerUpType)
     }
 
     fun createWall(world: World): Entity {

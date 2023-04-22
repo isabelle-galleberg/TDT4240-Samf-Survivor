@@ -5,7 +5,7 @@ import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 
 /**
- * The concrete factory following the abstract factory pattern for creating walls on gameboard
+ * The concrete factory following the abstract factory pattern for creating walls on game board
  */
 object WallFactory {
     fun createWall(world: World): Entity {

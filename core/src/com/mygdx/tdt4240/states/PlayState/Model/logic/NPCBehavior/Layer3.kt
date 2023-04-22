@@ -22,6 +22,8 @@ open class Layer3 : Layer2() {
     fun checkEscape(entity: Entity?) : Boolean {
         val x = CharacterSystem.getPosition(entity).first
         val y = CharacterSystem.getPosition(entity).second
+
+        // Checks whether NPC is in a corner
         if (x < 3 && (y < 3 || y > 5) || x > 5 && (y < 3 || y > 5)) {
             return false
         }

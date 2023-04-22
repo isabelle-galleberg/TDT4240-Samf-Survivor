@@ -4,17 +4,17 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerUpType
 
 /**
  * System for powerups
  */
-object PowerupSystem : IteratingSystem(
+object PowerUpSystem : IteratingSystem(
     World.family { all(BoostComponent) }
 ) {
 
-    fun getPowerupType(entity: Entity?) : PowerupType {
-        return entity?.get(BoostComponent)?.powerupType ?: PowerupType.POINTS
+    fun getPowerUpType(entity: Entity?) : PowerUpType {
+        return entity?.get(BoostComponent)?.powerUpType ?: PowerUpType.POINTS
     }
 
     fun contains(entity: Entity?) : Boolean {

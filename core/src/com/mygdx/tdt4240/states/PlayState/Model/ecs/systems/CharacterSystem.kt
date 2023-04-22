@@ -35,8 +35,8 @@ object CharacterSystem : IteratingSystem(
         entity?.get(CharacterComponent)?.changeDirection(direction)
     }
 
-    fun getFirelength(entity: Entity?): Int {
-        return entity?.get(CharacterComponent)?.firelength ?: Constants.STARTFIRELENGTH
+    fun getFireLength(entity: Entity?): Int {
+        return entity?.get(CharacterComponent)?.fireLength ?: Constants.STARTFIRELENGTH
     }
 
     fun getLives(entity: Entity?): Int {
@@ -55,8 +55,8 @@ object CharacterSystem : IteratingSystem(
         entity?.get(CharacterComponent)?.changeSpeed(speed)
     }
 
-    fun setFirelength(entity: Entity?, range: Int) {
-        entity?.get(CharacterComponent)?.changeFirelength(range)
+    fun setFireLength(entity: Entity?, range: Int) {
+        entity?.get(CharacterComponent)?.changeFireLength(range)
     }
 
     override fun onTickEntity(entity: Entity) {

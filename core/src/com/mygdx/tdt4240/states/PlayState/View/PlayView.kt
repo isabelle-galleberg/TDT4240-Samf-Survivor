@@ -70,15 +70,15 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         if (GameButtons().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))
         } else if (GameButtons().upBtnPressed()) {
-            playController.updatePos("UP")
+            playController.updatePosPlayer("UP")
         } else if (GameButtons().downBtnPressed()) {
-            playController.updatePos("DOWN")
+            playController.updatePosPlayer("DOWN")
         } else if (GameButtons().leftBtnPressed()) {
-            playController.updatePos("LEFT")
+            playController.updatePosPlayer("LEFT")
         } else if (GameButtons().rightBtnPressed()) {
-            playController.updatePos("RIGHT")
+            playController.updatePosPlayer("RIGHT")
         } else if(GameButtons().bombBtnPressed()) {
-            playController.bomb()
+            playController.playerPlaceBomb()
             if(soundOn){
                 sound.play(1.0f)
             }

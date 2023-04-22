@@ -8,6 +8,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ScoreSystem.remove
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
+import com.mygdx.tdt4240.utils.Constants
 import com.mygdx.tdt4240.utils.Globals
 import java.util.*
 import kotlin.random.Random
@@ -195,7 +196,7 @@ class PlayLogic (world: World) { //set number of NPCs default to 1
             CharacterSystem.reduceLives(player)
         }
 
-        var deadNPCs = mutableListOf<Entity>()
+        val deadNPCs = mutableListOf<Entity>()
         npcList.forEach { npc ->
             if (fireCoordinates.contains(CharacterSystem.getPosition(npc))) {
                 CharacterSystem.reduceLives(npc)
@@ -205,6 +206,10 @@ class PlayLogic (world: World) { //set number of NPCs default to 1
                 ScoreSystem.addScore(50)
             }}
         npcList.removeAll(deadNPCs)
+        if (npcList.isEmpty()) {
+            timerTasks.forEach { t -> t.cancel() }
+            return
+        }
         deadNPCs.forEach { npc -> npc.remove() }
 
         val t: TimerTask = object : TimerTask() {
@@ -244,7 +249,7 @@ private fun booster(entity: Entity?) {
         CharacterSystem.setFirelength(player, PowerupType.RANGE.value)
         val t: TimerTask = object : TimerTask() {
             override fun run() {
-                CharacterSystem.setFirelength(player,CharacterSystem.getStartFirelength())
+                CharacterSystem.setFirelength(player,Constants.STARTFIRELENGTH)
                 timerTasks.remove(this)
             }
         }
@@ -257,7 +262,7 @@ private fun booster(entity: Entity?) {
             CharacterSystem.setSpeed(player, 20 - PowerupType.SPEED.value)
             val t: TimerTask = object : TimerTask() {
                 override fun run() {
-                    CharacterSystem.setSpeed(player, CharacterSystem.getStartSpeed())
+                    CharacterSystem.setSpeed(player, Constants.STARTSPEED)
                     timerTasks.remove(this)
                 }
             }
@@ -268,6 +273,9 @@ private fun booster(entity: Entity?) {
     }
 
     fun moveNPC() {
+        if (npcList.isEmpty()) {
+            return
+        }
         if (npcMove < CharacterSystem.getSpeed(npcList[0])) {
             npcMove += 1
             return
@@ -290,26 +298,19 @@ private fun booster(entity: Entity?) {
         }
     }
 
-
-
     fun getPlayerPosition() : Pair<Int,Int> {
         return CharacterSystem.getPosition(player)
     }
 
     fun getNpcPositions() : Array<Pair<Int,Int>> {
         val pos = Array<Pair<Int,Int>>(npcList.size){Pair(0,0)}
-        for (i in pos.indices) {
-            var position = CharacterSystem.getPosition(npcList[i])
-            pos[i] = Pair(position.first,position.second)
-        }
+        npcList.forEach {npc -> pos[npcList.indexOf(npc)] = CharacterSystem.getPosition(npc) }
         return pos
     }
 
     fun getNpcLives() : Array<Int> {
         val lives = Array<Int>(npcList.size){0}
-        for (i in lives.indices) {
-            lives[i] = CharacterSystem.getLives(npcList[i])
-        }
+        npcList.forEach {npc -> lives[npcList.indexOf(npc)] = CharacterSystem.getLives(npc) }
         return lives
     }
 
@@ -326,6 +327,6 @@ private fun booster(entity: Entity?) {
     }
 
     fun gameOver(): Boolean {
-        return CharacterSystem.getLives(player) == 0 || npcList.all { npc -> CharacterSystem.getLives(npc) == 0}
+        return CharacterSystem.getLives(player) == 0 || npcList.isEmpty()
     }
 }

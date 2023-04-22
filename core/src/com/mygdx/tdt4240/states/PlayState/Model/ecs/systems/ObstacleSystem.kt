@@ -5,6 +5,9 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.ObstacleComponent
 
+/**
+ * System for walls and crates
+ */
 object ObstacleSystem : IteratingSystem(
     World.family { all(ObstacleComponent) }
 ) {
@@ -19,7 +22,6 @@ object ObstacleSystem : IteratingSystem(
     fun isWall(entity: Entity?) : Boolean {
         return entity?.get(ObstacleComponent)?.wall ?: false
     }
-
 
     override fun onTickEntity(entity: Entity) {
 

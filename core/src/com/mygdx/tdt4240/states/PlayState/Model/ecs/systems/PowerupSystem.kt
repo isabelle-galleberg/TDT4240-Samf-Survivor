@@ -6,6 +6,9 @@ import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
+/**
+ * System for powerups
+ */
 object PowerupSystem : IteratingSystem(
     World.family { all(BoostComponent) }
 ) {
@@ -20,7 +23,6 @@ object PowerupSystem : IteratingSystem(
         }
         return false
     }
-
 
     override fun onTickEntity(entity: Entity) {
 

@@ -8,6 +8,9 @@ import com.mygdx.tdt4240.states.PlayState.Model.logic.PlayLogic
 import com.mygdx.tdt4240.utils.Globals
 import kotlin.random.Random
 
+/**
+ * Controller for game. Handles the relationship between game logic and play view.
+ */
 object PlayController {
     private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
     private var timerOver = false

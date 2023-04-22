@@ -5,7 +5,9 @@ import com.github.quillraven.fleks.ComponentType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.utils.Constants
 
-/* Component containing direction, speed, amount of lives and length of fire from bombs*/
+/**
+ * Component containing direction, speed, amount of lives and length of fire from bombs
+ */
 data class CharacterComponent(
     var x: Int = 0,
     var y: Int = 0,
@@ -14,8 +16,6 @@ data class CharacterComponent(
     var lives:Int = 3,
     var firelength:Int = Constants.STARTFIRELENGTH
 ) : Component<CharacterComponent> {
-
-
     override fun type() = CharacterComponent
 
     fun changeDirection(direction: DirectionType) {

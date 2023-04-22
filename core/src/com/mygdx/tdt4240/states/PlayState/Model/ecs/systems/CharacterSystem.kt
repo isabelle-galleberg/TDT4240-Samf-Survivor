@@ -7,7 +7,9 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.github.quillraven.fleks.World.Companion.family
 import com.mygdx.tdt4240.utils.Constants
 
-/* System for NPC and Player*/
+/**
+ * System for NPC and Player
+ */
 object CharacterSystem : IteratingSystem(
         family { all(CharacterComponent) }
     ) {
@@ -45,11 +47,6 @@ object CharacterSystem : IteratingSystem(
         entity?.get(CharacterComponent)?.reduceLives()
     }
 
-
-    override fun onTickEntity(entity: Entity) {
-
-    }
-
     fun getSpeed(entity: Entity?): Int {
         return entity?.get(CharacterComponent)?.speed ?: Constants.STARTSPEED
     }
@@ -60,5 +57,9 @@ object CharacterSystem : IteratingSystem(
 
     fun setFirelength(entity: Entity?, range: Int) {
         entity?.get(CharacterComponent)?.changeFirelength(range)
+    }
+
+    override fun onTickEntity(entity: Entity) {
+
     }
 }

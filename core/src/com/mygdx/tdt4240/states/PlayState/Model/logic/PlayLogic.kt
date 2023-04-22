@@ -13,7 +13,11 @@ import com.mygdx.tdt4240.utils.Globals
 import java.util.*
 import kotlin.random.Random
 
-/* Game logic */
+/**
+ * Handels the logic for the game.
+ *
+ * @param world The world is the container for entites, components, systems and families
+ */
 class PlayLogic (private val world: World) { //set number of NPCs default to 1
     private var board = Array(9) { arrayOfNulls<Entity>(9) }
     private var npcNum = 1

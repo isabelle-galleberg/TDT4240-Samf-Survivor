@@ -5,7 +5,9 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.*
 
-/* System for the powerups and bombs*/
+/**
+ * System for powerups, bombs and fire
+ */
 object LifeSystem : IteratingSystem(
     World.family { all(LifetimeComponent) }
 ) {

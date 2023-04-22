@@ -4,7 +4,9 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
-/* The abstract factory following the abstract factory pattern for creating entities for gameboard */
+/**
+ * The abstract factory following the abstract factory pattern for creating entities for gameboard
+ */
 object EntityFactory {
     fun createBomb(world: World): Entity{
         return BombFactory.createBomb( world)

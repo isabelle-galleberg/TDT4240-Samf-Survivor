@@ -6,7 +6,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.logic.PlayLogic
 import kotlin.random.Random
 
 /**
- * Third layer for the NPC. Set bombs with a random delay between 2 and 10 seconds
+ * Third layer for the NPC. Set bombs randomly
  */
 open class Layer3 : Layer2() {
     fun setBombs(entity: Entity?, board: Array<Array<Entity?>>, game: PlayLogic) {

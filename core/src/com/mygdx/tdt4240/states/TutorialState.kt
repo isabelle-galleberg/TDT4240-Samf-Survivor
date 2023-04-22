@@ -30,12 +30,12 @@ class TutorialState(
         font.data.setScale(Constants.FONT_SIZE)
     }
 
-    private val tutorial1 = Texture("tutorial/Tutorial1.png")
-    private val tutorial2 = Texture("tutorial/Tutorial2.png")
-    private val tutorial3 = Texture("tutorial/Tutorial3.png")
-    private val tutorial4 = Texture("tutorial/Tutorial4.png")
-    private val tutorial5 = Texture("tutorial/Tutorial5.png")
-    private val tutorial6 = Texture("tutorial/Tutorial6.png")
+    private val tutorial1 = Texture("tutorial/Tutorial1_2.png")
+    private val tutorial2 = Texture("tutorial/Tutorial2_2.png")
+    private val tutorial3 = Texture("tutorial/Tutorial3_2.png")
+    private val tutorial4 = Texture("tutorial/Tutorial4_2.png")
+    private val tutorial5 = Texture("tutorial/Tutorial5_2.png")
+    private val tutorial6 = Texture("tutorial/Tutorial6_2.png")
     private val imgArray= arrayOf(Sprite(tutorial1), Sprite(tutorial2), Sprite(tutorial3), Sprite(tutorial4), Sprite(tutorial5), Sprite(tutorial6))
     private var pointer = 0
 

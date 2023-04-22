@@ -23,7 +23,7 @@ object PlayController {
         }}
     private var game : PlayLogic? = null
 
-    private fun newGame() {
+    fun newGame() {
         game?.dispose()
         game = PlayLogic(world)
         worldTimer = 180
@@ -126,7 +126,7 @@ object PlayController {
         game?.movePlayer()
     }
 
-    private fun updatePosNPC() {
+    fun updatePosNPC() {
         game?.moveNPC()
 
     }

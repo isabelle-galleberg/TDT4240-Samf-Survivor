@@ -5,6 +5,7 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.CharacterComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.github.quillraven.fleks.World.Companion.family
+import com.mygdx.tdt4240.utils.Constants
 
 /* System for NPC and Player*/
 object CharacterSystem : IteratingSystem(
@@ -33,7 +34,7 @@ object CharacterSystem : IteratingSystem(
     }
 
     fun getFirelength(entity: Entity?): Int {
-        return entity?.get(CharacterComponent)?.firelength ?: getStartFirelength()
+        return entity?.get(CharacterComponent)?.firelength ?: Constants.STARTFIRELENGTH
     }
 
     fun getLives(entity: Entity?): Int {
@@ -49,16 +50,8 @@ object CharacterSystem : IteratingSystem(
 
     }
 
-    fun getStartSpeed(): Int {
-        return family.entities.first().get(CharacterComponent).getStartSpeed()
-    }
-
-    fun getStartFirelength(): Int {
-        return family.entities.first().get(CharacterComponent).getStartFirelength()
-    }
-
     fun getSpeed(entity: Entity?): Int {
-        return entity?.get(CharacterComponent)?.speed ?: getStartSpeed()
+        return entity?.get(CharacterComponent)?.speed ?: Constants.STARTSPEED
     }
 
     fun setSpeed(entity: Entity?, speed: Int) {

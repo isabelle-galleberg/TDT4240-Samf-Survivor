@@ -61,9 +61,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         scoreFont.data.setScale(FONT_SIZE)
     }
 
-    override fun update(deltaTime: Float) {
-        Gdx.input.inputProcessor = stage
-        playController.update(deltaTime)
+    private fun handleButtons() {
         if (GameButtons().pauseBtnPressed()) {
             stateManager.push(PauseState(stateManager))
         } else if (GameButtons().upBtnPressed()) {
@@ -80,10 +78,9 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                 sound.play(1.0f)
             }
         }
-
     }
-    override fun render(sprites: SpriteBatch) {
-        sprites.begin()
+
+    private fun checkGameOver() {
         gameOver = playController.isGameOver()
         if (gameOver) {
             newGame = true
@@ -91,10 +88,18 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
             api!!.updateHighscore(currentUser, playController.finalScore())
             stateManager.push(GameOverState(stateManager,playController.isGameWon(),playController.finalScore()))
         }
+    }
 
-        pauseBtn.draw(sprites) // Pause button
-        uiBoard = playController.drawBoard() // Game board
-
+    override fun update(deltaTime: Float) {
+        Gdx.input.inputProcessor = stage
+        playController.update(deltaTime)
+        handleButtons()
+        checkGameOver()
+    }
+    override fun render(sprites: SpriteBatch) {
+        sprites.begin()
+        pauseBtn.draw(sprites)
+        uiBoard = playController.drawBoard()
         sprites.draw(boardFrameImg, GAME_WIDTH * 0.25f,  (GAME_HEIGHT - screenMiddleWidth) * 0.5f, screenMiddleWidth, screenMiddleWidth) // Draw game board frame
 
         for (i in uiBoard.indices) {
@@ -123,23 +128,23 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
         val playerPos = playController.getPlayerPosition()
         Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
-        player.draw(sprites) // Player
+        player.draw(sprites)
 
         for (npcPos in playController.getNPCPositions()) {
             NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
-            nPC.draw(sprites) //NPC
+            nPC.draw(sprites)
         }
 
-        upBtn.draw(sprites) // UP button
-        downBtn.draw(sprites) // DOWN button
-        leftBtn.draw(sprites) // LEFT button
-        rightBtn.draw(sprites) // RIGHT button
-        bombBtn.draw(sprites) // Bomb button
+        upBtn.draw(sprites)
+        downBtn.draw(sprites)
+        leftBtn.draw(sprites)
+        rightBtn.draw(sprites)
+        bombBtn.draw(sprites)
 
         LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives()) // Lives
 
 
-        val time = playController.getTime().toString() //Timer
+        val time = playController.getTime().toString()
         font.color = Color.BLACK
         font.draw(sprites, time, GAME_WIDTH * 0.05f,  GAME_HEIGHT * 0.92f)
         scoreFont.color = Color.BLACK

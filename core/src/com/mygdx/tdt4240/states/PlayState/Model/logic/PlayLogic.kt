@@ -14,7 +14,7 @@ import java.util.*
 import kotlin.random.Random
 
 /* Game logic */
-class PlayLogic (world: World) { //set number of NPCs default to 1
+class PlayLogic (private val world: World) { //set number of NPCs default to 1
     private var board = Array(9) { arrayOfNulls<Entity>(9) }
     private var npcNum = 1
     private var player:Entity? = null
@@ -23,7 +23,6 @@ class PlayLogic (world: World) { //set number of NPCs default to 1
     private var playerMove = 0
     private var timer = Timer()
     private var timerTasks = mutableListOf<TimerTask>()
-    private val world = world
 
     init {
         player = EntityFactory.createPlayer(world,0,8)

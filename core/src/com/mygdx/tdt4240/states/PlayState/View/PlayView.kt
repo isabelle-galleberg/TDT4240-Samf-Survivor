@@ -35,8 +35,13 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val rightBtn = GameButtons().createRightBtn()
     private val bombBtn = GameButtons().createBombBtn()
 
-    private val player = Player().createPlayer()
+    private var playController = PlayController
+    private var uiBoard = playController.drawBoard()
     private val nPC = NPC().createNPC()
+    private val player = Player().createPlayer()
+    private var playerPos = Pair(0,0)
+    private var time = "0"
+    private var gameOver = false
 
     private val boardFrameImg = Texture("gameView/boardFrame.png")
     private val tileImg = Texture("gameView/tile.png")
@@ -47,10 +52,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
     private val powerUpSpeedImg = Texture("gameView/powerUpSpeed.png")
     private val powerUpRangeImg = Texture("gameView/powerUpRange.png")
     private val powerUpPointsImg = Texture("gameView/powerUpPoints.png")
-
-    private var playController = PlayController
-    private var uiBoard = playController.drawBoard()
-    private var gameOver = false
 
     private var sound: Sound = Gdx.audio.newSound(Gdx.files.internal("data/bombe.mp3"))
 
@@ -99,12 +100,17 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         playController.update(deltaTime)
         handleButtons()
         checkGameOver()
+        time = playController.getTime().toString()
+        playerPos = playController.getPlayerPosition()
+        Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
+        for (npcPos in playController.getNPCPositions()) {
+            NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
+        }
     }
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
-        pauseBtn.draw(sprites)
         uiBoard = playController.drawBoard()
-        sprites.draw(boardFrameImg, GAME_WIDTH * 0.25f,  (GAME_HEIGHT - screenMiddleWidth) * 0.5f, screenMiddleWidth, screenMiddleWidth) // Draw game board frame
+        sprites.draw(boardFrameImg, GAME_WIDTH * 0.25f,(GAME_HEIGHT - screenMiddleWidth) * 0.5f, screenMiddleWidth, screenMiddleWidth)
 
         for (i in uiBoard.indices) {
             for (j in 0 until uiBoard[0].size) {
@@ -129,13 +135,8 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
                 }
             }
         }
-
-        val playerPos = playController.getPlayerPosition()
-        Player().updatePosition(player, playerPos.first.toFloat(), playerPos.second.toFloat())
         player.draw(sprites)
-
         for (npcPos in playController.getNPCPositions()) {
-            NPC().updatePosition(nPC, npcPos.first.toFloat(), npcPos.second.toFloat())
             nPC.draw(sprites)
         }
 
@@ -144,15 +145,11 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         leftBtn.draw(sprites)
         rightBtn.draw(sprites)
         bombBtn.draw(sprites)
-
+        pauseBtn.draw(sprites)
         LivesDisplay(sprites, playController.getPlayerLives(), playController.getNPCLives())
-
-
-        val time = playController.getTime().toString()
 
         font.draw(sprites, time, GAME_WIDTH * 0.05f,  GAME_HEIGHT * 0.92f)
         font.draw(sprites, "Score: ${playController.currentScore()}", GAME_WIDTH * 0.80f, GAME_HEIGHT * 0.80f)
-
 
         sprites.flush()
         sprites.end()
@@ -160,6 +157,7 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         stage.act(Gdx.graphics.deltaTime)
         stage.draw()
     }
+
     override fun dispose() {
         font.dispose()
         stage.dispose()

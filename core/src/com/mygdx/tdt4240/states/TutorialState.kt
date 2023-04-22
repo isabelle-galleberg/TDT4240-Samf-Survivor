@@ -97,7 +97,7 @@ class TutorialState(
     override fun render(sprites: SpriteBatch) {
         sprites.begin()
         menuBtn.draw(sprites)
-        sprites.draw(imgArray[pointer], (GAME_WIDTH - GAME_WIDTH * 0.75f) * 0.5f,
+        sprites.draw(imgArray[pointer], GAME_WIDTH * 0.125f,
             GAME_HEIGHT * 0.1f, GAME_WIDTH * 0.75f, GAME_HEIGHT * 0.9f)
         sprites.end()
         stage.act(Gdx.graphics.deltaTime)

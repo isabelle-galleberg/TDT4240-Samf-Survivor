@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.random.Random
 
 /* Game logic */
-class PlayLogic (world: World) { //set number of NPCs default to 1
+class PlayLogic (private val world: World) { //set number of NPCs default to 1
     private var board = Array(9) { arrayOfNulls<Entity>(9) }
     private var npcNum = 1
     private var player:Entity? = null
@@ -22,7 +22,6 @@ class PlayLogic (world: World) { //set number of NPCs default to 1
     private var playerMove = 0
     private var timer = Timer()
     private var timerTasks = mutableListOf<TimerTask>()
-    private val world = world
 
     init {
         player = EntityFactory.createPlayer(world,0,8)
@@ -195,7 +194,7 @@ class PlayLogic (world: World) { //set number of NPCs default to 1
             CharacterSystem.reduceLives(player)
         }
 
-        var deadNPCs = mutableListOf<Entity>()
+        val deadNPCs = mutableListOf<Entity>()
         npcList.forEach { npc ->
             if (fireCoordinates.contains(CharacterSystem.getPosition(npc))) {
                 CharacterSystem.reduceLives(npc)
@@ -297,16 +296,16 @@ private fun booster(entity: Entity?) {
     }
 
     fun getNpcPositions() : Array<Pair<Int,Int>> {
-        val pos = Array<Pair<Int,Int>>(npcList.size){Pair(0,0)}
+        val pos = Array(npcList.size){Pair(0,0)}
         for (i in pos.indices) {
-            var position = CharacterSystem.getPosition(npcList[i])
+            val position = CharacterSystem.getPosition(npcList[i])
             pos[i] = Pair(position.first,position.second)
         }
         return pos
     }
 
     fun getNpcLives() : Array<Int> {
-        val lives = Array<Int>(npcList.size){0}
+        val lives = Array(npcList.size){0}
         for (i in lives.indices) {
             lives[i] = CharacterSystem.getLives(npcList[i])
         }

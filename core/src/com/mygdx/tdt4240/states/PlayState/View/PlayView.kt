@@ -3,19 +3,19 @@ package com.mygdx.tdt4240.states.PlayState.View
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.mygdx.tdt4240.sprites.*
-import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
-import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
-import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
 import com.mygdx.tdt4240.states.*
 import com.mygdx.tdt4240.states.PlayState.Controller.PlayController
-import com.mygdx.tdt4240.utils.Globals.newGame
+import com.mygdx.tdt4240.utils.Constants.FONT_SIZE
+import com.mygdx.tdt4240.utils.Constants.GAME_HEIGHT
+import com.mygdx.tdt4240.utils.Constants.GAME_WIDTH
 import com.mygdx.tdt4240.utils.Globals.api
 import com.mygdx.tdt4240.utils.Globals.currentUser
+import com.mygdx.tdt4240.utils.Globals.newGame
 import com.mygdx.tdt4240.utils.Globals.soundOn
 
 class PlayView (stateManager: StateManager) : State(stateManager) {
@@ -49,6 +49,13 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     private var sound: Sound = Gdx.audio.newSound(Gdx.files.internal("data/bombe.mp3"))
 
+    // Calculate values to ensure the view to be scalable on different devices
+    private val screenMiddleWidth = if (GAME_WIDTH * 0.5f > GAME_HEIGHT) GAME_HEIGHT else GAME_WIDTH * 0.5f
+    private val boardSize = (screenMiddleWidth * 0.9f).coerceAtMost(GAME_HEIGHT * 0.9f)
+    private val tileSize = boardSize / 9
+    private val boardX = GAME_WIDTH * 0.25f + (screenMiddleWidth-boardSize) * 0.5f
+    private val boardY = (GAME_HEIGHT-boardSize) * 0.5f
+
     init {
         font.data.setScale(FONT_SIZE)
         scoreFont.data.setScale(FONT_SIZE)
@@ -76,15 +83,6 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
 
     }
     override fun render(sprites: SpriteBatch) {
-        // Calculate values to ensure the view to be scalable on different devices
-        var screenMiddleWidth = GAME_WIDTH * 0.5f
-        if (screenMiddleWidth > GAME_HEIGHT) { screenMiddleWidth = GAME_HEIGHT }
-
-        val boardSize = if (screenMiddleWidth < GAME_HEIGHT){ screenMiddleWidth * 0.9f } else { GAME_HEIGHT * 0.9f }
-        val tileSize = boardSize/9
-        val boardX = GAME_WIDTH * 0.25f + (screenMiddleWidth-boardSize) * 0.5f
-        val boardY = (GAME_HEIGHT-boardSize) * 0.5f
-
         sprites.begin()
         gameOver = playController.isGameOver()
         if (gameOver) {
@@ -158,5 +156,14 @@ class PlayView (stateManager: StateManager) : State(stateManager) {
         font.dispose()
         scoreFont.dispose()
         stage.dispose()
+        boardFrameImg.dispose()
+        tileImg.dispose()
+        wallImg.dispose()
+        crateImg.dispose()
+        fireImg.dispose()
+        bombImg.dispose()
+        powerUpSpeedImg.dispose()
+        powerUpRangeImg.dispose()
+        powerUpPointsImg.dispose()
     }
 }

@@ -75,7 +75,7 @@ class PlayLogic (private val world: World) { //set number of NPCs default to 1
         if (direction == DirectionType.DOWN) {
             if (y-1 < 0 || ObstacleSystem.contains(board[x][y-1])) {
                 return
-            } else if(PowerUpSystem.contains(board[x][y-1]))
+            } else if(PowerupSystem.contains(board[x][y-1]))
             {
                 powerUp(board[x][y-1])
                 board[x][y-1] = null
@@ -84,7 +84,7 @@ class PlayLogic (private val world: World) { //set number of NPCs default to 1
         } else if (direction == DirectionType.UP) {
             if (y+1 > 8 || ObstacleSystem.contains(board[x][y+1])) {
                 return
-            }else if(PowerUpSystem.contains(board[x][y+1]))
+            }else if(PowerupSystem.contains(board[x][y+1]))
             {
                 powerUp(board[x][y+1])
                 board[x][y+1] = null
@@ -93,7 +93,7 @@ class PlayLogic (private val world: World) { //set number of NPCs default to 1
         } else if (direction == DirectionType.RIGHT) {
             if (x+1 > 8 || ObstacleSystem.contains(board[x+1][y])) {
                 return
-            }else if(PowerUpSystem.contains(board[x+1][y]))
+            }else if(PowerupSystem.contains(board[x+1][y]))
             {
                 powerUp(board[x+1][y])
                 board[x+1][y] = null
@@ -102,7 +102,7 @@ class PlayLogic (private val world: World) { //set number of NPCs default to 1
         } else if (direction == DirectionType.LEFT) {
             if (x-1 < 0 || ObstacleSystem.contains(board[x-1][y])) {
                 return
-            }else if(PowerUpSystem.contains(board[x-1][y]))
+            }else if(PowerupSystem.contains(board[x-1][y]))
             {
                 powerUp(board[x-1][y])
                 board[x-1][y] = null
@@ -252,7 +252,7 @@ class PlayLogic (private val world: World) { //set number of NPCs default to 1
 
 
 private fun powerUp(entity: Entity?) {
-    val powerUp = PowerUpSystem.getPowerUpType(entity)
+    val powerUp = PowerupSystem.getPowerUpType(entity)
 
     if (powerUp == PowerUpType.POINTS) {
         ScoreSystem.addScore(PowerUpType.POINTS.value)

@@ -28,7 +28,7 @@ object EntityFactory {
     }
 
     fun createPowerUp(world: World, powerUpType: PowerUpType): Entity {
-        return PowerUpFactory.createPowerUp(world,powerUpType)
+        return PowerupFactory.createPowerUp(world,powerUpType)
     }
 
     fun createWall(world: World): Entity {

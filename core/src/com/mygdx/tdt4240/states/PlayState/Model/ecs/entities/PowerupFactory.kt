@@ -9,7 +9,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerUpType
 /**
  * The concrete factory following the abstract factory pattern for creating powerups on gameboard
  */
-object PowerUpFactory {
+object PowerupFactory {
     fun createPowerUp(world: World, powerUpType: PowerUpType): Entity {
         val entity: Entity = world.entity {
             it += BoostComponent(powerUpType)

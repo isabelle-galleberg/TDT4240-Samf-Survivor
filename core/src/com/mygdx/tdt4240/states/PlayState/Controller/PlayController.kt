@@ -21,7 +21,7 @@ object PlayController {
             add(ScoreSystem)
             add(LifeSystem)
             add(CharacterSystem)
-            add(PowerUpSystem)
+            add(PowerupSystem)
         }}
     private var game : PlayLogic? = null
 
@@ -70,12 +70,12 @@ object PlayController {
                     } else {
                         uiBoard[i][j] = "crate"
                     }
-                } else if (PowerUpSystem.contains(tile)) {
-                    if (PowerUpSystem.getPowerUpType(tile) == PowerUpType.SPEED) {
+                } else if (PowerupSystem.contains(tile)) {
+                    if (PowerupSystem.getPowerUpType(tile) == PowerUpType.SPEED) {
                         uiBoard[i][j] = "speed"
-                    } else if (PowerUpSystem.getPowerUpType(tile)== PowerUpType.RANGE) {
+                    } else if (PowerupSystem.getPowerUpType(tile)== PowerUpType.RANGE) {
                         uiBoard[i][j] = "range"
-                    } else if (PowerUpSystem.getPowerUpType(tile) == PowerUpType.POINTS) {
+                    } else if (PowerupSystem.getPowerUpType(tile) == PowerUpType.POINTS) {
                         uiBoard[i][j] = "points"
                     }
 

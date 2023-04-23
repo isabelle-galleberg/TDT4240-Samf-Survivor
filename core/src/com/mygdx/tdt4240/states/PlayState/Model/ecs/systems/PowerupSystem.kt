@@ -9,7 +9,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerUpType
 /**
  * System for powerups
  */
-object PowerUpSystem : IteratingSystem(
+object PowerupSystem : IteratingSystem(
     World.family { all(BoostComponent) }
 ) {
 

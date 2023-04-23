@@ -3,7 +3,7 @@ package com.mygdx.tdt4240.states.PlayState.Controller
 import com.github.quillraven.fleks.world
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerUpType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.PlayLogic
 import com.mygdx.tdt4240.utils.Globals
 
@@ -71,11 +71,11 @@ object PlayController {
                         uiBoard[i][j] = "crate"
                     }
                 } else if (PowerupSystem.contains(tile)) {
-                    if (PowerupSystem.getPowerUpType(tile) == PowerUpType.SPEED) {
+                    if (PowerupSystem.getPowerUpType(tile) == PowerupType.SPEED) {
                         uiBoard[i][j] = "speed"
-                    } else if (PowerupSystem.getPowerUpType(tile)== PowerUpType.RANGE) {
+                    } else if (PowerupSystem.getPowerUpType(tile)== PowerupType.RANGE) {
                         uiBoard[i][j] = "range"
-                    } else if (PowerupSystem.getPowerUpType(tile) == PowerUpType.POINTS) {
+                    } else if (PowerupSystem.getPowerUpType(tile) == PowerupType.POINTS) {
                         uiBoard[i][j] = "points"
                     }
 

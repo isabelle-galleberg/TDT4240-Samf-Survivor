@@ -7,7 +7,7 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.entities.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.*
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.ScoreSystem.remove
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
-import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerUpType
+import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import com.mygdx.tdt4240.utils.Constants
 import com.mygdx.tdt4240.utils.Globals
 import java.util.*
@@ -246,7 +246,7 @@ class PlayLogic (private val world: World) { //set number of NPCs default to 1
             y = Random.nextInt(0, 8)
         }
 
-        val randomTypes = PowerUpType.values().toList().shuffled()
+        val randomTypes = PowerupType.values().toList().shuffled()
         board[x][y] = EntityFactory.createPowerUp(world, randomTypes.first())
         }
 
@@ -254,11 +254,11 @@ class PlayLogic (private val world: World) { //set number of NPCs default to 1
 private fun powerUp(entity: Entity?) {
     val powerUp = PowerupSystem.getPowerUpType(entity)
 
-    if (powerUp == PowerUpType.POINTS) {
-        ScoreSystem.addScore(PowerUpType.POINTS.value)
+    if (powerUp == PowerupType.POINTS) {
+        ScoreSystem.addScore(PowerupType.POINTS.value)
     }
-    else if (powerUp == PowerUpType.RANGE) {
-        CharacterSystem.setFireLength(player, PowerUpType.RANGE.value)
+    else if (powerUp == PowerupType.RANGE) {
+        CharacterSystem.setFireLength(player, PowerupType.RANGE.value)
         val t: TimerTask = object : TimerTask() {
             override fun run() {
                 CharacterSystem.setFireLength(player,Constants.STARTFIRELENGTH)
@@ -270,8 +270,8 @@ private fun powerUp(entity: Entity?) {
 
     }
 
-    else if ( powerUp == PowerUpType.SPEED) {
-            CharacterSystem.setSpeed(player, 20 - PowerUpType.SPEED.value)
+    else if ( powerUp == PowerupType.SPEED) {
+            CharacterSystem.setSpeed(player, 20 - PowerupType.SPEED.value)
             val t: TimerTask = object : TimerTask() {
                 override fun run() {
                     CharacterSystem.setSpeed(player, Constants.STARTSPEED)

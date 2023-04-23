@@ -7,7 +7,9 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.github.quillraven.fleks.World.Companion.family
 import com.mygdx.tdt4240.utils.Constants
 
-/* System for NPC and Player*/
+/**
+ * System for NPC and Player
+ */
 object CharacterSystem : IteratingSystem(
         family { all(CharacterComponent) }
     ) {
@@ -33,8 +35,8 @@ object CharacterSystem : IteratingSystem(
         entity?.get(CharacterComponent)?.changeDirection(direction)
     }
 
-    fun getFirelength(entity: Entity?): Int {
-        return entity?.get(CharacterComponent)?.firelength ?: Constants.STARTFIRELENGTH
+    fun getFireLength(entity: Entity?): Int {
+        return entity?.get(CharacterComponent)?.fireLength ?: Constants.STARTFIRELENGTH
     }
 
     fun getLives(entity: Entity?): Int {
@@ -45,11 +47,6 @@ object CharacterSystem : IteratingSystem(
         entity?.get(CharacterComponent)?.reduceLives()
     }
 
-
-    override fun onTickEntity(entity: Entity) {
-
-    }
-
     fun getSpeed(entity: Entity?): Int {
         return entity?.get(CharacterComponent)?.speed ?: Constants.STARTSPEED
     }
@@ -58,7 +55,11 @@ object CharacterSystem : IteratingSystem(
         entity?.get(CharacterComponent)?.changeSpeed(speed)
     }
 
-    fun setFirelength(entity: Entity?, range: Int) {
-        entity?.get(CharacterComponent)?.changeFirelength(range)
+    fun setFireLength(entity: Entity?, range: Int) {
+        entity?.get(CharacterComponent)?.changeFireLength(range)
+    }
+
+    override fun onTickEntity(entity: Entity) {
+
     }
 }

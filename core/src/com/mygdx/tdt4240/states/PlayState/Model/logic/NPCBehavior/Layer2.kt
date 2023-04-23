@@ -8,10 +8,14 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.systems.PowerupSystem
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import kotlin.random.Random
 
-/* Avoid collision with fire, bombs, walls, crates*/
+/**
+ * Second layer for the NPC. Avoids collision with fire, bombs, walls and crates.
+ */
 open class Layer2 : Layer1() {
     fun avoidCollision(entity: Entity?, board : Array<Array<Entity?>>) : DirectionType {
         var npcDirection = CharacterSystem.getDirection(entity)
+
+        // Set random direction at random times
         val randInt = Random.nextInt(0,8)
         if (randInt == 0) {
             npcDirection = randomDirection(DirectionType.NONE)
@@ -50,13 +54,12 @@ open class Layer2 : Layer1() {
         return npcDirection
     }
 
-    /* Finds new random direction that is not the NotDirection*/
-    fun randomDirection(NotDirection: DirectionType): DirectionType {
+    private fun randomDirection(NotDirection: DirectionType): DirectionType {
         return DirectionType.values().filterNot { d -> (d== DirectionType.NONE || d==NotDirection) }.random()
-
     }
 
-    fun checkIfCanWalk(entity: Entity?):Boolean {
+    /* Checks whether the tile is not wall, crate, fire or bomb*/
+    private fun checkIfCanWalk(entity: Entity?):Boolean {
         return ObstacleSystem.contains(entity) || (LifeSystem.contains(entity) && !PowerupSystem.contains(entity))
     }
 }

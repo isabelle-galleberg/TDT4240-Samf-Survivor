@@ -6,8 +6,10 @@ import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.DirectionType
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 import com.mygdx.tdt4240.states.PlayState.Model.logic.PlayLogic
 import com.mygdx.tdt4240.utils.Globals
-import kotlin.random.Random
 
+/**
+ * Controller for game. Handles the relationship between game logic and play view.
+ */
 object PlayController {
     private var uiBoard = Array(9) { arrayOfNulls<String>(9) }
     private var timerOver = false
@@ -23,9 +25,9 @@ object PlayController {
         }}
     private var game : PlayLogic? = null
 
-    fun newGame() {
-        game?.dispose()
-        game = PlayLogic(world)
+    private fun createNewGame() {
+        game?.dispose() // disposes old game
+        game = PlayLogic(world) //creates new game
         worldTimer = 180
         timeCount = 0f
         timerOver = false
@@ -34,8 +36,10 @@ object PlayController {
 
     fun update(dt: Float) {
         if (Globals.newGame) {
-            newGame()
+            createNewGame()
         }
+
+        // Update time
         timeCount += dt
         if (timeCount >= 1) {
             if (worldTimer!! > 0) {
@@ -45,8 +49,10 @@ object PlayController {
             }
             timeCount = 0F
         }
-        spawnPowerUp()
-        updatePosNPC()
+
+        //Update game
+        game?.spawnPowerUp()
+        game?.moveNPC()
     }
 
     fun getTime(): Int? {
@@ -65,11 +71,11 @@ object PlayController {
                         uiBoard[i][j] = "crate"
                     }
                 } else if (PowerupSystem.contains(tile)) {
-                    if (PowerupSystem.getPowerupType(tile) == PowerupType.SPEED) {
+                    if (PowerupSystem.getPowerUpType(tile) == PowerupType.SPEED) {
                         uiBoard[i][j] = "speed"
-                    } else if (PowerupSystem.getPowerupType(tile)== PowerupType.RANGE) {
+                    } else if (PowerupSystem.getPowerUpType(tile)== PowerupType.RANGE) {
                         uiBoard[i][j] = "range"
-                    } else if (PowerupSystem.getPowerupType(tile) == PowerupType.POINTS) {
+                    } else if (PowerupSystem.getPowerUpType(tile) == PowerupType.POINTS) {
                         uiBoard[i][j] = "points"
                     }
 
@@ -108,7 +114,7 @@ object PlayController {
 
     }
 
-    fun updatePos(direction: String) {
+    fun updatePosPlayer(direction: String) {
         var directionType = DirectionType.NONE
         if (direction == "RIGHT") {
             directionType = DirectionType.RIGHT
@@ -122,27 +128,15 @@ object PlayController {
         if (direction == "DOWN") {
             directionType = DirectionType.DOWN
         }
-        game?.setPlayerDirection(directionType)
-        game?.movePlayer()
+        game?.movePlayer(directionType)
     }
 
-    fun updatePosNPC() {
-        game?.moveNPC()
-
-    }
-
-    fun bomb() {
-        game?.bomb()
-    }
-    private fun spawnPowerUp() {
-        val randInt = Random.nextInt(0,700)
-        if(randInt < 2) {
-            game?.powerUp()
-        }
+    fun playerPlaceBomb() {
+        game?.playerPlaceBomb()
     }
 
     fun isGameOver(): Boolean {
-        if (game!!.gameOver()) {
+        if (game!!.isGameOver()) {
             return true
         } else if (timerOver) {
             return true

@@ -6,12 +6,15 @@ import com.github.quillraven.fleks.World
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.components.BoostComponent
 import com.mygdx.tdt4240.states.PlayState.Model.ecs.types.PowerupType
 
+/**
+ * System for powerups
+ */
 object PowerupSystem : IteratingSystem(
     World.family { all(BoostComponent) }
 ) {
 
-    fun getPowerupType(entity: Entity?) : PowerupType {
-        return entity?.get(BoostComponent)?.powerupType ?: PowerupType.POINTS
+    fun getPowerUpType(entity: Entity?) : PowerupType {
+        return entity?.get(BoostComponent)?.powerUpType ?: PowerupType.POINTS
     }
 
     fun contains(entity: Entity?) : Boolean {
@@ -20,7 +23,6 @@ object PowerupSystem : IteratingSystem(
         }
         return false
     }
-
 
     override fun onTickEntity(entity: Entity) {
 

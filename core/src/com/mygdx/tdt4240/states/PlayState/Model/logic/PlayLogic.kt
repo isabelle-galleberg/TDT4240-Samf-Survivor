@@ -294,7 +294,7 @@ private fun powerUp(entity: Entity?) {
             return
         }
         npcList.forEach {npc ->
-            NPCBehavior.setBombs(npc,board, this)
+            NPCBehavior.npcBehave(npc,board, this)
             val x = CharacterSystem.getPosition(npc).first
             val y = CharacterSystem.getPosition(npc).second
             val direction = CharacterSystem.getDirection(npc)

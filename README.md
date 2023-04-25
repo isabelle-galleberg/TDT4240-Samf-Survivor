@@ -24,7 +24,6 @@ In `core/src/com/mygdx/tdt4240`:
 - `utils` provides utility classes 
 
 
-
 ## 👩‍💻 How to run 
 
 ### With Android device
